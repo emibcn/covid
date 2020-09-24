@@ -5,6 +5,8 @@ import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -25,16 +27,42 @@ import About from './About';
 
 const withErrorCatcher = (origin, component) => <ErrorCatcher {...{ origin , key: origin }}>{ component }</ErrorCatcher>;
 
-function Copyright() {
+const Copyright = (props) => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://github.com/emibcn/covid">
-        Codi font de Dades Covid Refactored
+        Codi font de <em>Dades Covid <code>Refactored</code></em>
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
+  );
+}
+
+const AppThemeProvider = (props) => {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const { type, children } = props;
+
+  const theme = React.useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type: type ?
+                  type :
+                  prefersDarkMode ?
+                    'dark' :
+                    'light',
+        },
+      }),
+    [prefersDarkMode, type],
+  );
+
+  return (
+    <ThemeProvider theme={ theme }>
+      <CssBaseline />
+      { children }
+    </ThemeProvider>
   );
 }
 
@@ -96,7 +124,7 @@ const RoutesModal = (props) => {
 
 const Dashboard = (props) => {
   const classes = useStyles();
-  const { children } = props;
+  const { children, theme, ...restProps } = props;
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -107,42 +135,43 @@ const Dashboard = (props) => {
   };
 
   return (
-    <div id="root" className={classes.root}>
-      <CssBaseline />
+    <AppThemeProvider type={ theme } >
       <RoutesModal />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open menu"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            { "Dades Covid" }
-          </Typography>
-          {/*
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          */}
-        </Toolbar>
-      </AppBar>
-      <Menu { ...{ handleDrawerOpen, handleDrawerClose, open } } { ...props } />
-      <main className={classes.content}>
-        { children }
-        <Container maxWidth="lg" className={classes.container}>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
-        </Container>
-      </main>
-    </div>
+      <div id="root" className={classes.root}>
+        <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open menu"
+              onClick={handleDrawerOpen}
+              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+              { "Dades Covid" }
+            </Typography>
+            {/*
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            */}
+          </Toolbar>
+        </AppBar>
+        <Menu { ...{ handleDrawerOpen, handleDrawerClose, open } } { ...restProps } />
+        <main className={classes.content}>
+          { children }
+          <Container maxWidth="lg" className={classes.container}>
+            <Box pt={4}>
+              <Copyright />
+            </Box>
+          </Container>
+        </main>
+      </div>
+    </AppThemeProvider>
   );
 }
 

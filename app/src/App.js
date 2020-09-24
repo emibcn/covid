@@ -62,6 +62,7 @@ class App extends React.Component {
       initializing: true,
       newServiceWorkerDetected: false,
       language: available.hasOwnProperty(navigator.language) ? navigator.language : 'ca-es',
+      theme: false, // Use defined by user in browser
     };
   }
 
@@ -81,7 +82,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { newServiceWorkerDetected, language } = this.state;
+    const { newServiceWorkerDetected, language, theme } = this.state;
     const translations = available[language];
 
     return (
@@ -106,6 +107,7 @@ class App extends React.Component {
             onLoadNewServiceWorkerAccept={ this.handleLoadNewServiceWorkerAccept }
             language={ language }
             onLanguageChange={ this.handleLanguageChange }
+            theme={ theme }
           >
             <ErrorCatcher origin='WidgetsList'>
               <WidgetsList />
