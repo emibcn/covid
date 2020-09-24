@@ -37,6 +37,8 @@ jobs:
         key: covid
 
     - name: yarn install and test
+      env:
+        REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
       run: |
         cd app
         yarn install
@@ -135,6 +137,8 @@ jobs:
         key: covid
 
     - name: yarn install and build
+      env:
+        REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
       run: |
         cd app
         yarn install
