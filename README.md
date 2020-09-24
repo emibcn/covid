@@ -17,6 +17,8 @@ The aim of this application is to display the data in different ways than the or
 - [Disclaimer](#disclaimer)
 - [Licenses](#licenses)
 
+![App Screenshot](https://github.com/emibcn/covid/raw/badges/images/covid-data-example-01.png)
+
 # Contributing
 
 This application has been made to help others better understand the situation and evolution of the Covid19 pandemy in the region of Catalunya.
