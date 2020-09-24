@@ -9,12 +9,11 @@ on:
       - '*'
       - '!badges'
       - '!gh-pages'
-    paths:
-      - '*'
-      - '!README.md'
-      - '!app/README.md'
-      - '!LICENSE'
-      - '!.gitignore'
+    paths-ignore:
+      - 'README.md'
+      - 'app/README.md'
+      - 'LICENSE'
+      - '.gitignore'
   pull_request:
     branches: [ master ]
 
