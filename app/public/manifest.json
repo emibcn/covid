@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Covid Data",
+  "name": "Covid Data Refactored",
   "icons": [
     {
       "src": "favicon.ico",
