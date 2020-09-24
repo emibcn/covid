@@ -2,9 +2,9 @@
 ![Coverage](https://raw.githubusercontent.com/emibcn/covid/badges/master/test-coverage.svg)
 ![Download maps from backend and publish with GitHub Pages](https://github.com/emibcn/covid-data/workflows/Download%20maps%20from%20backend%20and%20publish%20with%20GitHub%20Pages/badge.svg)
 
-# Covid Web App
+# Covid Data Web Application `refactored`
 
-This applications displays public information extracted from the official web [https://dadescovid.cat](https://dadescovid.cat).
+[This applications](https://emibcn.github.io/covid) displays public information extracted from the official web [https://dadescovid.cat](https://dadescovid.cat).
 
 The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it.
 
