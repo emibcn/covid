@@ -1,0 +1,6 @@
+docker-compose.yml
+.git
+.gitignore
+*~
+*.swp
+*.swo

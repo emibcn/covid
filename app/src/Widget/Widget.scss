@@ -1,0 +1,27 @@
+.widget-header-section {
+  label {
+    display: block;
+    box-sizing: border-box;
+    padding: .5em;
+    margin: .2em;
+
+    color: #3f51b5;
+    transition: 100ms all ease;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-bottom-width: 0;
+    background: #ddd;
+  }
+  input[type="checkbox"] {
+    position: absolute;
+    left: -9999px;
+    &:checked + label {
+      background: #fff;
+    }
+    &:hover + label,
+    & + label:hover,
+    &:focus + label {
+      box-shadow: -2px -3px 6px 0px lightblue;
+    }
+  }
+}

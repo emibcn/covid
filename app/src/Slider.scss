@@ -1,0 +1,28 @@
+$button-height: 2em;
+$border-width-left: $button-height*0.81;
+
+.playpause {
+  label {
+    display: block;
+    box-sizing: border-box;
+    width: 0;
+    height: $button-height;
+
+    border-color: transparent transparent transparent #3f51b5;
+    transition: 100ms all ease;
+    cursor: pointer;
+    border-style: double;
+    border-width: 0px 0 0px $border-width-left;
+  }
+  input[type="checkbox"] {
+    position: absolute;
+    left: -9999px;
+    &:checked + label {
+      border-style: solid;
+      border-width: $button-height/2 0 $button-height/2 $border-width-left;
+    }
+    &:focus + label {
+      box-shadow: 0 0 5px lightblue;
+    }
+  }
+}

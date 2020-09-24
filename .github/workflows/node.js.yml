@@ -1,0 +1,149 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!badges'
+      - '!gh-pages'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Manage cache
+      uses: actions/cache@v2.0.0
+      with:
+        path: app/node_modules
+        key: covid
+
+    - name: yarn install and test
+      run: |
+        cd app
+        yarn install
+        yarn test -- --coverage
+
+    # Coverage badges will be updated on any branch
+    # and saved into a dedicated one
+    - name: Check test coverage
+      uses: johanvanhelden/gha-clover-test-coverage-check@v1
+      id: coverage
+      with:
+        percentage: 30
+        filename: "app/coverage/clover.xml"
+
+    - name: Round coverage value
+      id: round
+      run: printf '##[set-output name=coverage;]%.2f%%\n' ${COVERAGE}
+      env:
+        COVERAGE: ${{ steps.coverage.outputs.coverage }}
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - uses: actions/checkout@v2
+      with:
+        ref: badges
+
+    # Use the output from the `coverage` step
+    - name: Generate the badge SVG image
+      uses: emibcn/badge-action@v1
+      id: badge
+      with:
+        label: 'Coverage'
+        status: ${{ steps.round.outputs.coverage }}
+        color: ${{
+          steps.coverage.outputs.coverage > 90 && 'green'         ||
+          steps.coverage.outputs.coverage > 80 && 'yellow,green'  ||
+          steps.coverage.outputs.coverage > 70 && 'yellow'        ||
+          steps.coverage.outputs.coverage > 60 && 'orange,yellow' ||
+          steps.coverage.outputs.coverage > 50 && 'orange'        ||
+          steps.coverage.outputs.coverage > 40 && 'red,orange'    ||
+          'red' }}
+        path: test-coverage.svg
+
+    - name: Commit badge
+      env:
+        BRANCH: ${{ steps.extract_branch.outputs.branch }}
+        FILE: 'test-coverage.svg'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        mkdir -p "${BRANCH}"
+        mv "${FILE}" "${BRANCH}"
+        git add "${BRANCH}/${FILE}"
+
+        # Will give error if badge did not changed
+        git commit -m "Add/Update badge" || true
+    - name: Push badge commit
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: badges
+
+
+  publish:
+
+    # Only publish if all these conditions are met:
+    # - The previous step ended successfully
+    # - This is a push event
+    # - The push event is on branch 'master'
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Manage cache
+      uses: actions/cache@v2.0.0
+      with:
+        path: app/node_modules
+        key: covid
+
+    - name: yarn install and build
+      run: |
+        cd app
+        yarn install
+        yarn build
+
+    - name: Deploy to GitHub Pages
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v2
+      with:
+        target_branch: gh-pages
+        build_dir: docs
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

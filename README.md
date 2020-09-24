@@ -1,0 +1,71 @@
+# Covid Web App
+
+This applications displays public information extracted from the official web [https://dadescovid.cat](https://dadescovid.cat).
+
+The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it.
+
+# Contributing
+
+This application has been made to help others better understand the situation and evolution of the Covid19 pandemy in the region of Catalunya.
+
+If you have an idea about:
+- Improve app performance, design, usability, testing or translations
+- Add data sources
+- Add visualization widgets
+- Add regions
+- Have funds or can look for them to speed up all the development processes
+- Something else?
+
+Please, [open an issue](https://github.com/emibcn/covid/issues) and let me know. If you're a developer or designer (or just a user) and want to help develop, design, translate or test this app, [open an issue](https://github.com/emibcn/covid/issues) or -still better!- [open a pull request](https://github.com/emibcn/covid/pulls) and let me know ;)
+
+# How it works
+
+The application has been split into 2 parts: the frontend (this one, [the application you see deployed here](https://emibcn.github.io/covid)) and the backend (the one containing the data used in the frontend, updated daily with official data).
+
+## The frontend
+
+This applications has been created using [Create React App](https://create-react-app.dev/). The applications is built and deployed to [GitHub Pages](https://emibcn.github.io/covid) using it's [workflow](./github/worflows/node.js.yml).
+
+The frontend is a React web application. It's intended to be used directly from the browser, or installed as a Progressive Web Application. It should work in all devices and browsers (if not, [open an issue](https://github.com/emibcn/covid/issues) and I will do my best). Some of the code in this app is inspired from the code in the [official app](https://dadescovid.cat). Specifically, how it handles the data sources against the SVG maps.
+
+### Features
+
+This application does not use any tracking system by itself, only the ones that could use GitHub Pages (they own the servers, they know the client IP). This means I have no feedback of the use of the app, so let a star or a follow, an issue or a pull request. They all are welcome! (Specially the last one :P ). It also means there is no cookie disclaimer, there is no one spying here, there are no ads.
+
+The application lets you add more visual widgets into the grid/dashboard. The configuration of those widgets is saved in the location of the web browser (the `hash`), so you can undo or go back easily. It's also useful to share a dashboard, as its URL contains its configuration. Furthermore, the app saves the same configuration into the `localStorage` system of your browser. If you come back to the app without your preferred configuration in the URL, it will automatically load it from the `localStorage`. Each time a parameter is modified, it is saved and all needed data is downloaded.
+
+Each widget have a menu button where you can find its actions: __Edit__, __Remove__ and __Legend__. Those actions open a dialog to show information to you or let you change some parameters.
+
+There is a Slider with a Play/Pause button to handle the day the data is shown for. The Play/Pause button enables/disables the automatic day increase and restart, helping you to see time-based correlations.
+
+The application automatically detects when the used data has been updated and need to be redownloaded, and when the application itself has been updated, and notifies the user to do so.
+
+The application have a HashRoute Menu with an __About__ section and an __Update!__ section when an update is available. There are more to come!
+
+## The __backend__
+
+The backend (the real one) are servers from institutions like the __Generalitat de Catalunya__ or others that may come in the future. Those servers might have strict security restrictions (like CORS), or might not perform as desired, or the data offered there has already been processed, or because the data is updated just once a day (and we don't need to bomb the servers).
+
+Anyway, those backends are scrapped once a day by a workflow on a sibling project: [covid-data](/emibcn/covid-data). That project consists in a small shell script that downloads the data -processes it a bit- and deploys it to its own GitHub Pages. That deploy is not intended to be used directly from your browser, but through this application, which downloads the data (JSON and SVG files) to fill in the app widgets.
+
+So, in fact, this is a serverless application, where __the cloud__ is provided by GitHub, GitHub Workflow and GitHub Pages (all with free tiers), and the original 3rd party backends, which are not part of this project (for the moment).
+
+# TODO list
+
+- Add Chart Widget.
+- Add language selector and translate remaining components. Add languages (like spanish).
+- Add more sections: __Help__, ...
+- Add more data sources.
+- Add tests.
+
+# Disclaimer
+
+This app and the code are released as-is. The app may fail because there is a problem with GitHub or its servers (probably at Azure), or because the app itself (the code) has a bug, or because its deploy process has failed in some step. If your work or the live of someone relies on this app, please, install your own stack and pay someone to ensure it does not fails ([and let me know!](https://github.com/emibcn/covid/issues) I could be that paid __someone__).
+
+# Licenses
+
+The application, scripts and documentation in this project are released under the [GNU General Public License v3.0](https://github.com/emibcn/covid/blob/master/LICENSE).
+
+The scripts and documentation published in [covid-data](/emibcn/covid-data) are also released under the [GNU General Public License v3.0](https://github.com/emibcn/crypt-disk-image/blob/master/LICENSE).
+
+The data scrapped and published in [covid-data](/emibcn/covid-data) is licensed by their owner, the __Generalitat de Catalunya__, under their own conditions ([Open Data Commons Attribution License](http://opendatacommons.org/licenses/by/1.0/) until now). See more at the [dataset API documentation](https://analisi.transparenciacatalunya.cat/Salut/Dades-setmanals-de-COVID-19-per-comarca/jvut-jxu8).
