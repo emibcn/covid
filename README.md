@@ -1,3 +1,7 @@
+![Node.js CI](https://github.com/emibcn/covid/workflows/Node.js%20CI/badge.svg)
+![Coverage](https://raw.githubusercontent.com/emibcn/covid/badges/master/test-coverage.svg)
+![Download maps from backend and publish with GitHub Pages](https://github.com/emibcn/covid-data/workflows/Download%20maps%20from%20backend%20and%20publish%20with%20GitHub%20Pages/badge.svg)
+
 # Covid Web App
 
 This applications displays public information extracted from the official web [https://dadescovid.cat](https://dadescovid.cat).
