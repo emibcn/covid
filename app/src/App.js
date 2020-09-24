@@ -13,7 +13,7 @@ import { WidgetsList } from './Widget';
 
 // App Helmet: Controls HTML <head> elements with SideEffect
 // - Set a default title and title template, translated
-const AppHelmet = function(props) {
+const AppHelmet = (props) => {
   const t = useTranslate("App");
   const title = t("Covid Data Refactored");
   return (
@@ -27,7 +27,7 @@ const AppHelmet = function(props) {
 }
 
 // Concentrate all providers (4) used in the app into a single component
-const AppProviders = function(props) {
+const AppProviders = (props) => {
   return (
     <TranslatorProvider translations={ props.translations }>
       <HelmetProvider>
@@ -40,7 +40,7 @@ const AppProviders = function(props) {
       </HelmetProvider>
     </TranslatorProvider>
   );
-};
+}
 
 class App extends React.Component {
 
