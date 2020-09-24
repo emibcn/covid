@@ -7,7 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import './Slider.scss';
 
 // Component to render the label's value
-function ValueLabelComponent(props) {
+const ValueLabelComponent = (props) => {
   const { children, open, value } = props;
 
   return (
@@ -49,6 +49,7 @@ class PlayPauseButton extends React.PureComponent {
           name="check"
           checked={ !this.props.isPlaying }
           onChange={ this.onChange }
+          aria-label={ "Toggle play status" }
         />
         <label
           htmlFor="playpause"
@@ -64,12 +65,15 @@ class PlayPauseButton extends React.PureComponent {
    sticky container at the top of the page
 */
 class Slider extends React.PureComponent {
+
   state = {
     isPlaying: false
   }
 
+  timer = false;
+
   onPause = () => {
-    clearTimeout(this.timer);
+    this.clearTimer();
     this.setState({ isPlaying: false });
   }
 
@@ -80,7 +84,15 @@ class Slider extends React.PureComponent {
 
   // TODO: Allow changing the timeout/speed
   setTimer = () => {
+    this.clearTimer();
     this.timer = setTimeout(this.updatePlay, 40);
+  }
+
+  clearTimer = () => {
+    if ( this.timer ) {
+      clearTimeout(this.timer);
+      this.timer = false;
+    }
   }
 
   updatePlay = () => {
@@ -91,6 +103,11 @@ class Slider extends React.PureComponent {
         : 0
     );
     this.setTimer();
+  }
+
+  componentWillUnmount() {
+    // Cancel timer if is active
+    this.clearTimer();
   }
 
   render() {
