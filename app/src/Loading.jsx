@@ -10,6 +10,8 @@ const Loading = (props) => {
       src={ loading }
       style={{
         width: '80%',
+        margin: 'auto',
+        display: 'block',
         ...style
       }}
       { ...restProps }
