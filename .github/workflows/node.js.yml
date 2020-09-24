@@ -56,14 +56,10 @@ jobs:
       uses: johanvanhelden/gha-clover-test-coverage-check@v1
       id: coverage
       with:
-        percentage: 1
+        percentage: 50
+        exit: 0
+        rounded-precision: 2
         filename: "app/coverage/clover.xml"
-
-    - name: Round coverage value
-      id: round
-      run: printf '##[set-output name=coverage;]%.2f%%\n' ${COVERAGE}
-      env:
-        COVERAGE: ${{ steps.coverage.outputs.coverage }}
 
     - name: Extract branch name
       shell: bash
@@ -80,7 +76,7 @@ jobs:
       id: badge
       with:
         label: 'Coverage'
-        status: ${{ steps.round.outputs.coverage }}
+        status: ${{ steps.coverage.outputs.coverage-rounded-display }}
         color: ${{
           steps.coverage.outputs.coverage > 90 && 'green'         ||
           steps.coverage.outputs.coverage > 80 && 'yellow,green'  ||
