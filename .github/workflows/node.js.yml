@@ -49,7 +49,7 @@ jobs:
       uses: johanvanhelden/gha-clover-test-coverage-check@v1
       id: coverage
       with:
-        percentage: 0
+        percentage: 1
         filename: "app/coverage/clover.xml"
 
     - name: Round coverage value
