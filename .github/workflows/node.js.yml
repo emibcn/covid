@@ -34,7 +34,7 @@ jobs:
       uses: actions/cache@v2.0.0
       with:
         path: app/node_modules
-        key: covid
+        key: covid-v2
 
     - name: yarn install and test
       env:
@@ -134,7 +134,7 @@ jobs:
       uses: actions/cache@v2.0.0
       with:
         path: app/node_modules
-        key: covid
+        key: covid-v2
 
     - name: yarn install and build
       env:
