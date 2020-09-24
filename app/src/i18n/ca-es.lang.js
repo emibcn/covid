@@ -12,6 +12,7 @@ export default {
 
   App: {
     ...common,
+    "Covid Data Refactored": "Covid Data Refactored",
   },
 
   ErrorCatcher: {
