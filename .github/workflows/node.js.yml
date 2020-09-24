@@ -135,9 +135,6 @@ jobs:
         key: covid
 
     - name: yarn install and build
-      # Disable strict checking for warnings during build
-      env:
-        CI: 0
       run: |
         cd app
         yarn install

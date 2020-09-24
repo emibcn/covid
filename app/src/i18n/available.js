@@ -1,6 +1,8 @@
-import en_en from "./en-en.lang.js";
-import ca_es from "./ca-es.lang.js";
+/*
 import es_es from "./es-es.lang.js";
+import en_en from "./en-en.lang.js";
+*/
+import ca_es from "./ca-es.lang.js";
 
 // Exports each language with more locale codes
 export default {
