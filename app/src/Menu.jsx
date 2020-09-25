@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { translate } from 'react-translate'
 
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MenuContent = translate('MainMenuItems')((props) => {
+const MenuContent = translate('Menu')((props) => {
   const classes = useStyles();
   const { t } = props;
   return (
@@ -91,12 +92,14 @@ const MenuContent = translate('MainMenuItems')((props) => {
 });
 
 // Renders the menu, responsive
-const Menu = translate('MainMenuItems')((props) => {
+const Menu = translate('Menu')((props) => {
   const classes = useStyles();
   const { handleDrawerOpen, handleDrawerClose, open, newServiceWorkerDetected, t } = props;
   const theme = useTheme();
   const isBig = useMediaQuery(theme.breakpoints.up('md'));
+  const DrawerComponent = isBig ? Drawer : SwipeableDrawer;
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
   const toggleDrawer = (open) => (event) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -108,13 +111,13 @@ const Menu = translate('MainMenuItems')((props) => {
       handleDrawerClose();
     }
   };
-  const DrawerComponent = isBig ? Drawer : SwipeableDrawer;
   
   const handleClickUpdate = (e) => {
     e.preventDefault();
     handleDrawerClose();
     props.onLoadNewServiceWorkerAccept();
-  }
+  };
+
   const renderLink = (props) => {
     const { children, ...restProps } = props;
     return (
@@ -129,6 +132,7 @@ const Menu = translate('MainMenuItems')((props) => {
       </a>
     )
   };
+
   return (
     <DrawerComponent
       { ...(isBig ? {
@@ -156,5 +160,9 @@ const Menu = translate('MainMenuItems')((props) => {
     </DrawerComponent>
   )
 });
+
+Menu.propTypes = {
+  onLoadNewServiceWorkerAccept: PropTypes.func.isRequired,
+};
 
 export default Menu;

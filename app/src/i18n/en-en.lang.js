@@ -21,7 +21,7 @@ export default {
     "Try reloading the app to recover from it": "Try reloading the app to recover from it",
   },
 
-  MainMenuItems: {
+  Menu: {
     ...common,
     "Menu": "Menu",
     "Update!": "Update!",

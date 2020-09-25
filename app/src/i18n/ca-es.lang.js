@@ -21,7 +21,7 @@ export default {
     "Try reloading the app to recover from it": "Intenta recarregar l'aplicació per a continuar",
   },
 
-  MainMenuItems: {
+  Menu: {
     ...common,
     "Menu": "Menú",
     "Update!": "Actualitza!",

@@ -43,7 +43,7 @@ ListItemLink.propTypes = {
   to: PropTypes.string.isRequired,
 };
 
-const MainMenuItems = translate('MainMenuItems')((props) => {
+const MainMenuItems = translate('Menu')((props) => {
   const { t } = props;
   return (
     <div>
