@@ -54,9 +54,6 @@ class App extends React.Component {
       global.location.replace(hash);
     }
 
-    // Save App element to handle modal
-    this.appElement = React.createRef();
-
     this.registration = false;
     this.state = {
       initializing: true,
@@ -67,19 +64,28 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    // Receive message from index.js when a new service worker has been detected
     document.addEventListener('onNewServiceWorker', this.handleNewServiceWorker);
   }
 
   componentWillUnmount() {
+    // Remove event listener
     document.removeEventListener('onNewServiceWorker', this.handleNewServiceWorker);
   }
 
+  // When new serviceWorker is accepted, save the registration object
+  // and change own state, which will be passed to Dashboard to let the user upgrade
   handleNewServiceWorker = (event) => {
     this.registration = event.detail.registration;
     this.setState({
       newServiceWorkerDetected: true,
     });
   }
+
+  // Once the user accepts to update, call index.js callback
+  handleLoadNewServiceWorkerAccept = () => this.props.onLoadNewServiceWorkerAccept(this.registration);
+
+  handleLanguageChange = (language) => this.setState({ language });
 
   render() {
     const { newServiceWorkerDetected, language, theme } = this.state;
@@ -103,10 +109,13 @@ class App extends React.Component {
         {/* Shows the app, with ErrorBoundaries */}
         <ErrorCatcher origin='Dashboard'>
           <Dashboard
+            // Handle App update acceptance by user
             newServiceWorkerDetected={ newServiceWorkerDetected }
             onLoadNewServiceWorkerAccept={ this.handleLoadNewServiceWorkerAccept }
+            // Use language and handle its change
             language={ language }
             onLanguageChange={ this.handleLanguageChange }
+            // Pass theme
             theme={ theme }
           >
             <ErrorCatcher origin='WidgetsList'>
@@ -118,15 +127,7 @@ class App extends React.Component {
       </AppProviders>
     );
   }
-
-  handleLoadNewServiceWorkerAccept = () => this.props.onLoadNewServiceWorkerAccept(this.registration);
-
-  handleLanguageChange = (language) => this.setState({ language });
 }
-
-App.defaultProps = {
-  onLoadNewServiceWorkerAccept: registration => {},
-};
 
 App.propTypes = {
   onLoadNewServiceWorkerAccept: PropTypes.func.isRequired,

@@ -7,11 +7,11 @@ import * as serviceWorker from './serviceWorker';
 // - Send message to SW to trigger the update
 // - Once updated, reload this window to load new assets
 const updateSW = (registration) => {
-  if( registration.waiting ) {
+  if ( registration.waiting ) {
 
     // When the user asks to refresh the UI, we'll need to reload the window
-    var preventDevToolsReloadLoop;
-    navigator.serviceWorker.addEventListener('controllerchange', function(event) {
+    let preventDevToolsReloadLoop;
+    navigator.serviceWorker.addEventListener('controllerchange', (event) => {
 
       // Ensure refresh is only called once.
       // This works around a bug in "force update on reload".
@@ -47,7 +47,7 @@ serviceWorker.register({
   // When new ServiceWorker is available, trigger an event on `document`,
   // passing `registration` as extra data
   onUpdate: registration => {
-    var event = new CustomEvent('onNewServiceWorker', { detail: { registration } });
+    const event = new CustomEvent('onNewServiceWorker', { detail: { registration } });
     document.dispatchEvent(event);
   }
 
