@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons'
@@ -185,14 +186,16 @@ class WidgetsList extends React.PureComponent {
           <div className={classes.appBarSpacer} />
           <div className={classes.sliderContainer} >
             {/* Add an item */}
-            <Button
-              onClick={ this.onAdd }
-              color="primary"
-              aria-label="add" 
-              className={classes.addButton}
-            >
-              <FontAwesomeIcon icon={ faPlusSquare } />
-            </Button>
+            <Tooltip title={ "Afegeix un gràfic" } aria-label={ "add" }>
+              <Button
+                onClick={ this.onAdd }
+                color="primary"
+                aria-label={ "add" }
+                className={classes.addButton}
+              >
+                <FontAwesomeIcon icon={ faPlusSquare } />
+              </Button>
+            </Tooltip>
 
             {/* Days display & Current manager */}
             <Slider
