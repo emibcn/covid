@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
   popper: {
     zIndex: 1,
   },
+  tooltip: {
+    fontSize: '1rem',
+  },
 }));
 
 // Component to render the label's value
@@ -26,7 +29,10 @@ const ValueLabelComponent = (props) => {
       enterTouchDelay={ 0 }
       placement="bottom"
       title={ value }
-      classes={{ popper: classes.popper }}
+      classes={{
+        popper: classes.popper,
+        tooltip: classes.tooltip,
+      }}
       arrow
     >
       { children }
