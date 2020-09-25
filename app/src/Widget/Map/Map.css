@@ -1,8 +1,17 @@
 .map_elem {
   fill: #ddd; 
-}
-
-.map_elem {
   stroke: #000; 
   stroke-width: 1;
+  stroke-linejoin: round;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform .1s, stroke-width .2s, stroke .1s;
+  paint-order: stroke;
+}
+
+.map_elem:hover {
+  transform: scale(1);
+  stroke-width: 10;
+  stroke: #000000a0;
+  paint-order: unset;
 }
