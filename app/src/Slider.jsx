@@ -1,14 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { makeStyles } from '@material-ui/core/styles';
 import SliderLib from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 
+// Magic for Play/Pause button
 import './Slider.scss';
+
+// Use special non-intrusive zIndex for the Slider tooltip
+const useStyles = makeStyles((theme) => ({
+  popper: {
+    zIndex: 1,
+  },
+}));
 
 // Component to render the label's value
 const ValueLabelComponent = (props) => {
   const { children, open, value } = props;
+  const classes = useStyles();
 
   return (
     <Tooltip
@@ -16,6 +26,8 @@ const ValueLabelComponent = (props) => {
       enterTouchDelay={ 0 }
       placement="bottom"
       title={ value }
+      classes={{ popper: classes.popper }}
+      arrow
     >
       { children }
     </Tooltip>
