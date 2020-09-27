@@ -4,7 +4,7 @@
 
 # Covid Data Web Application `refactored`
 
-[This applications](https://emibcn.github.io/covid) displays public information extracted from the official web [https://dadescovid.cat](https://dadescovid.cat).
+[This applications](https://emibcn.github.io/covid) displays public information about Covid19 Pandemy on Catalonia, extracted from the official web [https://dadescovid.cat](https://dadescovid.cat).
 
 The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it.
 
@@ -17,7 +17,9 @@ The aim of this application is to display the data in different ways than the or
 - [Disclaimer](#disclaimer)
 - [Licenses](#licenses)
 
-![App Screenshot](https://github.com/emibcn/covid/raw/badges/images/covid-data-example-01.png)
+<p align="center">
+  <img src="https://github.com/emibcn/covid/raw/badges/images/covid-data-example-01.png" alt="App Screenshot" style="max-width:80%;">
+</p>
 
 # Contributing
 
@@ -31,7 +33,13 @@ If you have an idea about:
 - Have funds or can look for them to speed up all the development processes
 - Something else?
 
-Please, [open an issue](https://github.com/emibcn/covid/issues) and let me know. If you're a developer or designer (or just a user) and want to help develop, design, translate or test this app, [open an issue](https://github.com/emibcn/covid/issues) or -still better!- [open a pull request](https://github.com/emibcn/covid/pulls) and let me know ;)
+Please, [open an issue](https://github.com/emibcn/covid/issues) and let me know. If you're a developer, designer or translator (or just a user) and want to help develop, design, translate or test this app, let me know by [opening an issue](https://github.com/emibcn/covid/issues) or -still better!- [opening a pull request](https://github.com/emibcn/covid/pulls).
+
+There are some already opened _simple_ issues. If you feel you can afford one of them, just comment on it (so nobody starts duplicating work in parallel) and commit a PR when you think you are all done with it. If you don't know what a PR is, you can read [these open source guidelines](https://www.digitalocean.com/community/tutorial_series/an-introduction-to-open-source).
+
+All contributors will be rewarded :trophy: by thanking them here (unless you prefer not to)! If funds are found, they will be fairly distributed across all contributors.
+
+- _Still no one. [Be the first!](https://github.com/emibcn/covid/issues)_
 
 # How it works
 
@@ -45,25 +53,25 @@ The frontend is a React web application. It's intended to be used directly from 
 
 ### Features
 
-This application does not use any tracking system by itself, only the ones that could use GitHub Pages (they own the servers, they know the client IP). This means I have no feedback of the use of the app, so let a star or a follow, an issue or a pull request. They all are welcome! (Specially the last one :P ). It also means there is no cookie disclaimer, there is no one spying here, there are no ads.
+This application **does not use any tracking system** by itself, only the ones that could use GitHub Pages (they own the servers, they know the client IP). This means I have no feedback of the use of the app, so let a **star** or a **follow**, an issue or a pull request. They all are welcome! (Specially the last one :P ). It also means there is **no EU cookie disclaimer/acceptance button**, there is **no one spying** here, there are **no ads**.
 
-The application lets you add more visual widgets into the grid/dashboard. The configuration of those widgets is saved in the location of the web browser (the `hash`), so you can undo or go back easily with native browser back/forward control. It's also useful to share a dashboard or a widget, as its URL contains its configuration. Furthermore, the app saves the same configuration into the `localStorage` system of your browser. If you come back to the app without your preferred configuration in the URL, it will automatically load it from the `localStorage`. Each time a parameter is modified, it is saved and all needed data is downloaded.
+The application lets you **add more visual widgets into the grid/dashboard**. The configuration of those widgets is **saved in the location of the web browser** (the `hash`), so you can undo or go back easily with native browser back/forward control. It's also useful to share a dashboard or a widget, as its URL contains its configuration. Furthermore, the app saves the same configuration into the **`localStorage`** system of your browser. If you come back to the app without your preferred configuration in the URL, it will automatically load it from the `localStorage`. Each time a parameter is modified, it is saved and all needed data is downloaded.
 
 Each widget have a menu button where you can find its actions: _Edit_, _Remove_ and _Legend_. Those actions open a dialog to show information to you or let you change some parameters.
 
-There is a Slider with a Play/Pause button to handle the day the data is shown for. The Play/Pause button enables/disables the automatic day increase and restart, helping you to see time-based correlations.
+There is a Slider with a **Play/Pause button** to handle the day the data is shown for. The Play/Pause button enables/disables the automatic day increase and restart, helping you to see time-based correlations.
 
-The application automatically detects when the used data has been updated and need to be redownloaded, and when the application itself has been updated, and notifies the user to do so.
+The application automatically detects when the **used data has been updated** and need to be redownloaded, and when the **application itself has been updated**, and notifies the user to apply the updates.
 
-The application have a HashRoute Menu with an _About_ section. An _Update!_ section is visible when an app update is available. There are more to come!
+The application have a Menu with an _About_ section. An _Update!_ section is visible when an app update is available. There are more to come!
 
 ## The _backend_
 
-The backend (the real one) are servers from institutions like the _Generalitat de Catalunya_ or others that may come in the future. Those servers might have strict security restrictions (like CORS), or might not perform as desired, or the data offered there has already been processed, or because the data is updated just once a day (and we don't need to bomb the servers).
+The backend (the real one) are **servers from institutions** like the _Generalitat de Catalunya_ or others that may come in the future. Those servers might have strict security restrictions (like CORS), or might not perform as desired, or the data offered there has already been processed, or because the data is updated just once a day (and we don't need to bomb the servers).
 
-Anyway, those backends are scrapped once a day by a workflow on a sibling project: [covid-data](/emibcn/covid-data). That project consists in a small shell script that downloads the data -processes it a bit- and deploys it to its own GitHub Pages. That deploy is not intended to be used directly from your browser, but through this application, which downloads the data (JSON and SVG files) to fill in the app widgets.
+Anyway, those backends are **scrapped once a day by a [workflow](https://github.com/emibcn/covid-data/blob/master/.github/workflows/get-maps.yml)** on a sibling project: [covid-data](/emibcn/covid-data). That project consists in a small shell script that downloads the data -processes it a bit- and deploys it to its own **GitHub Pages**. That deploy is not intended to be used directly from your browser, but through this application, which downloads the data (JSON and SVG files) to fill in the app widgets.
 
-So, in fact, this is a serverless application, where _the cloud_ is provided by GitHub, GitHub Workflow and GitHub Pages (all with free tiers), and the original 3rd party backends, which are not part of this project (for the moment).
+So, in fact, this is a ***serverless application**, where _the cloud_ is provided by GitHub, GitHub Workflow and GitHub Pages (all with free tiers), and the original 3rd party backends, which are not part of this project (for the moment).
 
 # TODO list
 
