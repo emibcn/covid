@@ -39,7 +39,7 @@ There are some already opened _simple_ issues. If you feel you can afford one of
 
 All contributors will be rewarded :trophy: by thanking them here (unless you prefer not to)! If funds are found, they will be fairly distributed across all contributors.
 
-- _Still no one. [Be the first!](https://github.com/emibcn/covid/issues)_
+- [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/37369782?s=400&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/MiguelMJ) [MiguelMJ](https://github.com/MiguelMJ) for the [Spanish translation](https://github.com/emibcn/covid/blob/master/app/src/i18n/es-es.lang.js)
 
 # How it works
 
