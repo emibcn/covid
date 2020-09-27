@@ -55,10 +55,11 @@ class App extends React.Component {
     }
 
     this.registration = false;
+    const languageNav = navigator.language.toLowerCase();
     this.state = {
       initializing: true,
       newServiceWorkerDetected: false,
-      language: available.hasOwnProperty(navigator.language) ? navigator.language : 'ca-es',
+      language: available.hasOwnProperty(languageNav) ? languageNav : 'ca-es',
       theme: false, // Use defined by user in browser
       tutorialSeen: false,
     };
