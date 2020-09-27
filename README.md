@@ -9,6 +9,7 @@
 The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it.
 
 - [Contributing](#contributing)
+- [Thanks to](#thanks-to)
 - [How it works](#how-it-works)
   - [The frontend](#the-frontend)
     - [Features](#features)
@@ -38,6 +39,8 @@ Please, [open an issue](https://github.com/emibcn/covid/issues) and let me know.
 There are some already opened _simple_ issues. If you feel you can afford one of them, just comment on it (so nobody starts duplicating work in parallel) and commit a PR when you think you are all done with it. If you don't know what a PR is, you can read [these open source guidelines](https://www.digitalocean.com/community/tutorial_series/an-introduction-to-open-source).
 
 All contributors will be rewarded :trophy: by thanking them here (unless you prefer not to)! If funds are found, they will be fairly distributed across all contributors.
+
+# Thanks to
 
 - [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/37369782?s=400&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/MiguelMJ) [MiguelMJ](https://github.com/MiguelMJ) for the [Spanish translation](https://github.com/emibcn/covid/blob/master/app/src/i18n/es-es.lang.js)
 
