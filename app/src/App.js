@@ -15,7 +15,7 @@ import { WidgetsList } from './Widget';
 // - Set a default title and title template, translated
 const AppHelmet = (props) => {
   const t = useTranslate("App");
-  const title = t("Covid Data Refactored");
+  const title = t("Covid Data - Refactored");
   return (
     <Helmet
       titleTemplate={ `%s | ${ title }` }

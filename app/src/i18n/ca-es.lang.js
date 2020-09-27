@@ -1,7 +1,7 @@
 const common = {
-    "Covid Data Refactored": "Covid Data Refactored",
+    "Covid Data - Refactored": "Dades Covid - Refactoritzada",
     "Covid Data": "Dades Covid",
-    "Refactored": "Refactoritzats",
+    "Refactored": "Refactoritzada",
     "Close": "Tanca",
     "About": "Quant a...",
     "Help": "Ajuda",
