@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { translate } from 'react-translate'
+
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -59,16 +61,17 @@ const Selector = (props) => {
 // Renders a Select with map kinds options
 const MapSelectorOptions = MapData.kinds()
   .map( kind => ({ value: kind, label: kind }));
-const MapSelector = (props) => {
+const MapSelector = translate('Widget/Map/Edit')((props) => {
+  const { t, restProps } = props;
   return (
     <Selector
       options={ MapSelectorOptions }
-      label={ "Tipus" }
-      help={ "Selecciona el tipus de regions a mostrar" }
-      { ...props }
+      label={ t("Type") }
+      help={ t("Select the regions type to show") }
+      { ...restProps }
     />
   )
-}
+});
 
 // Renders a Select with map values options
 const MapValueSelectorOptions = MapData.kinds()
@@ -77,24 +80,24 @@ const MapValueSelectorOptions = MapData.kinds()
       .map( values => ({ value: values, label: MapData.metaName(values) }));
     return options
   }, {});
-const MapValueSelector = (props) => {
-  const { kind, ...restProps } = props;
+const MapValueSelector = translate('Widget/Map/Edit')((props) => {
+  const { kind, t, ...restProps } = props;
   return (
     <Selector
-      label={ "Valors" }
-      help={ "Selecciona l'origen de les dades" }
+      label={ t("Values") }
+      help={ t("Select the data origin") }
       options={ MapValueSelectorOptions[kind] }
       { ...restProps }
     />
   )
-}
+});
 
 /*
    Renders the edit form for the Map widget
 */
 class Edit extends React.PureComponent {
 
-  onChangeMapKind = (event) => { console.log("Event: ", event); this.props.onChangeMapKind(event.target.value) };
+  onChangeMapKind = (event) => this.props.onChangeMapKind(event.target.value);
   onChangeMapValue = (event) => this.props.onChangeMapValue(event.target.value);
 
   render() {

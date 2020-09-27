@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { translate } from 'react-translate'
+
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,17 +14,18 @@ import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 // Renders an item into the widget's popup actions menu
 // Ensures click event uses widget id
 const WidgetMenuItem = React.forwardRef((props, ref) => {
-  const handleClick = () => props.onClick(props.option);
+  const { onClick, option, icon, label} = props;
+  const handleClick = () => onClick(option);
   return (
     <MenuItem
-      key={ props.option }
+      key={ option }
       onClick={ handleClick }
       ref={ ref }
     >
       <ListItemIcon>
-        { props.icon }
+        { icon }
       </ListItemIcon>
-      <ListItemText primary={ props.label } />
+      <ListItemText primary={ label || option } />
     </MenuItem>
   )
 });
@@ -30,6 +33,8 @@ const WidgetMenuItem = React.forwardRef((props, ref) => {
 
 // Renders the widget's popup actions menu
 const WidgetMenu = (props) => {
+  const { onClick, options, id, ...restProps } = props;
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -40,7 +45,7 @@ const WidgetMenu = (props) => {
   // When an element is clicked, close menu and call parent's onClick
   const handleClickElement = (value) => {
     handleClose();
-    props.onClick(value);
+    onClick(value);
   };
 
   // Render the open icon button and, if in open
@@ -49,7 +54,7 @@ const WidgetMenu = (props) => {
     <div>
       <IconButton
         aria-label="widget actions"
-        aria-controls={ `widget-menu-${ props.id }` }
+        aria-controls={ `widget-menu-${ id }` }
         aria-haspopup="true"
         onClick={ handleClickOpen }
       >
@@ -57,7 +62,7 @@ const WidgetMenu = (props) => {
       </IconButton>
       { anchorEl ? (
           <Menu
-            id={ `widget-menu-${ props.id }` }
+            id={ `widget-menu-${ id }` }
             anchorEl={ anchorEl }
             keepMounted
             open={ open }
@@ -68,15 +73,15 @@ const WidgetMenu = (props) => {
               },
             }}
           >
-            { Object.keys(props.options)
+            { Object.keys(options)
               .filter( option => option !== 'view' )
               .map( option => (
                 <WidgetMenuItem
                   key={ option }
                   option={ option }
                   onClick={ handleClickElement }
-                  icon={ props.options[option].icon }
-                  label={ props.options[option].label || option }
+                  icon={ options[option].icon }
+                  label={ typeof options[option].label === "function" ? options[option].label(restProps) : options[option].label }
                 />
               ))
             }
@@ -87,4 +92,4 @@ const WidgetMenu = (props) => {
   );
 }
 
-export default WidgetMenu;
+export default translate('Widget')(WidgetMenu);

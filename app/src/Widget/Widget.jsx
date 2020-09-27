@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { translate } from 'react-translate'
+
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -25,9 +27,9 @@ const withWidget = (sectionsOrig) => {
     ...sectionsOrig,
     remove: {
       icon: <FontAwesomeIcon icon={ faTrash } />,
-      label: 'Elimina',
-      title: (props) => 'Eliminar?',
-      render: ({ id, onRemove }) => {
+      label: ({ t }) => t("Remove"),
+      title: ({ t }) => t("Remove?"),
+      render: ({ id, onRemove, t }) => {
         const handleRemove = () => onRemove(id);
         return (
           <Button
@@ -35,9 +37,9 @@ const withWidget = (sectionsOrig) => {
             onClick={ handleRemove }
             variant="contained"
             color="primary"
-            aria-label="delete" 
+            aria-label={ t("remove") }
           >
-            Confirma l'eliminació
+            { t("Confirm removal") }
           </Button>
         )
       },
@@ -68,7 +70,7 @@ const withWidget = (sectionsOrig) => {
     )
   };
 
-  return Widget;
-}
+  return translate('Widget')(Widget);
+};
 
 export default withWidget;

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { translate } from 'react-translate'
+
 import { makeStyles } from '@material-ui/core/styles';
 import SliderLib from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -47,7 +49,7 @@ ValueLabelComponent.propTypes = {
 };
 
 // Render the Play/Pause button next to the Slider
-class PlayPauseButton extends React.PureComponent {
+class PlayPauseButtonUntranslated extends React.PureComponent {
   onChange = () => {
     if ( this.props.isPlaying ) {
       this.props.onPause();
@@ -59,25 +61,30 @@ class PlayPauseButton extends React.PureComponent {
 
   // All the magic is done into the SCSS file Slider.sccs ;)
   render() {
-    const { className } = this.props;
+    const { className, t } = this.props;
     return (
-      <div className={ `playpause ${className || ''}` }>
-        <input
-          type="checkbox"
-          id="playpause"
-          name="check"
-          checked={ !this.props.isPlaying }
-          onChange={ this.onChange }
-          aria-label={ "Toggle play status" }
-        />
-        <label
-          htmlFor="playpause"
-          style={{ borderLeftColor: '' }}
-        />
-      </div>
+      <Tooltip title={ t("Toggle play status") } aria-label={ !this.props.isPlaying ? t("play") : t("pause") }>
+        <div className={ `playpause ${className || ''}` }>
+          <input
+            type="checkbox"
+            id="playpause"
+            name="check"
+            checked={ !this.props.isPlaying }
+            onChange={ this.onChange }
+            aria-label={ t("Toggle play status") }
+          />
+          <label
+            htmlFor="playpause"
+            style={{ borderLeftColor: '' }}
+          />
+        </div>
+      </Tooltip>
     )
   }
 }
+
+// Translate Play/Pause component
+const PlayPauseButton = translate('PlayPause')(PlayPauseButtonUntranslated);
 
 /*
    Renders a Slider with a play/pause button next to it, inside a

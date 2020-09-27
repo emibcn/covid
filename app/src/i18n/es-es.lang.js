@@ -1,4 +1,7 @@
 const common = {
+    "Covid Data Refactored": "Datos Covid Refactorizados",
+    "Covid Data": "Datos Covid",
+    "Refactored": "Refactorizados",
     "Close": "Cerrar",
     "About": "Sobre...",
     "Help": "Ayuda",
@@ -12,7 +15,11 @@ export default {
 
   App: {
     ...common,
-    "Covid Data Refactored": "Datos Covid Refactorizados",
+  },
+
+  Copyright: {
+    ...common,
+    "Source code of:": "Código fuente de",
   },
 
   ErrorCatcher: {
@@ -23,11 +30,15 @@ export default {
 
   Menu: {
     ...common,
-    "Menu": "Menu",
-    "Update!": "Actualizar!",
-    "New update available!": "Nueva actualización disponible!",
+    "Menu": "Menú",
+    "Update!": "¡Actualizar!",
+    "New update available!": "¡Nueva actualización disponible!",
   },
   
+  ModalRouter: {
+    ...common,
+  },
+
   About: {
     ...common,
     "This applications displays public information extracted from the official web": "Esta aplicación muestra información pública extraída de la página web oficial",
@@ -53,5 +64,37 @@ export default {
   
   Help: {
     ...common,
+  },
+
+  WidgetsList: {
+    ...common,
+    "Add a graph": "Añadir un gráfico",
+    "add": "añadir",
+  },
+
+  PlayPause: {
+    ...common,
+    "Toggle play status": "Conmutat el estado de reproducción",
+    "play": "reproducir",
+    "pause": "detener",
+  },
+
+  Widget: {
+    ...common,
+    "remove": "eliminar",
+    "Remove": "Eliminar",
+    "Remove?": "Eliminar?",
+    "Confirm removal": "Confirmar la eliminación",
+    "View": "Ver",
+    "Edit": "Editar",
+    "Edit map parameters": "Editar las opciones del mapa",
+    "Legend": "Leyenda",
+  },
+
+  'Widget/Map/Edit': {
+    "Type": "Tipo",
+    "Select the regions type to show": "Seleccionar el tipo de regiones a mostrar",
+    "Values": "Valores",
+    "Select the data origin": "Selecciona el origen de los datos",
   },
 }

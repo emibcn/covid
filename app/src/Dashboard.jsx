@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 
 import clsx from 'clsx';
+import { translate } from 'react-translate'
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -27,18 +28,23 @@ import About from './About';
 
 const withErrorCatcher = (origin, component) => <ErrorCatcher {...{ origin , key: origin }}>{ component }</ErrorCatcher>;
 
-const Copyright = (props) => {
+const Copyright = translate('Copyright')((props) => {
+  const { t } = props;
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://github.com/emibcn/covid">
-        Codi font de <em>Dades Covid <code>Refactored</code></em>
+        { t("Source code of:") }{' '}
+        <em>
+          { t("Covid Data") }{' '}
+          <code>{ t("Refactored") }</code>
+        </em>
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
-}
+});
 
 const AppThemeProvider = (props) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -124,7 +130,7 @@ const RoutesModal = (props) => {
 
 const Dashboard = (props) => {
   const classes = useStyles();
-  const { children, theme, ...restProps } = props;
+  const { children, theme, t, ...restProps } = props;
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -150,7 +156,8 @@ const Dashboard = (props) => {
               <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              { "Dades Covid" }
+              { t("Covid Data") }{' '}
+              <code>{ t("Refactored") }</code>
             </Typography>
             {/*
             <IconButton color="inherit">
@@ -175,4 +182,4 @@ const Dashboard = (props) => {
   );
 }
 
-export default Dashboard;
+export default translate('Widget')(Dashboard);

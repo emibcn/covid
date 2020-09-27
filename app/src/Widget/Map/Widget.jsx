@@ -20,7 +20,7 @@ const MapWrapper = withWidget({
   // The normal view
   view: {
     icon: <FontAwesomeIcon icon={ faMap } />,
-    label: 'Veure',
+    label: ({ t }) => t("View"),
     title: (props) => props.name,
     render: (props) => (
       <>
@@ -44,8 +44,8 @@ const MapWrapper = withWidget({
   // Edit data
   edit: {
     icon: <FontAwesomeIcon icon={ faEdit } />,
-    label: 'Edita',
-    title: (props) => "Edita les opcions del mapa",
+    label: ({ t }) => t("Edit"),
+    title: ({ t }) => t("Edit map parameters"),
     render: (props) => (
       <Edit
         mapKind={ props.mapKind }
@@ -58,7 +58,7 @@ const MapWrapper = withWidget({
   // Show map legend
   legend: {
     icon: <FontAwesomeIcon icon={ faLegend } />,
-    label: 'Llegenda',
+    label: ({ t }) => t("Legend"),
     title: (props) => props.title,
     render: (props) => (
       <Legend

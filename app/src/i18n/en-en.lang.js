@@ -1,4 +1,7 @@
 const common = {
+    "Covid Data Refactored": "Covid Data Refactored",
+    "Covid Data": "Covid Data",
+    "Refactored": "Refactored",
     "Close": "Close",
     "About": "About...",
     "Help": "Help",
@@ -12,7 +15,11 @@ export default {
 
   App: {
     ...common,
-    "Covid Data Refactored": "Covid Data Refactored",
+  },
+
+  Copyright: {
+    ...common,
+    "Source code of:": "Source code of:",
   },
 
   ErrorCatcher: {
@@ -57,5 +64,37 @@ export default {
 
   Help: {
     ...common,
+  },
+
+  WidgetsList: {
+    ...common,
+    "Add a graph": "Add a graph",
+    "add": "add",
+  },
+
+  PlayPause: {
+    ...common,
+    "Toggle play status": "Toggle play status",
+    "play": "play",
+    "pause": "pause",
+  },
+
+  Widget: {
+    ...common,
+    "remove": "remove",
+    "Remove": "Remove",
+    "Remove?": "Remove?",
+    "Confirm removal": "Confirm removal",
+    "View": "View",
+    "Edit": "Edit",
+    "Edit map parameters": "Edit map parameters",
+    "Legend": "Legend",
+  },
+
+  'Widget/Map/Edit': {
+    "Type": "Type",
+    "Select the regions type to show": "Select the regions type to show",
+    "Values": "Values",
+    "Select the data origin": "Select the data origin",
   },
 }

@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { translate } from 'react-translate'
 import clsx from 'clsx';
+
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 //import Container from '@material-ui/core/Container';
@@ -23,9 +25,11 @@ import Loading from '../Loading';
 import WidgetDataContextProvider from './DataContextProvider'; 
 import withPropHandler from './withPropHandler';
 
+// GUID generator: used to create unique dtemporal IDs for widgets
 const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 const guidGenerator = () => "a-"+S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4();
 
+// UI Material styles/classes
 const useStyles = (theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   widgetsContainer: {
@@ -189,7 +193,7 @@ class WidgetsList extends React.PureComponent {
   onSetDate = (event, current) => this.throtle.run(false, 10, () => this.setState({ current }) );
   sliderTipFormatter = value => this.state.days[value];
 
-  // Probably should go anywhere else
+  // TODO: Probably should go anywhere else
   widgetType = {
     map: MapWidget
   }
@@ -226,7 +230,7 @@ class WidgetsList extends React.PureComponent {
       return <Loading />;
     }
 
-    const { widgets, classes, showMarkLabels } = this.props;
+    const { widgets, classes, showMarkLabels, t } = this.props;
     const { days, current, marks, marksSmall } = this.state;
     const fixedPaper = clsx(classes.paper, classes.fixed);
 
@@ -242,11 +246,11 @@ class WidgetsList extends React.PureComponent {
           {/* Space used by the App Bar fixed positioned */}
           <div className={ classes.sliderContainer } >
             {/* Add an item */}
-            <Tooltip title={ "Afegeix un gràfic" } aria-label={ "add" }>
+            <Tooltip title={ t("Add a graph") } aria-label={ t("add") }>
               <IconButton
                 onClick={ this.onAdd }
                 color="primary"
-                aria-label={ "add" }
+                aria-label={ t("add") }
                 className={ classes.addButton }
               >
                 <FontAwesomeIcon icon={ faPlusSquare } />
@@ -314,11 +318,12 @@ const withShowMarkLabels = (Component) => {
 // withStyles: Add `classes` prop for styling components
 // withShowMarkLabels: Add `showMarkLabels` breakpoint to sho/hide Slider mark labels depending on sreen size
 const WidgetsListWithPropHandler =
-  withPropHandler(
-    withStyles(useStyles)(
-      withShowMarkLabels(
-        WidgetsList
-  )));
+  translate('WidgetsList')(
+    withPropHandler(
+      withStyles(useStyles)(
+        withShowMarkLabels(
+          WidgetsList
+  ))));
 
 // Manage some context providers details:
 // - pathFilter: How to split `location` (Route `path` prop)

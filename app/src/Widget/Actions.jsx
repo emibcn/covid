@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { translate } from 'react-translate'
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,7 +14,7 @@ import Draggable from 'react-draggable';
 
 import WidgetMenu from './Menu';
 
-class DraggableResponsiveDialog extends React.PureComponent {
+class DraggableResponsiveDialogUntranslated extends React.PureComponent {
 
   /*
      Handle dialog open/close status
@@ -34,7 +36,7 @@ class DraggableResponsiveDialog extends React.PureComponent {
     const { open } = this.state;
     const { id } = this.props;
     // Get `restProps` to child renders
-    const { sections, fullScreen, ...restProps } = this.props;
+    const { sections, fullScreen, t, ...restProps } = this.props;
     // Get shortcut to content & title render functions
     const Content = open ? sections[open].render : () => {};
     const Title = open ? sections[open].title : () => {};
@@ -44,6 +46,7 @@ class DraggableResponsiveDialog extends React.PureComponent {
           options={ sections }
           id={ id }
           onClick={ this.handleClickOpen }
+          { ...restProps }
         />
         {/* If open is not null, render the related dialog (opened) */}
         { open ? (
@@ -58,14 +61,14 @@ class DraggableResponsiveDialog extends React.PureComponent {
               aria-labelledby={ `draggable-dialog-title-${id}-${open}` }
             >
               <DialogTitle style={{ cursor: 'move' }} id={ `draggable-dialog-title-${id}-${open}` }>
-                <Title { ...restProps } />
+                <Title { ...restProps } t={ t } />
               </DialogTitle>
               <DialogContent>
-                <Content { ...restProps } />
+                <Content { ...restProps } t={ t } />
               </DialogContent>
               <DialogActions>
                 <Button autoFocus onClick={ this.handleClose } color="primary">
-                  { "Tanca" }
+                  { t("Close") }
                 </Button>
               </DialogActions>
             </Dialog>
@@ -75,6 +78,8 @@ class DraggableResponsiveDialog extends React.PureComponent {
     )
   }
 }
+
+const DraggableResponsiveDialog = translate('Widget')(DraggableResponsiveDialogUntranslated);
 
 // Get fullScreen prop using MediaQuery
 const withFullScreen = (Component) => {

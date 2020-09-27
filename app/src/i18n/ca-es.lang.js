@@ -1,4 +1,7 @@
 const common = {
+    "Covid Data Refactored": "Covid Data Refactored",
+    "Covid Data": "Dades Covid",
+    "Refactored": "Refactoritzats",
     "Close": "Tanca",
     "About": "Quant a...",
     "Help": "Ajuda",
@@ -12,7 +15,11 @@ export default {
 
   App: {
     ...common,
-    "Covid Data Refactored": "Covid Data Refactored",
+  },
+
+  Copyright: {
+    ...common,
+    "Source code of:": "Codi font de",
   },
 
   ErrorCatcher: {
@@ -57,5 +64,37 @@ export default {
 
   Help: {
     ...common,
+  },
+
+  WidgetsList: {
+    ...common,
+    "Add a graph": "Afegeix un gràfic",
+    "add": "afegeix",
+  },
+
+  PlayPause: {
+    ...common,
+    "Toggle play status": "Commuta l'estat de reproducció",
+    "play": "Reprodueix",
+    "pause": "Pausa",
+  },
+
+  Widget: {
+    ...common,
+    "remove": "elimina",
+    "Remove": "Elimina",
+    "Remove?": "Eliminar?",
+    "Confirm removal": "Confirma l'eliminació",
+    "View": "Veure",
+    "Edit": "Edita",
+    "Edit map parameters": "Edita les opcions del mapa",
+    "Legend": "Llegenda",
+  },
+
+  'Widget/Map/Edit': {
+    "Type": "Tipus",
+    "Select the regions type to show": "Selecciona el tipus de regions a mostrar",
+    "Values": "Valors",
+    "Select the data origin": "Selecciona l'origen de les dades",
   },
 }
