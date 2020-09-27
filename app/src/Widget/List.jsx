@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+//import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -42,35 +44,70 @@ const useStyles = (theme) => ({
     top: 0,
     zIndex: 1,
     padding: 0,
-    marginBottom: theme.spacing(2),
+    // Not using it, adds a scrolling slider to the container on some screens
+    paddingBottom: 1,
   },
   sliderContainer: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: theme.spacing(1),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(.5),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    // Marks labels not shown under 'md'
+    [theme.breakpoints.up('md')]: {
+      marginBottom: theme.spacing(1),
+      alignItems: 'flex-start',
+    },
+    // This is for non-mouse pointers, which need some extra space for usability
+    // Not using it, adds a scrolling slider to the container on some screens
+    // eslint-disable-next-line no-useless-computed-key
+    ['@media (pointer: coarse)']: {
+      [theme.breakpoints.up('md')]: {
+        marginTop: theme.spacing(.5),
+        paddingBottom: theme.spacing(1),
+      },
+      [theme.breakpoints.down('sm')]: {
+        paddingBottom: theme.spacing(.1),
+      },
+    }
   },
+  // Save some space in buttons for small devices
   addButton: {
-    fontSize: theme.spacing(4),
     padding: 0,
+    fontSize: theme.spacing(4),
+    [theme.breakpoints.up('md')]: {
+      fontSize: theme.spacing(6),
+    },
+  },
+  // Play/pause button uses special CSS, so it does the font sizing
+  playPause: {
+    fontSize: theme.spacing(4/2),
+    [theme.breakpoints.up('md')]: {
+      fontSize: theme.spacing(6/2),
+    },
   },
 });
 
 // Renders widgets list
 // - Manages days list (using backend) and current selected day with a Slider
 // - Receives managed plugins params from props (with context providers and consumer)
-// - Receives Widgets param events and calls parents param event
+// - Receives Widgets param modification events and calls parents param event
 //   handlers callbacks with processed data:
 //   - Add
 //   - Edit
 //   - Remove
-// - Blindly handles different types of widgets depending on passed pramas from URL or localStorage
+// - Blindly (with `payload`) handles different types of widgets depending on passed/saved
+//   params from URL and localStorage
 class WidgetsList extends React.PureComponent {
 
   // Managed data: days & currently selected day
   state = {
     days: null,
     current: null,
+    marks: [],
+    marksSmall: [],
   }
 
   // Widgets list temporal IDs
@@ -103,8 +140,22 @@ class WidgetsList extends React.PureComponent {
           !this.state.days ||
           this.state.current === this.state.days.length - 1;
 
+        // Marks on the slider
+        const marks = days
+          // Remember index
+          .map( (day, index) => ({day, index}))
+          // Get first day of each month
+          .filter( ({day, index}) => /^0?1\//.test(day) )
+          // Map to Slider marks schema and remove initial `0`
+          .map( ({day, index}) => ({ value: index, label: day.replace(/^0/, '') }) );
+
         this.setState({
           days,
+
+          // Marks on the slider (small devices: no labels)
+          marks,
+          marksSmall: marks.map( ({value}) => ({value})),
+
           // If we were on last item, go to the new last
           ...(isLast ? {current: days.length - 1} : {}) 
         });
@@ -123,15 +174,15 @@ class WidgetsList extends React.PureComponent {
     this.throtle.clear();
   }
 
+  componentDidUpdate() {
+    this.updateIDs(this.props.widgets.length);
+  }
+
   updateIDs = (length) => {
     // Ensure all widgets have ID
     while ( this.widgetsIds.length < length ) {
       this.widgetsIds.push( guidGenerator() );
     }
-  }
-
-  componentDidUpdate() {
-    this.updateIDs(this.props.widgets.length);
   }
 
   // Slider helpers
@@ -152,7 +203,7 @@ class WidgetsList extends React.PureComponent {
   }
 
   // Handle onRemove event from widget
-  // Function creator to cache the widget position
+  // Uses `this.widgetsIDs` for widget identification
   // Calls parent' onChangeData to save the data
   onRemove = id => {
     const widgets = this.props.widgets.filter( (w,index) => this.widgetsIds[index] !== id);
@@ -161,7 +212,6 @@ class WidgetsList extends React.PureComponent {
   }
 
   // Handle onChangeData event from widget
-  // Function creator to cache the widget position
   // Calls parent' onChangeData to save the data
   onChangeData = (id, data) => {
     const { widgets } = this.props;
@@ -176,33 +226,45 @@ class WidgetsList extends React.PureComponent {
       return <Loading />;
     }
 
-    const { widgets, classes } = this.props;
-    const { days, current } = this.state;
+    const { widgets, classes, showMarkLabels } = this.props;
+    const { days, current, marks, marksSmall } = this.state;
     const fixedPaper = clsx(classes.paper, classes.fixed);
 
     return (
       <>
-        <Paper className={fixedPaper}>
-          <div className={classes.appBarSpacer} />
-          <div className={classes.sliderContainer} >
+        <Paper className={ fixedPaper } elevation={ 2 }>
+          <div className={ classes.appBarSpacer } />
+          {/*
+          <Container maxWidth="lg" className={classes.container}>
+            <h3>HELLO WORLD!</h3>
+          </Container>
+          */}
+          {/* Space used by the App Bar fixed positioned */}
+          <div className={ classes.sliderContainer } >
             {/* Add an item */}
             <Tooltip title={ "Afegeix un gràfic" } aria-label={ "add" }>
-              <Button
+              <IconButton
                 onClick={ this.onAdd }
                 color="primary"
                 aria-label={ "add" }
-                className={classes.addButton}
+                className={ classes.addButton }
               >
                 <FontAwesomeIcon icon={ faPlusSquare } />
-              </Button>
+              </IconButton>
             </Tooltip>
 
             {/* Days display & Current manager */}
             <Slider
-              onChange={ this.onSetDate }
-              value={ current || 0 }
-              valueLabelFormat={ this.sliderTipFormatter }
+              classes={{ playPause: classes.playPause }}
               max={ days.length - 1 }
+              value={ current || 0 }
+              onChange={ this.onSetDate }
+              valueLabelFormat={ this.sliderTipFormatter }
+              getAriaValueText={ this.sliderTipFormatter }
+              // Marks without labels for small screens
+              marks={ showMarkLabels ? marks : marksSmall }
+              // Always visible on small screens
+              valueLabelDisplay={ showMarkLabels ? null : "on" }
             />
           </div>
         </Paper>
@@ -238,9 +300,25 @@ WidgetsList.propTypes = {
   onChangeData: PropTypes.func.isRequired,
 };
 
+// Get showMarkLabels prop using MediaQuery
+// Used to prevent showing mark labels on small screens
+const withShowMarkLabels = (Component) => {
+  return (props) => {
+    const theme = useTheme();
+    const showMarkLabels = useMediaQuery(theme.breakpoints.up('md'));
+    return <Component { ...props } { ...{ showMarkLabels } } />
+  }
+};
+
 // withPropHandler: Handle params from providers (route + localStorage) into props
-// - Here default/initial value: one map widget with default data
-const WidgetsListWithPropHandler = withPropHandler( withStyles(useStyles)(WidgetsList) );
+// withStyles: Add `classes` prop for styling components
+// withShowMarkLabels: Add `showMarkLabels` breakpoint to sho/hide Slider mark labels depending on sreen size
+const WidgetsListWithPropHandler =
+  withPropHandler(
+    withStyles(useStyles)(
+      withShowMarkLabels(
+        WidgetsList
+  )));
 
 // Manage some context providers details:
 // - pathFilter: How to split `location` (Route `path` prop)

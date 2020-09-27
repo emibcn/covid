@@ -59,8 +59,9 @@ class PlayPauseButton extends React.PureComponent {
 
   // All the magic is done into the SCSS file Slider.sccs ;)
   render() {
+    const { className } = this.props;
     return (
-      <div className="playpause">
+      <div className={ `playpause ${className || ''}` }>
         <input
           type="checkbox"
           id="playpause"
@@ -130,18 +131,20 @@ class Slider extends React.PureComponent {
 
   render() {
     const { isPlaying } = this.state;
+    const { classes = {}, ...restProps } = this.props;
+    const { playPause, ...restClasses } = classes;
     return (
       <>
         <SliderLib
-          valueLabelDisplay="on"
           ValueLabelComponent={ ValueLabelComponent }
-          aria-labelledby="discrete-slider-small-steps"
           step={ 1 }
           min={ 0 }
           style={{ margin: '0 1em' }}
-          { ...this.props }
+          classes={{ ...restClasses }}
+          { ...restProps }
         />
         <PlayPauseButton
+           className={ playPause }
            onPlay={ this.onPlay }
            onPause={ this.onPause }
            isPlaying={ isPlaying }
