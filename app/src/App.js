@@ -60,6 +60,7 @@ class App extends React.Component {
       newServiceWorkerDetected: false,
       language: available.hasOwnProperty(navigator.language) ? navigator.language : 'ca-es',
       theme: false, // Use defined by user in browser
+      tutorialSeen: false,
     };
   }
 
@@ -85,10 +86,13 @@ class App extends React.Component {
   // Once the user accepts to update, call index.js callback
   handleLoadNewServiceWorkerAccept = () => this.props.onLoadNewServiceWorkerAccept(this.registration);
 
+  // Handle global configuration options
   handleLanguageChange = (language) => this.setState({ language });
+  handleThemeChange = (theme) => this.setState({ theme });
+  handleTutorialSeenChange = (tutorialSeen) => this.setState({ tutorialSeen });
 
   render() {
-    const { newServiceWorkerDetected, language, theme } = this.state;
+    const { newServiceWorkerDetected, language, theme, tutorialSeen } = this.state;
     const translations = available[language];
 
     return (
@@ -115,8 +119,12 @@ class App extends React.Component {
             // Use language and handle its change
             language={ language }
             onLanguageChange={ this.handleLanguageChange }
-            // Pass theme
+            // Use theme and handle its change
             theme={ theme }
+            onThemeChange={ this.handleThemeChange }
+            // Force tutorial?
+            tutorialSeen={ tutorialSeen }
+            onTutorialSeen={ this.handleTutorialSeenChange }
           >
             <ErrorCatcher origin='WidgetsList'>
               <WidgetsList />
