@@ -182,8 +182,8 @@ class WidgetsList extends React.PureComponent {
     this.updateIDs(this.props.widgets.length);
   }
 
+  // Ensure all widgets have ID
   updateIDs = (length) => {
-    // Ensure all widgets have ID
     while ( this.widgetsIds.length < length ) {
       this.widgetsIds.push( guidGenerator() );
     }
