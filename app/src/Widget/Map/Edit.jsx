@@ -62,7 +62,7 @@ const Selector = (props) => {
 const MapSelectorOptions = MapData.kinds()
   .map( kind => ({ value: kind, label: kind }));
 const MapSelector = translate('Widget/Map/Edit')((props) => {
-  const { t, restProps } = props;
+  const { t, ...restProps } = props;
   return (
     <Selector
       options={ MapSelectorOptions }
