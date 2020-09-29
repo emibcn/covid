@@ -25,6 +25,7 @@ import Menu from './Menu';
 import ModalRouter from './ModalRouter';
 import ErrorCatcher from './ErrorCatcher';
 import About from './About';
+import Language from './Language';
 
 const withErrorCatcher = (origin, component) => <ErrorCatcher {...{ origin , key: origin }}>{ component }</ErrorCatcher>;
 
@@ -117,12 +118,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RoutesModal = (props) => {
+  const { language, onLanguageChange } = props.routeProps;
   return (
     <ModalRouter force={ false } >
       <Route
         exact
         path='about'
         render={ props => withErrorCatcher('About', <About />) }
+      />
+      <Route
+        exact
+        path="language"
+        render={(props) =>
+          withErrorCatcher(
+            "Language",
+            <Language language={language} onLanguageChange={onLanguageChange} />
+          )
+        }
       />
     </ModalRouter>
   )
@@ -142,7 +154,7 @@ const Dashboard = (props) => {
 
   return (
     <AppThemeProvider type={ theme } >
-      <RoutesModal />
+      <RoutesModal routeProps={props} />
       <div id="root" className={classes.root}>
         <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
           <Toolbar className={classes.toolbar}>

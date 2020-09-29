@@ -4,6 +4,7 @@ const common = {
     "Refactored": "Refactored",
     "Close": "Close",
     "About": "About...",
+    "Language": "Language",
     "Help": "Help",
     "Yes": "Yes",
     "No": "No",
@@ -60,6 +61,11 @@ export default {
     ", until now).": ", until now).",
     "See more at the": "See more at the",
     "dataset API documentation": "dataset API documentation",
+  },
+
+  Language :{
+    ...common,
+    
   },
 
   Help: {

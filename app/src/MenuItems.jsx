@@ -17,7 +17,7 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 */
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfoCircle as faAbout } from '@fortawesome/free-solid-svg-icons'
+import { faInfoCircle as faAbout, faLanguage } from '@fortawesome/free-solid-svg-icons'
 
 const ListItemLink = (props) => {
   const { icon, primary, to } = props;
@@ -49,6 +49,7 @@ const MainMenuItems = translate('Menu')((props) => {
     <div>
       {/* <ListItemLink to="/" primary={ "Dashboard" } icon={ <DashboardIcon /> } /> */}
       <ListItemLink to="#about" primary={ t("About") } icon={ <FontAwesomeIcon style={{ fontSize: '1.5rem' }} icon={ faAbout } /> } />
+      <ListItemLink to="#language" primary={ t("Language") } icon={ <FontAwesomeIcon style={{ fontSize: '1.5rem' }} icon={ faLanguage } /> } />
     </div>
   )
 });
