@@ -1,6 +1,7 @@
 import ca_es from "./ca-es.lang.js";
 import es_es from "./es-es.lang.js";
 import en_en from "./en-en.lang.js";
+import pl_pl from "./pl-pl.lang.js";
 
 // Exports each language with more locale codes
 export default {
@@ -12,4 +13,6 @@ export default {
   'ca-es': ca_es,
   'es'   : es_es,
   'es-es': es_es,
+  'pl'   : pl_pl,
+  'pl-pl': pl_pl,
 };
