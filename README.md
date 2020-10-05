@@ -42,7 +42,8 @@ All contributors will be rewarded :trophy: by thanking them here (unless you pre
 
 # Thanks to
 
-- [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/37369782?s=400&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/MiguelMJ) [MiguelMJ](https://github.com/MiguelMJ) for the [Spanish translation](https://github.com/emibcn/covid/blob/master/app/src/i18n/es-es.lang.js)
+- [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/37369782?s=30&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/MiguelMJ) [MiguelMJ](https://github.com/MiguelMJ) for the [Spanish translation](https://github.com/emibcn/covid/blob/master/app/src/i18n/es-es.lang.js)
+- [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/163973?s=30&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/wikiyu) [Wiktor Jędrzejczak](https://github.com/wikiyu) for the [Polish translation](https://github.com/emibcn/covid/pull/7)
 
 # How it works
 
@@ -72,7 +73,7 @@ The application have a Menu with an _About_ section. An _Update!_ section is vis
 
 The backend (the real one) are **servers from institutions** like the _Generalitat de Catalunya_ or others that may come in the future. Those servers might have strict security restrictions (like CORS), or might not perform as desired, or the data offered there has already been processed, or because the data is updated just once a day (and we don't need to bomb the servers).
 
-Anyway, those backends are **scrapped once a day by a [workflow](https://github.com/emibcn/covid-data/blob/master/.github/workflows/get-maps.yml)** on a sibling project: [covid-data](/emibcn/covid-data). That project consists in a small shell script that downloads the data -processes it a bit- and deploys it to its own **GitHub Pages**. That deploy is not intended to be used directly from your browser, but through this application, which downloads the data (JSON and SVG files) to fill in the app widgets.
+Anyway, those backends are **scrapped once a day by a [workflow](https://github.com/emibcn/covid-data/blob/master/.github/workflows/get-maps-and-charts.yml)** on a sibling project: [covid-data](https://github.com/emibcn/covid-data). That project consists in a small shell script that downloads the Maps data -and processes it a bit- and a full JS project to download Charts data. Finally, deploys all collected data to its own **GitHub Pages**. That deploy is not intended to be used directly from your browser, but through this application, which downloads the data (JSON and SVG files) to fill in the app widgets.
 
 So, in fact, this is a ***serverless application**, where _the cloud_ is provided by GitHub, GitHub Workflow and GitHub Pages (all with free tiers), and the original 3rd party backends, which are not part of this project (for the moment).
 
@@ -100,4 +101,4 @@ The application, scripts and documentation in this project are released under th
 
 The scripts and documentation published in [covid-data](/emibcn/covid-data) are also released under the [GNU General Public License v3.0](https://github.com/emibcn/crypt-disk-image/blob/master/LICENSE).
 
-The data scrapped and published in [covid-data](/emibcn/covid-data) is licensed by their owner, the __Generalitat de Catalunya__, under their own conditions ([Open Data Commons Attribution License](http://opendatacommons.org/licenses/by/1.0/) until now). See more at the [dataset API documentation](https://analisi.transparenciacatalunya.cat/Salut/Dades-setmanals-de-COVID-19-per-comarca/jvut-jxu8).
+The data scrapped and published in [covid-data](/emibcn/covid-data) is licensed by their owner, the _Generalitat de Catalunya_, under their own conditions ([Open Data Commons Attribution License](http://opendatacommons.org/licenses/by/1.0/) until now). See more at the [dataset API documentation](https://analisi.transparenciacatalunya.cat/Salut/Dades-setmanals-de-COVID-19-per-comarca/jvut-jxu8).
