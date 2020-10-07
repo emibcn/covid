@@ -83,7 +83,7 @@ class ChartDataHandler extends React.Component {
 
   // Fetch map data
   updateData = () => {
-    const { chartDivision, chartPopulation, chartRegion } = this.props;
+    const { chartDivision, chartPopulation, chartRegion, chartDataset } = this.props;
 
     // If there is an ongoing update, cancel the registration to it
     if (this.cancelDataUpdate) {
@@ -102,7 +102,7 @@ class ChartDataHandler extends React.Component {
              chartRegion === this.props.chartRegion ) {
           this.setState({
             chartData,
-            ...this.getMeta(chartDivision, chartPopulation, chartRegion, chartDataset, chartData),
+            ...this.getMeta(chartDivision, chartPopulation, chartRegion, this.props.chartDataset, chartData),
           });
         }
       });
@@ -174,9 +174,10 @@ class ChartDataHandler extends React.Component {
 
   // Fix region if needed
   // Also, update map metadata
-  onChangeChart = (chartDivision, chartPopulation, chartRegion, chartDataset) => {
+  onChangeChart = (chartDivision, chartPopulation, chartRegion, chartDataset, chartData) => {
     this.setState({
-      ...this.getMeta(chartDivision, chartPopulation, chartRegion, chartDataset, null)
+      ...(chartData === this.state.chartData ? {chartData} : {}),
+      ...this.getMeta(chartDivision, chartPopulation, chartRegion, chartDataset, chartData)
     });
     const region = this.findRegion(chartDivision, chartPopulation, chartRegion);
     this.props.onChangeData(
@@ -192,34 +193,26 @@ class ChartDataHandler extends React.Component {
   // Force data update on division change
   onChangeChartDivision = (chartDivision) => {
     const { chartPopulation, chartRegion, chartDataset } = this.props;
-    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset);
-    this.setState({
-      chartData: null,
-    });
+    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset, null);
   }
 
   // Force data update on value change
   onChangeChartPopulation = (chartPopulation) => {
     const { chartDivision, chartRegion, chartDataset } = this.props;
-    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset);
-    this.setState({
-      chartData: null,
-    });
+    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset, null);
   }
 
   // Force data update on value change
   onChangeChartRegion = (chartRegion) => {
     const { chartDivision, chartPopulation, chartDataset } = this.props;
-    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset);
-    this.setState({
-      chartData: null,
-    });
+    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset, null);
   }
 
   // Datasets are on same data object
   onChangeChartDataset = (chartDataset) => {
     const { chartDivision, chartPopulation, chartRegion } = this.props;
-    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset);
+    const { chartData } = this.state;
+    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset, chartData);
   }
 
   render() {
