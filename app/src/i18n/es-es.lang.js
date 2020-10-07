@@ -93,8 +93,9 @@ export default {
     "Confirm removal": "Confirmar la eliminación",
     "View": "Ver",
     "Edit": "Editar",
-    "Edit map parameters": "Editar las opciones del mapa",
     "Legend": "Leyenda",
+    "Edit map parameters": "Editar las opciones del mapa",
+    "Edit chart parameters": "Editar las opciones del gráfico",
   },
 
   'Widget/Map/Edit': {
@@ -102,5 +103,18 @@ export default {
     "Select the regions type to show": "Seleccionar el tipo de regiones a mostrar",
     "Values": "Valores",
     "Select the data origin": "Selecciona el origen de los datos",
+  },
+
+  'Widget/Chart/Edit': {
+    "Division": "División territorial",
+    "Select the division type to show": "Seleccionar la división territorial a usar",
+    "Population": "Población",
+    "Select the population": "Seleccionar la población",
+    "Dataset": "Conjunto de datos",
+    "Select the dataset": "Seleccionar el conjunto de datos a usar",
+    "Extensió": "Extensión",
+    "Risc iEPG": "Riesgo iEPG",
+    "Region": "Región",
+    "Select the region": "Seleccionar la región",
   },
 }

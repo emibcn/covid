@@ -80,7 +80,7 @@ export default {
 
   PlayPause: {
     ...common,
-    "Toggle play status": "przełącz status",
+    "Toggle play status": "Przełącz status",
     "play": "play",
     "pause": "pause",
   },
@@ -93,8 +93,9 @@ export default {
     "Confirm removal": "Potwierdź usunięcie",
     "View": "Widok",
     "Edit": "Edycja",
-    "Edit map parameters": "Edytuj parametry mapy",
     "Legend": "Legenda",
+    "Edit map parameters": "Edytuj parametry mapy",
+    "Edit chart parameters": "Edytuj parametry wykres",
   },
 
   'Widget/Map/Edit': {
@@ -102,5 +103,18 @@ export default {
     "Select the regions type to show": "Wybierz regiony do pokazania",
     "Values": "Wartość",
     "Select the data origin": "Wybierz źródło",
+  },
+
+  'Widget/Chart/Edit': {
+    "Division": "Division",
+    "Select the division type to show": "Select the division type to show",
+    "Population": "Population",
+    "Select the population": "Select the population",
+    "Dataset": "Dataset",
+    "Select the dataset": "Select the dataset",
+    "Extensió": "Extensió",
+    "Risc iEPG": "Risc iEPG",
+    "Region": "Region",
+    "Select the region": "Select the region",
   },
 }

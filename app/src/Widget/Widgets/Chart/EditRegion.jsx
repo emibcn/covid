@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 
 const RecursiveTreeView = (props) => {
   const classes = useStyles();
-  const { chartsIndex, division, population, value, onChange } = props;
+  const { chartsIndex, division, population, value, onChange, ...restProps } = props;
 
   const onNodeSelect = (event, value) => onChange(Number(value));
 
@@ -49,6 +49,7 @@ const RecursiveTreeView = (props) => {
       expanded={ found }
       selected={ `${value}` }
       onNodeSelect={ onNodeSelect }
+      { ...restProps }
     >
       {renderTree(initialNode)}
     </TreeView>

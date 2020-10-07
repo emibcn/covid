@@ -20,32 +20,24 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  labelFixed: {
+    position: 'initial',
+    transform: 'unset',
+    marginBottom: theme.spacing(2),
+  },
 }));
 
-// Renders a Select, with options from props
-const Selector = (props) => {
+const FormDecorators = (props) => {
   const classes = useStyles();
-  const { label, help, id, options, ...restProps } = props;
+  const { label, help, id, children, fixTree } = props;
   return (
     <div style={{ 
       margin: '0 auto',
       display: 'block',
     }}>
       <FormControl required className={ classes.formControl }>
-        <InputLabel htmlFor={ id }>{ label }</InputLabel>
-        <Select
-          native
-          { ...restProps }
-          aria-describedby={ `helper-text-${id}` }
-          inputProps={{
-            name: label,
-            id: id,
-          }}
-        >
-          { options.map( option => (
-            <option key={ `v_${option.value}` } value={ option.value }>{ option.label }</option>
-          )) }
-        </Select>
+        <InputLabel className={ fixTree ? classes.labelFixed : null } htmlFor={ id }>{ label }</InputLabel>
+        { children }
         { help ? (
             <FormHelperText id={ `helper-text-${id}` }>
               { help }
@@ -54,6 +46,32 @@ const Selector = (props) => {
         }
       </FormControl>
     </div>
+  )
+}
+
+// Renders a Select, with options from props
+const Selector = (props) => {
+  const { label, help, id, options, ...restProps } = props;
+  return (
+    <FormDecorators
+      id={ id }
+      label={ label }
+      help={ help }
+    >
+      <Select
+        native
+        { ...restProps }
+        aria-describedby={ `helper-text-${id}` }
+        inputProps={{
+          name: label,
+          id: id,
+        }}
+      >
+        { options.map( option => (
+          <option key={ `v_${option.value}` } value={ option.value }>{ option.label }</option>
+        )) }
+      </Select>
+    </FormDecorators>
   )
 }
 
@@ -85,8 +103,8 @@ const ChartPopulationSelector = translate('Widget/Chart/Edit')((props) => {
   );
   return (
     <Selector
-      label={ t("Població") }
-      help={ t("Select the població kind") }
+      label={ t("Population") }
+      help={ t("Select the population") }
       options={ ChartPopulationSelectorOptions }
       { ...restProps }
     />
@@ -131,7 +149,8 @@ class Edit extends React.PureComponent {
       chartRegion,
       divisions,
       populations,
-      chartsIndex
+      chartsIndex,
+      t
     } = this.props;
 
     return (
@@ -154,13 +173,20 @@ class Edit extends React.PureComponent {
         />
         
         <Divider style={{ margin: '2em 0' }} />
-        <ChartRegionSelector
-          chartsIndex={ chartsIndex }
-          division={ chartDivision }
-          population={ chartPopulation }
-          value={ chartRegion }
-          onChange={ this.onChangeChartRegion }
-        />
+        <FormDecorators
+          id={ 'regions-tree' }
+          label={ t("Region") }
+          fixTree
+        >
+          <ChartRegionSelector
+            id={ 'regions-tree' }
+            chartsIndex={ chartsIndex }
+            division={ chartDivision }
+            population={ chartPopulation }
+            value={ chartRegion }
+            onChange={ this.onChangeChartRegion }
+          />
+        </FormDecorators>
       </div>
     )
   }
@@ -180,4 +206,4 @@ Edit.propTypes = {
   onChangeChartRegion: PropTypes.func.isRequired,
 };
 
-export default Edit;
+export default translate('Widget/Chart/Edit')(Edit);
