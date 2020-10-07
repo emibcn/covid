@@ -38,9 +38,10 @@ class FetchCacheElement {
   // Catches fetch errors, original or 'self-raised', and throws to `onError` prop
   // Filters out non-error "Connection aborted"
   catchFetchErrors = (err) => {
-    if (err.name === 'AbortError' &&
-        process.env.NODE_ENV === 'development') {
-      console.log(`Connection aborted for ${this.url}`, err);
+    if (err.name === 'AbortError' ) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Connection aborted for ${this.url}`, err);
+      }
     }
     else {
       err.message = `${this.url}: ${err.message}`;

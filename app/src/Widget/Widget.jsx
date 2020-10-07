@@ -60,7 +60,7 @@ const withWidget = (sectionsOrig) => {
       <Card className={classes.root}>
         <CardHeader
           action={ action }
-          title={ props.name }
+          title={ sections.view.title(props)||props.name }
           subheader={ props.subtitle }
         />
         <CardContent>

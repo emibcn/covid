@@ -8,13 +8,13 @@ import {
   faGlobeEurope as faMap
 } from '@fortawesome/free-solid-svg-icons'
 
-import MapData from '../../Backend/Maps';
+import MapData from '../../../Backend/Maps';
 
 import MapImage from './MapImage';
 import Edit from './Edit';
 import Legend from './Legend';
-import Loading from '../../Loading';
-import withWidget from '../Widget';
+import Loading from '../../../Loading';
+import withWidget from '../../Widget';
 
 const MapWrapper = withWidget({
   // The normal view
