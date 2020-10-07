@@ -44,6 +44,7 @@ jobs:
     - name: yarn install and test
       env:
         REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
+        REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       run: |
         cd app
         yarn install
@@ -140,6 +141,7 @@ jobs:
     - name: yarn install and build
       env:
         REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
+        REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       run: |
         cd app
         yarn install
