@@ -68,6 +68,12 @@ export default {
 
   WidgetsList: {
     ...common,
+  },
+
+  MenuAddWidget: {
+    ...common,
+    "Map": "Mapa",
+    "Chart": "Gràfic",
     "Add a graph": "Afegeix un gràfic",
     "add": "afegeix",
   },

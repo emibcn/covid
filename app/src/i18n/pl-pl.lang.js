@@ -68,7 +68,13 @@ export default {
 
   WidgetsList: {
     ...common,
-    "Add a graph": "dodaj wykres",
+  },
+
+  MenuAddWidget: {
+    ...common,
+    "Map": "Mapa",
+    "Chart": "Wykres",
+    "Add a graph": "Dodaj wykres",
     "add": "dodaj",
   },
 
