@@ -4,7 +4,7 @@ const common = {
     "Refactored": "Refactorizada",
     "Close": "Cerrar",
     "About": "Sobre...",
-    "Language": "Language",
+    "Language": "Idioma",
     "Help": "Ayuda",
     "Yes": "Sí",
     "No": "No",

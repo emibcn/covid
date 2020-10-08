@@ -4,14 +4,22 @@ const common = {
     "Refactored": "Refactored",
     "Close": "Zamknij",
     "About": "O Covid Data...",
+    "Language": "Język",
     "Help": "Pomoc",
     "Yes": "Tak",
     "No": "Nie",
     "or": "albo",
 };
 
+const languages = {
+  en: "angielski",
+  es: "hiszpański",
+  fr: "Francuski",
+}
+
 export default {
   locale: "pl",
+  languages,
 
   App: {
     ...common,
