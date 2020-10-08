@@ -70,6 +70,10 @@ export default {
     "dataset API documentation": "dokumentacja źródła API",
   },
 
+  Language: {
+    ...common,
+  },
+
   Help: {
     ...common,
   },
