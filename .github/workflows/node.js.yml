@@ -10,7 +10,9 @@ on:
       - '!badges'
       - '!gh-pages'
     paths-ignore:
+      # Can we use '**.md' ?
       - 'README.md'
+      - 'CONTRIBUTING.md'
       - 'CODE_OF_CONDUCT.md'
       - 'app/README.md'
       - 'LICENSE'
