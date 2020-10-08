@@ -13,7 +13,7 @@ import './Slider.scss';
 // Use special non-intrusive zIndex for the Slider tooltip
 const useStyles = makeStyles((theme) => ({
   popper: {
-    zIndex: 1,
+    zIndex: 1200
   },
   tooltip: {
     fontSize: '1rem',

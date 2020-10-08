@@ -41,7 +41,7 @@ const useStyles = (theme) => ({
   fixed: {
     position: 'sticky',
     top: 0,
-    zIndex: 1,
+    zIndex: 1200,
     padding: 0,
     // Not using it, adds a scrolling slider to the container on some screens
     paddingBottom: 1,
