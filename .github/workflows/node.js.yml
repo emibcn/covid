@@ -66,16 +66,19 @@ jobs:
         filename: "app/coverage/clover.xml"
 
     - name: Extract branch name
+      if: ${{ github.event_name != 'pull_request' }}
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
 
     - uses: actions/checkout@v2
+      if: ${{ github.event_name != 'pull_request' }}
       with:
         ref: badges
 
     # Use the output from the `coverage` step
     - name: Generate the badge SVG image
+      if: ${{ github.event_name != 'pull_request' }}
       uses: emibcn/badge-action@v1
       id: badge
       with:
@@ -92,6 +95,7 @@ jobs:
         path: test-coverage.svg
 
     - name: Commit badge
+      if: ${{ github.event_name != 'pull_request' }}
       env:
         BRANCH: ${{ steps.extract_branch.outputs.branch }}
         FILE: 'test-coverage.svg'
@@ -105,6 +109,7 @@ jobs:
         # Will give error if badge did not changed
         git commit -m "Add/Update badge" || true
     - name: Push badge commit
+      if: ${{ github.event_name != 'pull_request' }}
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
