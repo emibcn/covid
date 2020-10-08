@@ -8,8 +8,8 @@ export default [
   { key: "en-en", label: "English", value: en_en },
   { key: "en-us", label: "English", value: en_en },
   { key: "en-au", label: "English", value: en_en },
-  { key: "ca", label: "Spanish", value: ca_es },
-  { key: "ca-es", label: "Spanish", value: ca_es },
-  { key: "es", label: "French", value: es_es },
-  { key: "es-es", label: "French", value: es_es },
+  { key: "ca", label: "Español", value: ca_es },
+  { key: "ca-es", label: "Español", value: ca_es },
+  { key: "es", label: "Français", value: es_es },
+  { key: "es-es", label: "Français", value: es_es },
 ];

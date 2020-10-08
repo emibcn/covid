@@ -11,8 +11,15 @@ const common = {
     "or": "o",
 };
 
+const languages = {
+  en: "Inglés",
+  es: "Español",
+  fr: "Francés",
+}
+
 export default {
   locale: "es",
+  languages,
 
   App: {
     ...common,
@@ -63,9 +70,8 @@ export default {
     "dataset API documentation": "documentación de la API del dataset",
   },
   
-  Language :{
+  Language: {
     ...common,
-    
   },
 
   Help: {
