@@ -1,5 +1,10 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Installation
+
+From the root of the repo, run `cd app && npm install`.
+Once installation is finished, you can run the following commands to run your project locally. Note: if you don't have yarn installed globally, you can run `npm i -g yarn` to do a global install or add `npx` at the start of your commands, e.g. `npx yarn start`
+
 ## Available Scripts
 
 In the project directory, you can run:
