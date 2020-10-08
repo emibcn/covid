@@ -3,7 +3,7 @@
 
    Includes data sources, kinds and values lists and metadata
 */
-const MapStaticHost = process.env.REACT_APP_MAP_STATIC_HOST;
+const MapStaticHost = process.env.REACT_APP_MAP_STATIC_HOST ?? "https://emibcn.github.io/covid-data/Maps";
 
 const days              = `${MapStaticHost}/days.json`;
 

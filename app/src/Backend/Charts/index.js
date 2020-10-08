@@ -1,7 +1,7 @@
 import Common from '../Base/Common';
 import cache from '../Base/Cache';
 
-const ChartStaticHost = process.env.REACT_APP_CHART_STATIC_HOST;
+const ChartStaticHost = process.env.REACT_APP_CHART_STATIC_HOST ?? "https://emibcn.github.io/covid-data/Charts";
 const ChartDataStaticURL = `${ChartStaticHost}/index.json`;
 const ChartDataBase = `${ChartStaticHost}/chart.json`;
 
