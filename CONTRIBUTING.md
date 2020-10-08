@@ -7,9 +7,10 @@
 Before you begin contributing, you should install the package.json your machine:
 
 ```sh
+git clone git@github.com:[YOUR USER HERE]/covid.git
+cd covid/app
 yarn install
 ```
-
 
 ## How you can help
 
