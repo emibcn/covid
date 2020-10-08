@@ -4,7 +4,7 @@
 
 ## Tools
 
-Before you begin contributing, you should install the package.json your machine:
+Before you begin contributing, you should install the dependencies described in `app/package.json`:
 
 ```sh
 git clone git@github.com:[YOUR USER HERE]/covid.git
