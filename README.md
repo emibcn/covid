@@ -49,6 +49,7 @@ Please note that this project is released with a [Contributor Code of Conduct](.
 
 - [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/37369782?s=30&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/MiguelMJ) [MiguelMJ](https://github.com/MiguelMJ) for the [Spanish translation](https://github.com/emibcn/covid/blob/master/app/src/i18n/es-es.lang.js)
 - [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/163973?s=30&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/wikiyu) [Wiktor Jędrzejczak](https://github.com/wikiyu) for the [Polish translation](https://github.com/emibcn/covid/pull/7)
+- [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/11623748?s=30&u=20e48d6c8a6768d22ae2b46ffc0d3e70139853c3&v=4" />](https://github.com/mandy6720) [Amanda Bozzi](https://github.com/mandy6720) for [fixing a bug and installation instructions](https://github.com/emibcn/covid/pull/16)
 
 # How it works
 
