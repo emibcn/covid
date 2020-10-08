@@ -11,6 +11,7 @@ on:
       - '!gh-pages'
     paths-ignore:
       - 'README.md'
+      - 'CODE_OF_CONDUCT.md'
       - 'app/README.md'
       - 'LICENSE'
       - '.gitignore'
