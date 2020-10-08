@@ -20,7 +20,7 @@ The aim of this application is to display the data in different ways than the or
 - [Licenses](#licenses)
 
 <p align="center">
-  <img src="https://github.com/emibcn/covid/raw/badges/images/covid-data-example-01.png" alt="App Screenshot" style="max-width:80%;">
+  <img src="https://github.com/emibcn/covid/raw/badges/images/covid-data-example-02.gif" alt="App GIF example" style="max-width:80%;">
 </p>
 
 # Contributing
