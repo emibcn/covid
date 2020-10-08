@@ -57,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(9),
     },
   },
+  updateItem: {
+    color: 'green',
+  },
 }));
 
 const MenuContent = translate('Menu')((props) => {
@@ -118,21 +121,6 @@ const Menu = translate('Menu')((props) => {
     props.onLoadNewServiceWorkerAccept();
   };
 
-  const renderLink = (props) => {
-    const { children, ...restProps } = props;
-    return (
-      <a
-        href={ process.env.PUBLIC_URL }
-        style={{ color: 'green' }}
-        title={ t("New update available!") }
-        onClick={ handleClickUpdate }
-        { ...restProps }
-      >
-        { children }
-      </a>
-    )
-  };
-
   return (
     <DrawerComponent
       { ...(isBig ? {
@@ -151,7 +139,12 @@ const Menu = translate('Menu')((props) => {
     >
       <MenuContent handleDrawerClose={ handleDrawerClose } />
       { newServiceWorkerDetected ? (
-          <ListItem button component={ renderLink }>
+          <ListItem
+            button
+            onClick={ handleClickUpdate }
+            title={ t("New update available!") }
+            className={ classes.updateItem }
+          >
             <ListItemIcon><FontAwesomeIcon icon={ faUpgrade } style={{ fontSize: '1.5rem', color: 'green' }} /></ListItemIcon>
             <ListItemText primary={ t("Update!") } />
           </ListItem>

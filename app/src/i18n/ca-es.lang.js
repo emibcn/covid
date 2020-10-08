@@ -80,6 +80,12 @@ export default {
 
   WidgetsList: {
     ...common,
+  },
+
+  MenuAddWidget: {
+    ...common,
+    "Map": "Mapa",
+    "Chart": "Gràfic",
     "Add a graph": "Afegeix un gràfic",
     "add": "afegeix",
   },
@@ -99,8 +105,9 @@ export default {
     "Confirm removal": "Confirma l'eliminació",
     "View": "Veure",
     "Edit": "Edita",
-    "Edit map parameters": "Edita les opcions del mapa",
     "Legend": "Llegenda",
+    "Edit map parameters": "Edita les opcions del mapa",
+    "Edit chart parameters": "Edita les opcions del gràfic",
   },
 
   'Widget/Map/Edit': {
@@ -108,5 +115,18 @@ export default {
     "Select the regions type to show": "Selecciona el tipus de regions a mostrar",
     "Values": "Valors",
     "Select the data origin": "Selecciona l'origen de les dades",
+  },
+
+  'Widget/Chart/Edit': {
+    "Division": "Divisió territorial",
+    "Select the division type to show": "Selecciona la divisió territorial a usar",
+    "Population": "Població",
+    "Select the population": "Selecciona la població",
+    "Dataset": "Conjunt de dades",
+    "Select the dataset": "Selecciona el conjunt de dades a usar",
+    "Extensió": "Extensió",
+    "Risc iEPG": "Risc iEPG",
+    "Region": "Regió",
+    "Select the region": "Selecciona la regió",
   },
 }

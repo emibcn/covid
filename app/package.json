@@ -9,6 +9,7 @@
     "@fortawesome/react-fontawesome": "^0.1.11",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -24,6 +25,7 @@
     "react-svg": "^11.0.39",
     "react-tooltip": "^4.2.9",
     "react-translate": "^7.0.1",
+    "recharts": "^1.8.5",
     "soda-js": "^0.2.3"
   },
   "scripts": {

@@ -1,15 +1,17 @@
 import Common from '../Base/Common';
 import cache from '../Base/Cache';
 
-import MapDataStatic from './MapDataStatic';
+const ChartStaticHost = process.env.REACT_APP_CHART_STATIC_HOST ?? "https://emibcn.github.io/covid-data/Charts";
+const ChartDataStaticURL = `${ChartStaticHost}/index.json`;
+const ChartDataBase = `${ChartStaticHost}/chart.json`;
 
-// TODO: Abstract a layer to share with GitHub Charts
+// TODO: Abstract a layer to share with GitHub Maps
 
-// Handle data backend and cache for Maps
+// Handle data backend and cache for Charts
 // This is not a singleton: unique error handlers
-class MapDataHandler extends Common {
+class ChartDataHandler extends Common {
   // Visible backend name
-  name = "Maps JSON Files";
+  name = "Charts JSON Files";
 
   // Used to update the data at official schedule
   // Official schedule's at 10am. It often is some minutes later.
@@ -19,33 +21,115 @@ class MapDataHandler extends Common {
   officialUpdateTime = "10:35".split(':');
 
   /*
-     Return static data
+     Return processed data
   */
-  static kinds  = ()     => Object.keys(MapDataStatic.kind);
-  static values = (kind) => Object.keys(MapDataStatic.kind[kind].values);
-  static svg    = (kind) => MapDataStatic.kind[kind].svg;
+  divisions = [];
+  populations = [];
 
-  static metadata = (values, meta) => MapDataStatic.metadata[values][meta];
-  static metaColors = (values) => MapDataHandler.metadata(values, 'colors');
-  static metaTitle  = (values) => MapDataHandler.metadata(values, 'title');
-  static metaLabel  = (values) => MapDataHandler.metadata(values, 'label');
-  static metaName   = (values) => MapDataHandler.metadata(values, 'name');
+  constructor(index) {
+    super();
+
+    if (index) {
+      this.parseIndex(index);
+    }
+    else {
+      this.index( this.parseIndex );
+    }
+  }
 
   /*
      Return dynamic data (with cache)
   */
-  days = (callback) => cache.fetch( MapDataStatic.days, callback);
-  data = (kind, values, callback) => cache.fetch( MapDataStatic.kind[kind].values[values], callback);
+  indexData = [];
+  index = (callback) => {
+    return cache.fetch( ChartDataStaticURL, callback );
+  }
+
+  parseIndex = (index) => {
+    // Get a unique (`[...new Set( )]`) list of options elements
+    this.divisions = [...new Set( index.map( ({territori}) => territori) )];
+    this.populations = [...new Set( index.map( ({poblacio})  => poblacio ) )];
+
+    // Save/cache index data
+    this.indexData = index;
+  }
+
+  // Active URLs: those which will be invalidated on update
+  active = [];
+
+  // Gets the breadcrumb of ancestors and the found node, or empty array (recursive)
+  findBreadcrumb = (node, value, compare = (node, url) => node.url === url) => {
+    if ( compare(node, value) ) {
+      return [node]
+    }
+    else if ('children' in node) {
+      for(const child of node.children) {
+        const found = this.findBreadcrumb(child, value, compare);
+        if (found.length) {
+          return [...found, node]
+        }
+      }
+    }
+    return []
+  }
+
+  // Find a node in a tree
+  findChild = (node, value, compare) => {
+    const list = this.findBreadcrumb(node, value, compare);
+    if (list.length) {
+      return list[0];
+    }
+  }
+
+  // Find division/population section
+  findInitialNode = (division, population) => {
+    return this.indexData.find(
+      (link) =>
+        link.territori === division &&
+        link.poblacio === population
+    );
+  }
+
+  // Fetch JSON data and subscribe to updates
+  data = (division, population, url, callback) => {
+    const initialLink = this.findInitialNode(division, population);
+
+    // If found (why should it not?)
+    if ( initialLink ) {
+
+      // Find region name in link and children, recursively
+      const found = this.findChild(initialLink, url);
+
+      // TODO: We should do something else on error
+      if (!found) {
+        console.warn(`Could not find data in index: ${division}/${population}/${url}`, {initialLink, index: this.indexData});
+        callback(false);
+        return () => {};
+      }
+
+      // Add URL to active ones. Will be invalidated on update 
+      if ( !(this.active.includes(found.url)) ) {
+        this.active.push(found.url);
+      }
+
+      // Get URL content (download or cached)
+      return cache.fetch( `${ChartDataBase}%3F${found.url}`, callback );
+    }
+
+    console.warn(`Could not find initial node in index: ${division}/${population}/${url}`, {initialLink, index: this.indexData});
+    callback(false);
+    return () => {};
+  }
 
   /*
      Handle data update and cache invalidation
   */
 
-  // Checks if `days` URL has updates
+  // Checks if `index` URL has updates
   // If HEAD request succeeds, calls callback with bool (`true` if update is needed)
   checkUpdate = (callback, onError = () => {}) => {
     cache.checkIfNeedUpdate(
-      MapDataStatic.days,
+      ChartDataStaticURL,
       updateNeeded => {
         if (process.env.NODE_ENV === 'development') {
           console.log(`${this.name}: update needed: ${updateNeeded}`);
@@ -63,21 +147,19 @@ class MapDataHandler extends Common {
   updateAll = (callback) => {
     (async (callback) => {
 
-      // Invalidate each map JSON first
-      for(let kind of MapDataHandler.kinds()) {
-        for(let value of MapDataHandler.values(kind)) {
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`Invalidate ${kind} - ${value}`);
-          }
-          await cache.invalidate( MapDataStatic.kind[kind].values[value] );
-        };
-      };
-     
-      // Finally, invalidate the `days` JSON
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`Invalidate days`);
+      // Invalidate each active JSON first
+      for(const url of this.active) {
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`Charts: Invalidate '?${url}'`);
+        }
+        await cache.invalidate( `${ChartDataBase}?${url}` );
       }
-      await cache.invalidate( MapDataStatic.days );
+     
+      // Finally, invalidate the `index` JSON
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Charts: Invalidate index`);
+      }
+      await cache.invalidate( ChartDataStaticURL );
 
       callback(true);
     })(callback);
@@ -142,4 +224,4 @@ class MapDataHandler extends Common {
   }
 }
 
-export default MapDataHandler;
+export default ChartDataHandler;

@@ -10,7 +10,10 @@ on:
       - '!badges'
       - '!gh-pages'
     paths-ignore:
+      # Can we use '**.md' ?
       - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'CODE_OF_CONDUCT.md'
       - 'app/README.md'
       - 'LICENSE'
       - '.gitignore'
@@ -44,6 +47,7 @@ jobs:
     - name: yarn install and test
       env:
         REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
+        REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       run: |
         cd app
         yarn install
@@ -62,16 +66,19 @@ jobs:
         filename: "app/coverage/clover.xml"
 
     - name: Extract branch name
+      if: ${{ github.event_name != 'pull_request' }}
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
 
     - uses: actions/checkout@v2
+      if: ${{ github.event_name != 'pull_request' }}
       with:
         ref: badges
 
     # Use the output from the `coverage` step
     - name: Generate the badge SVG image
+      if: ${{ github.event_name != 'pull_request' }}
       uses: emibcn/badge-action@v1
       id: badge
       with:
@@ -88,6 +95,7 @@ jobs:
         path: test-coverage.svg
 
     - name: Commit badge
+      if: ${{ github.event_name != 'pull_request' }}
       env:
         BRANCH: ${{ steps.extract_branch.outputs.branch }}
         FILE: 'test-coverage.svg'
@@ -101,6 +109,7 @@ jobs:
         # Will give error if badge did not changed
         git commit -m "Add/Update badge" || true
     - name: Push badge commit
+      if: ${{ github.event_name != 'pull_request' }}
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -140,6 +149,7 @@ jobs:
     - name: yarn install and build
       env:
         REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
+        REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       run: |
         cd app
         yarn install

@@ -1,22 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { translate } from 'react-translate'
 import clsx from 'clsx';
 
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-//import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusSquare } from '@fortawesome/free-solid-svg-icons'
-
+import MenuAddWidget from './MenuAddWidget';
+import WidgetsTypes from './Widgets';
 import MapData from '../Backend/Maps';
-import MapWidget from './Map';
+import ChartData from '../Backend/Charts';
 
 import Throtle from '../Throtle';
 import Slider from '../Slider';
@@ -46,7 +41,7 @@ const useStyles = (theme) => ({
   fixed: {
     position: 'sticky',
     top: 0,
-    zIndex: 1,
+    zIndex: 1200,
     padding: 0,
     // Not using it, adds a scrolling slider to the container on some screens
     paddingBottom: 1,
@@ -81,6 +76,8 @@ const useStyles = (theme) => ({
   addButton: {
     padding: 0,
     fontSize: theme.spacing(4),
+    boxShadow: '3px 3px 5px 2px rgba(100, 100, 100, .3)',
+    borderRadius: 3,
     [theme.breakpoints.up('md')]: {
       fontSize: theme.spacing(6),
     },
@@ -109,6 +106,7 @@ class WidgetsList extends React.PureComponent {
   // Managed data: days & currently selected day
   state = {
     days: null,
+    chartsIndex: null,
     current: null,
     marks: [],
     marksSmall: [],
@@ -125,6 +123,10 @@ class WidgetsList extends React.PureComponent {
   // Map Data backend
   // TODO: Handle errors
   MapData = new MapData();
+
+  // Chart Data backend
+  // TODO: Handle errors
+  ChartData = new ChartData();
 
   constructor(props) {
     super(props);
@@ -168,12 +170,23 @@ class WidgetsList extends React.PureComponent {
         // Mind the timer on unmount
         this.MapData.scheduleNextUpdate();
       });
+    this.ChartData.index(
+      chartsIndex => {
+
+        this.setState({ chartsIndex });
+
+        // Once data has been fetched, schedule next data update
+        // Mind the timer on unmount
+        this.ChartData.scheduleNextUpdate();
+      });
   }
 
   // Cleanup side effects
   componentWillUnmount() {
-    // Cancel next update timer
+    // Cancel next update timers
     this.MapData.cancelUpdateSchedule();
+    this.ChartData.cancelUpdateSchedule();
+
     // Cancel possible throtle timer
     this.throtle.clear();
   }
@@ -193,15 +206,10 @@ class WidgetsList extends React.PureComponent {
   onSetDate = (event, current) => this.throtle.run(false, 10, () => this.setState({ current }) );
   sliderTipFormatter = value => this.state.days[value];
 
-  // TODO: Probably should go anywhere else
-  widgetType = {
-    map: MapWidget
-  }
-
   // Adds a new default widget to the list
-  onAdd = () => {
+  onAdd = (widgetType) => {
     const widgets = [...this.props.widgets];
-    widgets.push({ type: 'map' });
+    widgets.push({ type: widgetType??'map' });
     this.updateIDs(widgets.length);
     return this.props.onChangeData({ widgets });
   }
@@ -226,36 +234,33 @@ class WidgetsList extends React.PureComponent {
   render() {
 
     // KISS Loading
-    if ( !this.state.days ) {
+    if ( !this.state.days || !this.state.chartsIndex ) {
       return <Loading />;
     }
 
-    const { widgets, classes, showMarkLabels, t } = this.props;
-    const { days, current, marks, marksSmall } = this.state;
+    const { widgets, classes, showMarkLabels } = this.props;
+    const { days, chartsIndex, current, marks, marksSmall } = this.state;
     const fixedPaper = clsx(classes.paper, classes.fixed);
 
     return (
       <>
         <Paper className={ fixedPaper } elevation={ 2 }>
+          {/* Space used by the App Bar fixed positioned */}
           <div className={ classes.appBarSpacer } />
           {/*
           <Container maxWidth="lg" className={classes.container}>
             <h3>HELLO WORLD!</h3>
           </Container>
           */}
-          {/* Space used by the App Bar fixed positioned */}
+
           <div className={ classes.sliderContainer } >
+
             {/* Add an item */}
-            <Tooltip title={ t("Add a graph") } aria-label={ t("add") }>
-              <IconButton
-                onClick={ this.onAdd }
-                color="primary"
-                aria-label={ t("add") }
-                className={ classes.addButton }
-              >
-                <FontAwesomeIcon icon={ faPlusSquare } />
-              </IconButton>
-            </Tooltip>
+            <MenuAddWidget
+              onAdd={ this.onAdd }
+              className={ classes.addButton }
+              options={ WidgetsTypes }
+            />
 
             {/* Days display & Current manager */}
             <Slider
@@ -277,13 +282,14 @@ class WidgetsList extends React.PureComponent {
         <Grid container spacing={3} className={classes.widgetsContainer}>
           {/* Widgets list */}
           { widgets.map( (widget, index) => {
-              const WidgetComponent = this.widgetType[widget.type];
+              const { Component } = WidgetsTypes.find(w => w.key === widget.type );
               return (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={ this.widgetsIds[index] }>
-                  <WidgetComponent
+                  <Component
                     id={ this.widgetsIds[index] }
                     key={ this.widgetsIds[index] }
                     days={ days }
+                    chartsIndex={ chartsIndex }
                     indexValues={ current }
                     onChangeData={ this.onChangeData }
                     onRemove={ this.onRemove }
@@ -318,12 +324,11 @@ const withShowMarkLabels = (Component) => {
 // withStyles: Add `classes` prop for styling components
 // withShowMarkLabels: Add `showMarkLabels` breakpoint to sho/hide Slider mark labels depending on sreen size
 const WidgetsListWithPropHandler =
-  translate('WidgetsList')(
-    withPropHandler(
-      withStyles(useStyles)(
-        withShowMarkLabels(
-          WidgetsList
-  ))));
+  withPropHandler(
+    withStyles(useStyles)(
+      withShowMarkLabels(
+        WidgetsList
+  )));
 
 // Manage some context providers details:
 // - pathFilter: How to split `location` (Route `path` prop)
@@ -337,7 +342,7 @@ const WidgetsListWithContextProviders = (props) => (
       let widgetsParsed;
 
       try {
-        widgetsParsed = widgets.split('/').map( w => JSON.parse(w) );
+        widgetsParsed = widgets.split('/').map( w => JSON.parse( decodeURIComponent(w) ) );
       } catch(err) {
         widgetsParsed = [];
       }
@@ -347,7 +352,9 @@ const WidgetsListWithContextProviders = (props) => (
       });
     }}
     paramsToString={ (params) => {
-      const widgets = params.widgets.map( w => JSON.stringify({ type: w.type, payload: w.payload })).join('/');
+      const widgets = params.widgets.map(
+        w => encodeURIComponent( JSON.stringify({ type: w.type, payload: w.payload }) )
+      ).join('/');
       return `/${widgets}`
     }}
   >

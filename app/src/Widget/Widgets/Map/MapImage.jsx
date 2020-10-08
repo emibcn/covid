@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { ReactSVG } from 'react-svg'
 import ReactTooltip from "react-tooltip";
 
-import Loading from '../../Loading';
+import Loading from '../../../Loading';
 
 import './Map.css';
 

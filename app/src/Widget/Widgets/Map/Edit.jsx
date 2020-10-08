@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
 
-import MapData from '../../Backend/Maps';
+import MapData from '../../../Backend/Maps';
 
 // UI-Material Styles
 const useStyles = makeStyles((theme) => ({
