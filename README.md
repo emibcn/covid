@@ -56,7 +56,7 @@ The application has been split into 2 parts: the frontend (this one, [the applic
 
 ## The frontend
 
-This applications has been created using [Create React App](https://create-react-app.dev/). The applications is built and deployed to [GitHub Pages](https://emibcn.github.io/covid) using it's [workflow](./.github/worflows/node.js.yml).
+This applications has been created using [Create React App](https://create-react-app.dev/). The applications is built and deployed to [GitHub Pages](https://emibcn.github.io/covid) using it's [workflow](./.github/workflows/node.js.yml).
 
 The frontend is a React web application. It's intended to be used directly from the browser, or installed as a Progressive Web Application. It should work in all devices and browsers (if not, [open an issue](https://github.com/emibcn/covid/issues) and I will do my best). Some of the code in this app is inspired from the code in the [official app](https://dadescovid.cat). Specifically, how it handles the data sources against the SVG maps.
 
