@@ -83,7 +83,7 @@ class ChartDataHandler extends React.Component {
 
   // Fetch map data
   updateData = () => {
-    const { chartDivision, chartPopulation, chartRegion, chartDataset } = this.props;
+    const { chartDivision, chartPopulation, chartRegion } = this.props;
 
     // If there is an ongoing update, cancel the registration to it
     if (this.cancelDataUpdate) {
