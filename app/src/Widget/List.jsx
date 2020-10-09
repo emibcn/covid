@@ -78,9 +78,9 @@ const useStyles = (theme) => ({
       marginLeft: theme.spacing(4),
       marginRight: theme.spacing(4),
     },
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
+      marginLeft: theme.spacing(3),
+      marginRight: theme.spacing(3),
     },
   },
   // Save some space in buttons for small devices
