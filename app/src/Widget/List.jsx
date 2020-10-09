@@ -72,6 +72,17 @@ const useStyles = (theme) => ({
       },
     }
   },
+  // Add some lateral space for the slider on larger displays
+  sliderRoot: {
+    [theme.breakpoints.up('md')]: {
+      marginLeft: theme.spacing(4),
+      marginRight: theme.spacing(4),
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+    },
+  },
   // Save some space in buttons for small devices
   addButton: {
     padding: 0,
@@ -264,7 +275,7 @@ class WidgetsList extends React.PureComponent {
 
             {/* Days display & Current manager */}
             <Slider
-              classes={{ playPause: classes.playPause }}
+              classes={{ root: classes.sliderRoot, playPause: classes.playPause }}
               max={ days.length - 1 }
               value={ current || 0 }
               onChange={ this.onSetDate }
