@@ -4,7 +4,7 @@ const common = {
     "Refactored": "Refactoritzada",
     "Close": "Tanca",
     "About": "Quant a...",
-    "Language": "Langue",
+    "Language": "Idioma",
     "Help": "Ajuda",
     "Yes": "Si",
     "No": "No",
@@ -13,7 +13,7 @@ const common = {
 
 export default {
   locale: "fr", // :(
-  name: "French",
+  name: "Català",
 
   App: {
     ...common,
