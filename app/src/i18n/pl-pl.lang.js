@@ -4,6 +4,7 @@ const common = {
     "Refactored": "Refactored",
     "Close": "Zamknij",
     "About": "O Covid Data...",
+    "Language": "Język",
     "Help": "Pomoc",
     "Yes": "Tak",
     "No": "Nie",
@@ -12,6 +13,7 @@ const common = {
 
 export default {
   locale: "pl",
+  name: "Polish",
 
   App: {
     ...common,
@@ -60,6 +62,10 @@ export default {
     ", until now).": ", dotychczas).",
     "See more at the": "Sprawdź więcej na",
     "dataset API documentation": "dokumentacja źródła API",
+  },
+
+  Language: {
+    ...common,
   },
 
   Help: {

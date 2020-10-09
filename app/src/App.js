@@ -59,7 +59,7 @@ class App extends React.Component {
     this.state = {
       initializing: true,
       newServiceWorkerDetected: false,
-      language: available.hasOwnProperty(languageNav) ? languageNav : 'ca-es',
+      language: available.find(language => language.key === languageNav) ? languageNav : 'ca-es',
       theme: false, // Use defined by user in browser
       tutorialSeen: false,
     };
@@ -94,7 +94,7 @@ class App extends React.Component {
 
   render() {
     const { newServiceWorkerDetected, language, theme, tutorialSeen } = this.state;
-    const translations = available[language];
+    const translations = available.find(_language => _language.key === language).value;
 
     return (
       <AppProviders { ...{
