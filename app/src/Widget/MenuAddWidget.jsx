@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 
 import { translate } from 'react-translate'
 
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusSquare } from '@fortawesome/free-solid-svg-icons'
+import Fab from "@material-ui/core/Fab";
+import AddIcon from '@material-ui/icons/Add';
 
 // Renders an item into the widget's popup actions menu
 // Ensures click event uses widget id
@@ -51,15 +50,14 @@ const MenuAddWidget = (props) => {
   return (
     <div>
       <Tooltip title={ t("Add a graph") } aria-label={ t("add") }>
-        <IconButton
-          onClick={ handleClickOpen }
+        <Fab
           color="primary"
           aria-label={ t("add") }
+          onClick={ handleClickOpen }
           aria-haspopup="true"
-          className={ props.className }
         >
-          <FontAwesomeIcon icon={ faPlusSquare } />
-        </IconButton>
+          <AddIcon />
+        </Fab>
       </Tooltip>
       { anchorEl ? (
           <Menu
