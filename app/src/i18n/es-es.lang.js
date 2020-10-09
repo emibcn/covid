@@ -13,7 +13,7 @@ const common = {
 
 export default {
   locale: "es",
-  name: "Spanish",
+  name: "Castellano",
 
   App: {
     ...common,
