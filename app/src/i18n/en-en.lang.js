@@ -11,15 +11,9 @@ const common = {
     "or": "or",
 };
 
-const languages = {
-  en: "English",
-  es: "Spanish",
-  fr: "French",
-}
-
 export default {
   locale: "en",
-  languages,
+  name: "English",
 
   App: {
     ...common,
