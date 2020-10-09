@@ -7,7 +7,7 @@
 
 [This applications](https://emibcn.github.io/covid) displays public information about Covid19 Pandemy on Catalonia, extracted from the official web [https://dadescovid.cat](https://dadescovid.cat).
 
-The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it.
+The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it, trying to help the users to better understand the situation and evolution of the Covid19 pandemy in the region of Catalunya.
 
 - [Contributing](#contributing)
 - [Thanks to](#thanks-to)
@@ -24,8 +24,6 @@ The aim of this application is to display the data in different ways than the or
 </p>
 
 # Contributing
-
-This application has been made to help others better understand the situation and evolution of the Covid19 pandemy in the region of Catalunya.
 
 If you have an idea about:
 - Improve app performance, design, usability, testing or translations
@@ -51,6 +49,7 @@ Please note that this project is released with a [Contributor Code of Conduct](.
 - [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/163973?s=30&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/wikiyu) [Wiktor Jędrzejczak](https://github.com/wikiyu) for the [Polish translation](https://github.com/emibcn/covid/pull/7)
 - [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/11623748?s=30&u=20e48d6c8a6768d22ae2b46ffc0d3e70139853c3&v=4" />](https://github.com/mandy6720) [Amanda Bozzi](https://github.com/mandy6720) for [fixing a bug and installation instructions](https://github.com/emibcn/covid/pull/16)
 - [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/56343352?s=30&u=64eed100b40eb180a4e7c2cf78c4219485623dca&v=4" />](https://github.com/PPInfy) [PPInfy](https://github.com/PPInfy) for [adding the contributing guidelines](https://github.com/emibcn/covid/pull/14)
+- [<img align="center" width="30px" height="30px" src="https://avatars0.githubusercontent.com/u/7333996?s=30&u=9dd0ebe05defb28c187d99f6103f151cbaa87c9b&v=4" />](https://github.com/ashish979) [Ashish Agrawal](https://github.com/ashish979) for [the new add button](https://github.com/emibcn/covid/pull/22)
 
 # How it works
 
