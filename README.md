@@ -3,7 +3,7 @@
 ![Download maps from backend and publish with GitHub Pages](https://github.com/emibcn/covid-data/workflows/Download%20maps%20from%20backend%20and%20publish%20with%20GitHub%20Pages/badge.svg)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
 
-# Covid Data Web Application `refactored`
+# Covid Data `refactored` (Web Application)
 
 [This applications](https://emibcn.github.io/covid) displays public information about Covid19 Pandemy on Catalonia, extracted from the official web [https://dadescovid.cat](https://dadescovid.cat).
 
@@ -50,7 +50,8 @@ Please note that this project is released with a [Contributor Code of Conduct](.
 - [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/11623748?s=30&u=20e48d6c8a6768d22ae2b46ffc0d3e70139853c3&v=4" />](https://github.com/mandy6720) [Amanda Bozzi](https://github.com/mandy6720) for [fixing a bug and installation instructions](https://github.com/emibcn/covid/pull/16)
 - [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/56343352?s=30&u=64eed100b40eb180a4e7c2cf78c4219485623dca&v=4" />](https://github.com/PPInfy) [PPInfy](https://github.com/PPInfy) for [adding the contributing guidelines](https://github.com/emibcn/covid/pull/14)
 - [<img align="center" width="30px" height="30px" src="https://avatars0.githubusercontent.com/u/7333996?s=30&u=9dd0ebe05defb28c187d99f6103f151cbaa87c9b&v=4" />](https://github.com/ashish979) [Ashish Agrawal](https://github.com/ashish979) for [the new add button](https://github.com/emibcn/covid/pull/22)
-- [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/9048589?s=30&u=b8f6c7a9e1bd533e193887d86213f9575be48511&v=4" />](https://github.com/Abhijith126) [ABHIJITH P](https://github.com/Abhijith126) for [the language selector](https://github.com/emibcn/covid/pull/19/files)
+- [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/9048589?s=30&u=b8f6c7a9e1bd533e193887d86213f9575be48511&v=4" />](https://github.com/Abhijith126) [ABHIJITH P](https://github.com/Abhijith126) for [the language selector](https://github.com/emibcn/covid/pull/19)
+- [<img align="center" width="30px" height="30px" src="https://avatars0.githubusercontent.com/u/32026169?s=30&u=08af20f6f590dded67a97d4c17efcd0c97e5d43a&v=4" />](https://github.com/mblaul) [Matt Blaul](https://github.com/mblaul) for [fixing spacing in time slider](https://github.com/emibcn/covid/pull/21)
 
 # How it works
 
