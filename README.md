@@ -10,7 +10,7 @@
 The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it, trying to help the users to better understand the situation and evolution of the Covid19 pandemy in the region of Catalunya.
 
 - [Contributing](#contributing)
-- [Thanks to](#thanks-to)
+- [Thanks to](#trophy-thanks-to)
 - [How it works](#how-it-works)
   - [The frontend](#the-frontend)
     - [Features](#features)
@@ -43,7 +43,7 @@ All contributors will be rewarded :trophy: by thanking them here (unless you pre
 
 Please note that this project is released with a [Contributor Code of Conduct](./CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
-# Thanks to
+# :trophy: Thanks to
 
 - [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/37369782?s=30&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/MiguelMJ) [MiguelMJ](https://github.com/MiguelMJ) for the [Spanish translation](https://github.com/emibcn/covid/blob/master/app/src/i18n/es-es.lang.js)
 - [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/163973?s=30&u=e45dece2e5b8aadb65b9b191bc12c46f60ad0512&v=4" />](https://github.com/wikiyu) [Wiktor Jędrzejczak](https://github.com/wikiyu) for the [Polish translation](https://github.com/emibcn/covid/pull/7)
@@ -52,6 +52,7 @@ Please note that this project is released with a [Contributor Code of Conduct](.
 - [<img align="center" width="30px" height="30px" src="https://avatars0.githubusercontent.com/u/7333996?s=30&u=9dd0ebe05defb28c187d99f6103f151cbaa87c9b&v=4" />](https://github.com/ashish979) [Ashish Agrawal](https://github.com/ashish979) for [the new add button](https://github.com/emibcn/covid/pull/22)
 - [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/9048589?s=30&u=b8f6c7a9e1bd533e193887d86213f9575be48511&v=4" />](https://github.com/Abhijith126) [ABHIJITH P](https://github.com/Abhijith126) for [the language selector](https://github.com/emibcn/covid/pull/19)
 - [<img align="center" width="30px" height="30px" src="https://avatars0.githubusercontent.com/u/32026169?s=30&u=08af20f6f590dded67a97d4c17efcd0c97e5d43a&v=4" />](https://github.com/mblaul) [Matt Blaul](https://github.com/mblaul) for [fixing spacing in time slider](https://github.com/emibcn/covid/pull/21)
+- [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/17725274?s=30&v=4" />](https://github.com/GisliNielsen) [Gisli Nielsen](https://github.com/GisliNielsen) for the [Norwegian translation](https://github.com/emibcn/covid/pull/27)
 
 # How it works
 
