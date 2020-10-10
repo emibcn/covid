@@ -146,7 +146,6 @@ class Slider extends React.PureComponent {
           ValueLabelComponent={ ValueLabelComponent }
           step={ 1 }
           min={ 0 }
-          style={{ margin: '0 1em' }}
           classes={{ ...restClasses }}
           { ...restProps }
         />
