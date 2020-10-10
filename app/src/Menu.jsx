@@ -18,6 +18,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowAltCircleUp as faUpgrade } from '@fortawesome/free-solid-svg-icons'
@@ -142,10 +143,11 @@ const Menu = translate('Menu')((props) => {
           <ListItem
             button
             onClick={ handleClickUpdate }
-            title={ t("New update available!") }
             className={ classes.updateItem }
           >
-            <ListItemIcon><FontAwesomeIcon icon={ faUpgrade } style={{ fontSize: '1.5rem', color: 'green' }} /></ListItemIcon>
+            <Tooltip title={ t("Update!") }>
+              <ListItemIcon><FontAwesomeIcon icon={ faUpgrade } style={{ fontSize: '1.5rem', color: 'green' }} /></ListItemIcon>
+            </Tooltip>
             <ListItemText primary={ t("Update!") } />
           </ListItem>
         ) : null

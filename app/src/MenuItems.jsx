@@ -7,6 +7,7 @@ import { translate } from 'react-translate'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
 /*
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -30,7 +31,11 @@ const ListItemLink = (props) => {
   return (
     <li>
       <ListItem button component={renderLink}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+        {icon ? (
+          <Tooltip title={ primary }>
+            <ListItemIcon>{icon}</ListItemIcon>
+          </Tooltip>
+        ) : null}
         <ListItemText primary={primary} />
       </ListItem>
     </li>
