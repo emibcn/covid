@@ -2,6 +2,7 @@ import ca_es from "./ca-es.lang.js";
 import es_es from "./es-es.lang.js";
 import en_en from "./en-en.lang.js";
 import pl_pl from "./pl-pl.lang.js";
+import nb_no from "./nb-no.lang.js";
 
 // Exports each language with more locale codes
 export default [
@@ -15,4 +16,5 @@ export default [
   { key: "es-es", label: es_es.name, value: es_es },
   { key: "pl", label: pl_pl.name, value: pl_pl },
   { key: "pl-pl", label: pl_pl.name, value: pl_pl },
+  { key: "nb-no", label: nb_no.name, value: nb_no },
 ];
