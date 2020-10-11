@@ -1,7 +1,7 @@
 ![Node.js CI](https://github.com/emibcn/covid/workflows/Node.js%20CI/badge.svg)
 ![Coverage](https://raw.githubusercontent.com/emibcn/covid/badges/master/test-coverage.svg)
-![Download maps from backend and publish with GitHub Pages](https://github.com/emibcn/covid-data/workflows/Download%20maps%20from%20backend%20and%20publish%20with%20GitHub%20Pages/badge.svg)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
+![Download maps and charts from backend and publish with GitHub Pages](https://github.com/emibcn/covid-data/workflows/Download%20maps%20and%20charts%20from%20backend%20and%20publish%20with%20GitHub%20Pages/badge.svg)
 
 # Covid Data `refactored` (Web Application)
 
@@ -108,6 +108,8 @@ The application, scripts and documentation in this project are released under th
 
 The scripts and documentation published in [covid-data](/emibcn/covid-data) are also released under the [GNU General Public License v3.0](https://github.com/emibcn/crypt-disk-image/blob/master/LICENSE).
 
-The data scrapped and published in [covid-data](/emibcn/covid-data) is licensed by their owner, the _Generalitat de Catalunya_, under their own conditions ([Open Data Commons Attribution License](http://opendatacommons.org/licenses/by/1.0/) until now). See more at the [dataset API documentation](https://analisi.transparenciacatalunya.cat/Salut/Dades-setmanals-de-COVID-19-per-comarca/jvut-jxu8).
+The data scrapped and published in [covid-data](/emibcn/covid-data) is licensed by their owners:
+- [Charts & Maps](https://dadescovid.cat): the _Generalitat de Catalunya_, under their own conditions ([Open Data Commons Attribution License](http://opendatacommons.org/licenses/by/1.0/) until now). See more at the [dataset API documentation](https://analisi.transparenciacatalunya.cat/Salut/Dades-setmanals-de-COVID-19-per-comarca/jvut-jxu8).
+- [Bcn](https://dades.ajuntament.barcelona.cat/seguiment-covid19-bcn): the _Ajuntament de Barcelona_ under their own conditions ([Creative Commons CC-BY](https://creativecommons.org/licenses/by/2.0/) until now).
 
 The Contributor Covenant is released under the Creative Commons Attribution 4.0 International Public License.
