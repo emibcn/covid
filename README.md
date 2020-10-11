@@ -89,11 +89,12 @@ So, in fact, this is a **serverless application**, where _the cloud_ is provided
 
 # TODO list
 
-- Add language selector and translate remaining components. Add languages.
+- Add languages.
 - Add more sections: _Help_, _Settings_, ...
 - Change branding icons.
 - Add tutorial for beginners.
 - Add more data sources.
+- Add more data visualization tools.
 - Add more regions.
 - Take a look at Google Maps iEPG new layer service.
 - Add tests.
