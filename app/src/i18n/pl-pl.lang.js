@@ -44,7 +44,7 @@ export default {
   About: {
     ...common,
     "This applications displays public information extracted from the official web": "Aplikacja pokazuje publicznie dostępne informacje z oficjalnych źródeł",
-    "The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it.": "Celem aplikacji jest pokazanie danych na inne sposoby niż dotychczas dostępne, dając wartość ze sposobu ukazania ich.",
+    "The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it.": "Celem aplikacji jest pokazanie danych w inny sposób niż dotychczas dostępne, poprawienie wydajności oraz wartościowe ich ukazanie",
     "Want more information?": "Potrzebujesz więcej informacji?",
     "The source code is publicly available.": "Kod źródłowy jest dostępny publicznie.",
     "There, you can find more information about how it has been done, licence and credits.": "Tutaj możesz znaleźć informacje o powstawaniu aplikacji, licencjach oraz autorach.",
@@ -95,13 +95,13 @@ export default {
     ...common,
     "remove": "usuń",
     "Remove": "Usuń",
-    "Remove?": "Usunąć??",
+    "Remove?": "Usunąć?",
     "Confirm removal": "Potwierdź usunięcie",
     "View": "Widok",
     "Edit": "Edycja",
     "Legend": "Legenda",
     "Edit map parameters": "Edytuj parametry mapy",
-    "Edit chart parameters": "Edytuj parametry wykres",
+    "Edit chart parameters": "Edytuj parametry wykresu",
   },
 
   'Widget/Map/Edit': {
@@ -112,15 +112,15 @@ export default {
   },
 
   'Widget/Chart/Edit': {
-    "Division": "Division",
-    "Select the division type to show": "Select the division type to show",
-    "Population": "Population",
-    "Select the population": "Select the population",
-    "Dataset": "Dataset",
-    "Select the dataset": "Select the dataset",
+    "Division": "Podział administracyjny",
+    "Select the division type to show": "Wybierz podział administracyjny",
+    "Population": "Populacja",
+    "Select the population": "Wybierz populację",
+    "Dataset": "Dane",
+    "Select the dataset": "Wybierz zbiór danych",
     "Extensió": "Extensió",
     "Risc iEPG": "Risc iEPG",
     "Region": "Region",
-    "Select the region": "Select the region",
+    "Select the region": "Wybierz region",
   },
 }
