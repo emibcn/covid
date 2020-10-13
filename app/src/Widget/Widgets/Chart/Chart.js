@@ -13,6 +13,8 @@ import {
   Tooltip,
 } from 'recharts';
 
+import CustomTooltip from './ChartTooltip';
+
 const ChartIEPG = (props) => {
   const { graph, dies, indexValues} = props;
   const data = React.useMemo(
@@ -24,16 +26,16 @@ const ChartIEPG = (props) => {
     <ResponsiveContainer width='100%' height={350}>
       <LineChart data={data} margin={{ bottom: 20, right: 10, left: 0 }} syncId="charts">
         <Line type="monotone" dataKey="v" dot={null} name={ graph.data[0].label } stroke="#000000" strokeWidth={2} />
-     
+
         <ReferenceLine y={ 30} stroke="#0f0" strokeDasharray="3 3" />
         <ReferenceLine y={ 70} stroke="#ff0" strokeDasharray="3 3" />
         <ReferenceLine y={100} stroke="#f00" strokeDasharray="3 3" />
         <ReferenceLine x={dies[indexValues]} label={`${data[indexValues].v}`} stroke="#777" strokeDasharray="3 3" />
-     
+
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="x" angle={-30} dx={-5} dy={15} />
         <YAxis />
-        <Tooltip />
+        <Tooltip content={<CustomTooltip/>} />
       </LineChart>
     </ResponsiveContainer>
   )
@@ -86,7 +88,7 @@ const ChartExtensio = (props) => {
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="x" angle={-30} dx={-5} dy={15} />
         <YAxis />
-        <Tooltip />
+        <Tooltip content={<CustomTooltip/>} />
       </ComposedChart>
     </ResponsiveContainer>
   )
