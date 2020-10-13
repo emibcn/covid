@@ -54,6 +54,7 @@ Please note that this project is released with a [Contributor Code of Conduct](.
 - [<img align="center" width="30px" height="30px" src="https://avatars0.githubusercontent.com/u/32026169?s=30&u=08af20f6f590dded67a97d4c17efcd0c97e5d43a&v=4" />](https://github.com/mblaul) [Matt Blaul](https://github.com/mblaul) for [fixing spacing in time slider](https://github.com/emibcn/covid/pull/21)
 - [<img align="center" width="30px" height="30px" src="https://avatars2.githubusercontent.com/u/17725274?s=30&v=4" />](https://github.com/GisliNielsen) [Gisli Nielsen](https://github.com/GisliNielsen) for the [Norwegian translation](https://github.com/emibcn/covid/pull/27)
 - [<img align="center" width="30px" height="30px" src="https://avatars3.githubusercontent.com/u/49305201?s=30&v=4" />](https://github.com/magdalenapaluch) [Magdalena Paluch](https://github.com/magdalenapaluch) for [updating the the Polish translation](https://github.com/emibcn/covid/pull/29)
+- [<img align="center" width="30px" height="30px" src="https://avatars0.githubusercontent.com/u/60227056?s=30&u=08d7a234130d88ca31069c082e6be8a7badae1e1&v=4" />](https://github.com/SahanAmarsha) [Sahan Amarsha](https://github.com/SahanAmarsha) for [fixing the charts Tooltips](https://github.com/emibcn/covid/pull/30)
 
 # How it works
 
