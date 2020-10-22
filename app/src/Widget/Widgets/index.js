@@ -8,6 +8,9 @@ import {
 
 import MapWidget from './Map';
 import ChartWidget from './Chart';
+import BcnWidget from './Bcn';
+
+import BcnLogo from './Bcn/BcnLogo';
 
 const WidgetsTypes = [
   {
@@ -21,6 +24,12 @@ const WidgetsTypes = [
     Component: ChartWidget,
     icon: <FontAwesomeIcon icon={ faChart } />,
     name: "Chart",
+  },
+  {
+    key: "bcn",
+    Component: BcnWidget,
+    icon: <BcnLogo />,
+    name: "Barcelona Chart",
   },
 ];
 

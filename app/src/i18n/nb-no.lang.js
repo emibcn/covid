@@ -11,6 +11,11 @@ const common = {
     "or": "eller",
 };
 
+const chartEdit = {
+  "Dataset": "Datasett",
+  "Select the dataset": "Velg datasett",
+};
+
 export default {
   locale: "no",
   name: "Norsk",
@@ -102,6 +107,7 @@ export default {
     "Legend": "Legende",
     "Edit map parameters": "Rediger kart parametere",
     "Edit chart parameters": "Rediger graf parametere",
+    "Edit BCN parameters": "Rediger BCN parametere",
   },
 
   'Widget/Map/Edit': {
@@ -112,15 +118,19 @@ export default {
   },
 
   'Widget/Chart/Edit': {
+    ...chartEdit,
     "Division": "Divisjon",
     "Select the division type to show": "Velg divisjonstype å vise",
     "Population": "Populasjon",
     "Select the population": "Velg populasjon",
-    "Dataset": "Datasett",
-    "Select the dataset": "Velg datasett",
     "Extensió": "Extensió",
     "Risc iEPG": "Risc iEPG",
     "Region": "Region",
     "Select the region": "Velg region",
   },
+
+  'Widget/Bcn/Edit': {
+    ...chartEdit,
+  },
+
 }
