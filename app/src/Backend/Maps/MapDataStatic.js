@@ -32,6 +32,11 @@ const MapDataStatic = {
       label: "Risc de rebrot (iEPG)",
       name: "Risc de rebrot (iEPG)",
       colors: [
+        {"color": "#88f", "nom": "Risc màxim - 6", "valor": 1500},
+        {"color": "#00f", "nom": "Risc màxim - 5", "valor": 1200},
+        {"color": "#00c", "nom": "Risc màxim - 4", "valor": 900},
+        {"color": "#008", "nom": "Risc màxim - 3", "valor": 600},
+        {"color": "#004", "nom": "Risc màxim - 2", "valor": 400},
         {"color": "#400", "nom": "Risc màxim", "valor": 210},
         {"color": "#800", "nom": "Risc extrem", "valor": 190},
         {"color": "#c00", "nom": "Risc altíssim", "valor": 160},
