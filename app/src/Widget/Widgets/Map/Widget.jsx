@@ -22,19 +22,19 @@ const MapWrapper = withWidget({
     icon: <FontAwesomeIcon icon={ faMap } />,
     label: ({ t }) => t("View"),
     title: (props) => props.name,
-    render: (props) => (
+    render: ({t, mapKind, label, mapData, indexValues, colors, id}) => (
       <>
-        { props.mapData === null ? (
+        { !mapData  || !mapData.valors ? (
             <Loading />
           ) : (
             <MapImage
-              label={ props.label }
-              dies={ props.days }
-              valors={ props.mapData.valors }
-              mapSrc={ MapData.svg(props.mapKind) }
-              indexValues={ props.indexValues }
-              colors={ props.colors }
-              id={ props.id }
+              title={ `${t('Map')}: Catalunya: ${t(mapKind)}` }
+              label={ label }
+              values={ mapData.valors }
+              mapSrc={ MapData.svg(mapKind) }
+              indexValues={ indexValues }
+              colors={ colors }
+              id={ id }
             />
           )
         }

@@ -1,11 +1,5 @@
-/*
-import Original from './Original';
-import Soda from './Soda';
 import Maps from './Maps';
-import GHPages from './GHPages';
+import Charts from './Charts';
+import Bcn from './Bcn';
 
-export {Original, Soda, Maps, GHPages};
-*/
-import Maps from './Maps';
-// Only `Maps` has been finished :P
-export {Maps};
+export {Maps, Charts, Bcn};

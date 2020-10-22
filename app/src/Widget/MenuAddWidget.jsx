@@ -31,7 +31,7 @@ const WidgetMenuItem = React.forwardRef((props, ref) => {
   )
 });
 
-const MenuAddWidget = (props) => {
+const MenuAddWidget = React.memo((props) => {
   const { t, onAdd, options } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -91,7 +91,7 @@ const MenuAddWidget = (props) => {
       }
     </div>
   )
-}
+});
 
 MenuAddWidget.propTypes = {
   onAdd: PropTypes.func.isRequired,

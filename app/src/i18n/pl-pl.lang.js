@@ -11,6 +11,11 @@ const common = {
     "or": "albo",
 };
 
+const chartEdit = {
+  "Dataset": "Dane",
+  "Select the dataset": "Wybierz zbiór danych",
+};
+
 export default {
   locale: "pl",
   name: "Polish",
@@ -102,6 +107,7 @@ export default {
     "Legend": "Legenda",
     "Edit map parameters": "Edytuj parametry mapy",
     "Edit chart parameters": "Edytuj parametry wykresu",
+    "Edit BCN parameters": "Edytuj parametry BCN",
   },
 
   'Widget/Map/Edit': {
@@ -112,15 +118,19 @@ export default {
   },
 
   'Widget/Chart/Edit': {
+    ...chartEdit,
     "Division": "Podział administracyjny",
     "Select the division type to show": "Wybierz podział administracyjny",
     "Population": "Populacja",
     "Select the population": "Wybierz populację",
-    "Dataset": "Dane",
-    "Select the dataset": "Wybierz zbiór danych",
     "Extensió": "Extensió",
     "Risc iEPG": "Risc iEPG",
     "Region": "Region",
     "Select the region": "Wybierz region",
   },
+
+  'Widget/Bcn/Edit': {
+    ...chartEdit,
+  },
+
 }

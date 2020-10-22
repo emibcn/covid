@@ -1,14 +1,19 @@
 const common = {
-    "Covid Data - Refactored": "Covid Data - Refactored",
-    "Covid Data": "Covid Data",
-    "Refactored": "Refactored",
-    "Close": "Close",
-    "About": "About...",
-    "Language": "Language",
-    "Help": "Help",
-    "Yes": "Yes",
-    "No": "No",
-    "or": "or",
+  "Covid Data - Refactored": "Covid Data - Refactored",
+  "Covid Data": "Covid Data",
+  "Refactored": "Refactored",
+  "Close": "Close",
+  "About": "About...",
+  "Language": "Language",
+  "Help": "Help",
+  "Yes": "Yes",
+  "No": "No",
+  "or": "or",
+};
+
+const chartEdit = {
+  "Dataset": "Dataset",
+  "Select the dataset": "Select the dataset",
 };
 
 export default {
@@ -80,6 +85,7 @@ export default {
     ...common,
     "Map": "Map",
     "Chart": "Chart",
+    "Barcelona Chart": "Barcelona Chart",
     "Add a graph": "Add a graph",
     "add": "add",
   },
@@ -102,6 +108,7 @@ export default {
     "Legend": "Legend",
     "Edit map parameters": "Edit map parameters",
     "Edit chart parameters": "Edit chart parameters",
+    "Edit BCN parameters": "Edit BCN parameters",
   },
 
   'Widget/Map/Edit': {
@@ -112,15 +119,18 @@ export default {
   },
 
   'Widget/Chart/Edit': {
+    ...chartEdit,
     "Division": "Division",
     "Select the division type to show": "Select the division type to show",
     "Population": "Population",
     "Select the population": "Select the population",
-    "Dataset": "Dataset",
-    "Select the dataset": "Select the dataset",
     "Extensió": "Extensió",
     "Risc iEPG": "Risc iEPG",
     "Region": "Region",
     "Select the region": "Select the region",
+  },
+
+  'Widget/Bcn/Edit': {
+    ...chartEdit,
   },
 }

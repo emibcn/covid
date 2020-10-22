@@ -10,8 +10,10 @@ import Paper from '@material-ui/core/Paper';
 
 import MenuAddWidget from './MenuAddWidget';
 import WidgetsTypes from './Widgets';
+
 import MapData from '../Backend/Maps';
 import ChartData from '../Backend/Charts';
+import BcnData from '../Backend/Bcn';
 
 import Throtle from '../Throtle';
 import Slider from '../Slider';
@@ -118,6 +120,7 @@ class WidgetsList extends React.PureComponent {
   state = {
     days: null,
     chartsIndex: null,
+    bcnIndex: null,
     current: null,
     marks: [],
     marksSmall: [],
@@ -138,6 +141,10 @@ class WidgetsList extends React.PureComponent {
   // Chart Data backend
   // TODO: Handle errors
   ChartData = new ChartData();
+
+  // BCN Data backend
+  // TODO: Handle errors
+  BcnData = new BcnData();
 
   constructor(props) {
     super(props);
@@ -190,6 +197,15 @@ class WidgetsList extends React.PureComponent {
         // Mind the timer on unmount
         this.ChartData.scheduleNextUpdate();
       });
+    this.BcnData.index(
+      bcnIndex => {
+
+        this.setState({ bcnIndex });
+
+        // Once data has been fetched, schedule next data update
+        // Mind the timer on unmount
+        this.BcnData.scheduleNextUpdate();
+      });
   }
 
   // Cleanup side effects
@@ -197,6 +213,7 @@ class WidgetsList extends React.PureComponent {
     // Cancel next update timers
     this.MapData.cancelUpdateSchedule();
     this.ChartData.cancelUpdateSchedule();
+    this.BcnData.cancelUpdateSchedule();
 
     // Cancel possible throtle timer
     this.throtle.clear();
@@ -250,7 +267,7 @@ class WidgetsList extends React.PureComponent {
     }
 
     const { widgets, classes, showMarkLabels } = this.props;
-    const { days, chartsIndex, current, marks, marksSmall } = this.state;
+    const { days, chartsIndex, bcnIndex, current, marks, marksSmall } = this.state;
     const fixedPaper = clsx(classes.paper, classes.fixed);
 
     return (
@@ -275,7 +292,10 @@ class WidgetsList extends React.PureComponent {
 
             {/* Days display & Current manager */}
             <Slider
-              classes={{ root: classes.sliderRoot, playPause: classes.playPause }}
+              classes={{
+                root: classes.sliderRoot,
+                playPause: classes.playPause,
+              }}
               max={ days.length - 1 }
               value={ current || 0 }
               onChange={ this.onSetDate }
@@ -301,6 +321,7 @@ class WidgetsList extends React.PureComponent {
                     key={ this.widgetsIds[index] }
                     days={ days }
                     chartsIndex={ chartsIndex }
+                    bcnIndex={ bcnIndex }
                     indexValues={ current }
                     onChangeData={ this.onChangeData }
                     onRemove={ this.onRemove }

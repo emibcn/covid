@@ -11,6 +11,11 @@ const common = {
     "or": "o",
 };
 
+const chartEdit = {
+  "Dataset": "Conjunt de dades",
+  "Select the dataset": "Selecciona el conjunt de dades a usar",
+};
+
 export default {
   locale: "fr", // :(
   name: "Català",
@@ -82,6 +87,7 @@ export default {
     "Chart": "Gràfic",
     "Add a graph": "Afegeix un gràfic",
     "add": "afegeix",
+    "Barcelona Chart": "Gràfic de Barcelona",
   },
 
   PlayPause: {
@@ -102,6 +108,7 @@ export default {
     "Legend": "Llegenda",
     "Edit map parameters": "Edita les opcions del mapa",
     "Edit chart parameters": "Edita les opcions del gràfic",
+    "Edit BCN parameters": "Edita les opcions de l'element de BCN",
   },
 
   'Widget/Map/Edit': {
@@ -112,15 +119,19 @@ export default {
   },
 
   'Widget/Chart/Edit': {
+    ...chartEdit,
     "Division": "Divisió territorial",
     "Select the division type to show": "Selecciona la divisió territorial a usar",
     "Population": "Població",
     "Select the population": "Selecciona la població",
-    "Dataset": "Conjunt de dades",
-    "Select the dataset": "Selecciona el conjunt de dades a usar",
     "Extensió": "Extensió",
     "Risc iEPG": "Risc iEPG",
     "Region": "Regió",
     "Select the region": "Selecciona la regió",
   },
+
+  'Widget/Bcn/Edit': {
+    ...chartEdit,
+  },
+
 }
