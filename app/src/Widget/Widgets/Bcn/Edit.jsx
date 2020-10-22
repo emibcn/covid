@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import { translate } from 'react-translate'
 
-import Divider from '@material-ui/core/Divider';
+//import Divider from '@material-ui/core/Divider';
 
-import {FormDecorators, Selector} from '../Common';
+import {FormDecorators/*, Selector*/} from '../Common';
 import DatasetSelector from './EditDataset';
 
 /*

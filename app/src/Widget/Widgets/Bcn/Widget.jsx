@@ -65,7 +65,7 @@ class ChartDataHandler extends React.Component {
     super(props);
 
     // Default values: first element of each's group
-    const { bcnIndex, dataset, section } = props;
+    const { bcnIndex, dataset/*, section*/ } = props;
 
     // TODO: Handle errors
     this.BcnData = new BcnData(bcnIndex);
