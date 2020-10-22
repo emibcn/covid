@@ -22,7 +22,7 @@ const ChartWrapper = withWidget({
     title: (props) => props.title,
     render: (props) => (
       <>
-        { props.chartData === null ? (
+        { !props.chartData ? (
             <Loading />
           ) : (
             <Chart
