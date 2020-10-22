@@ -3,8 +3,6 @@ import cache from '../Base/Cache';
 
 import MapDataStatic from './MapDataStatic';
 
-// TODO: Abstract a layer to share with GitHub Charts
-
 // Handle data backend and cache for Maps
 // This is not a singleton: unique error handlers
 class MapDataHandler extends GHPages {

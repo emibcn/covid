@@ -1,6 +1,8 @@
 import Common from './Common';
 import cache from './Cache';
 
+// Handle data backend and cache for backends at GH Pages
+// This is not a singleton: unique error handlers
 class GHPages extends Common {
   // Visible backend name
   name = "GitHub Pages";

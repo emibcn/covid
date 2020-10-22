@@ -5,21 +5,22 @@ const ChartStaticHost = process.env.REACT_APP_CHART_STATIC_HOST ?? "https://emib
 const ChartDataStaticURL = `${ChartStaticHost}/index.json`;
 const ChartDataBase = `${ChartStaticHost}/chart.json`;
 
-// TODO: Abstract a layer to share with GitHub Maps
-
 // Handle data backend and cache for Charts
 // This is not a singleton: unique error handlers
 class ChartDataHandler extends GHPages {
+
   // Visible backend name
   name = "Charts JSON Files";
-  indexUrl = ChartDataBase;
+  indexUrl = ChartDataStaticURL;
 
   /*
-     Return processed data
+     Processed data from index
   */
   divisions = [];
   populations = [];
 
+  // If index data is not passed, subscribe to index
+  // URL and parse its content once downloaded
   constructor(index) {
     super();
 
@@ -33,7 +34,7 @@ class ChartDataHandler extends GHPages {
 
   // Invalidate all URLs, except index
   invalidateAll = async () => {
-    for(const url of this.active) {
+    for (const url of this.active) {
       if (process.env.NODE_ENV === 'development') {
         console.log(`${this.name}: Invalidate '?${url}'`);
       }
@@ -64,11 +65,11 @@ class ChartDataHandler extends GHPages {
 
   // Gets the breadcrumb of ancestors and the found node, or empty array (recursive)
   findBreadcrumb = (node, value, compare = (node, url) => node.url === url) => {
-    if ( compare(node, value) ) {
+    if (compare(node, value)) {
       return [node]
     }
     else if ('children' in node) {
-      for(const child of node.children) {
+      for (const child of node.children) {
         const found = this.findBreadcrumb(child, value, compare);
         if (found.length) {
           return [...found, node]
@@ -97,10 +98,11 @@ class ChartDataHandler extends GHPages {
 
   // Fetch JSON data and subscribe to updates
   data = (division, population, url, callback) => {
+
     const initialLink = this.findInitialNode(division, population);
 
     // If found (why should it not?)
-    if ( initialLink ) {
+    if (initialLink) {
 
       // Find region name in link and children, recursively
       const found = this.findChild(initialLink, url);
@@ -118,7 +120,7 @@ class ChartDataHandler extends GHPages {
       }
 
       // Get URL content (download or cached)
-      return cache.fetch( `${ChartDataBase}%3F${found.url}`, callback );
+      return cache.fetch(`${ChartDataBase}%3F${found.url}`, callback);
     }
 
     console.warn(`Could not find initial node in index: ${division}/${population}/${url}`, {initialLink, index: this.indexData});
