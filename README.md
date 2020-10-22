@@ -5,9 +5,9 @@
 
 # Covid Data `refactored` (Web Application)
 
-[This applications](https://emibcn.github.io/covid) displays public information about Covid19 Pandemy on Catalonia, extracted from the official web [https://dadescovid.cat](https://dadescovid.cat).
+[This applications](https://emibcn.github.io/covid) displays public information about Covid19 Pandemy in Catalonia, extracted from the official webs [https://dadescovid.cat](https://dadescovid.cat) and [Seguiment Covid19 BCN](https://dades.ajuntament.barcelona.cat/seguiment-covid19-bcn/).
 
-The aim of this application is to display the data in different ways than the original, improving performance and adding more value to it, trying to help the users to better understand the situation and evolution of the Covid19 pandemy in the region of Catalunya.
+The aim of this application is to display the data in different ways than the originals, improving performance and adding more value to it, trying to help the users to better understand the situation and evolution of the Covid19 pandemy in the region of Catalunya.
 
 - [Contributing](#contributing)
 - [Thanks to](#trophy-thanks-to)
@@ -82,9 +82,9 @@ The application have a Menu with an _About_ section. An _Update!_ section is vis
 
 ## The _backend_
 
-The backend (the real one) are **servers from institutions** like the _Generalitat de Catalunya_ or others that may come in the future. Those servers might have strict security restrictions (like CORS), or might not perform as desired, or the data offered there has already been processed, or because the data is updated just once a day (and we don't need to bomb the servers).
+The backend (the real one) are **servers from institutions** like the _Generalitat de Catalunya_, the _Ajuntament de Barcelona_ or others that may come in the future. Those servers might have strict security restrictions (like CORS), or might not perform as desired, or the data offered there has already been processed, or because the data is updated just once a day (and we don't need to bomb the servers).
 
-Anyway, those backends are **scrapped once a day by a [workflow](https://github.com/emibcn/covid-data/blob/master/.github/workflows/get-maps-and-charts.yml)** on a sibling project: [covid-data](https://github.com/emibcn/covid-data). That project consists in a small shell script that downloads the Maps data -and processes it a bit- and a full JS project to download Charts data. Finally, deploys all collected data to its own **GitHub Pages**. That deploy is not intended to be used directly from your browser, but through this application, which downloads the data (JSON and SVG files) to fill in the app widgets.
+Anyway, those backends are **scrapped once a day by a [workflow](https://github.com/emibcn/covid-data/blob/master/.github/workflows/get-maps-and-charts.yml)** on a sibling project: [covid-data](https://github.com/emibcn/covid-data). That project consists in a small shell script that downloads the [dadescovid.cat Maps data](https://github.com/emibcn/covid-data/tree/master/bin) -and processes it a bit-, a full JS project to download [dadescovid.cat Charts data](https://github.com/emibcn/covid-data/tree/master/charts) and another full JS project to download data from [Barcelona's RStudio/Shiny server](https://github.com/emibcn/covid-data/tree/master/bcn). The workflow calls those parts sequentially and, finally, deploys all collected data to its own **GitHub Pages**. That deploy is not intended to be used directly from your browser, but through this application, which downloads the data (JSON and SVG files) to fill in the app widgets (or other apps that may come to re-use the same data/infrastructure).
 
 So, in fact, this is a **serverless application**, where _the cloud_ is provided by GitHub, GitHub Workflow and GitHub Pages (all with free tiers), and the original 3rd party backends, which are not part of this project (for the moment).
 
@@ -112,6 +112,6 @@ The scripts and documentation published in [covid-data](/emibcn/covid-data) are 
 
 The data scrapped and published in [covid-data](/emibcn/covid-data) is licensed by their owners:
 - [Charts & Maps](https://dadescovid.cat): the _Generalitat de Catalunya_, under their own conditions ([Open Data Commons Attribution License](http://opendatacommons.org/licenses/by/1.0/) until now). See more at the [dataset API documentation](https://analisi.transparenciacatalunya.cat/Salut/Dades-setmanals-de-COVID-19-per-comarca/jvut-jxu8).
-- [Bcn](https://dades.ajuntament.barcelona.cat/seguiment-covid19-bcn): the _Ajuntament de Barcelona_ under their own conditions ([Creative Commons CC-BY](https://creativecommons.org/licenses/by/2.0/) until now).
+- [BCN/Barcelona](https://dades.ajuntament.barcelona.cat/seguiment-covid19-bcn): the _Ajuntament de Barcelona_ under their own conditions ([Creative Commons CC-BY](https://creativecommons.org/licenses/by/2.0/) until now).
 
 The Contributor Covenant is released under the Creative Commons Attribution 4.0 International Public License.

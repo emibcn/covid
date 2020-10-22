@@ -54,10 +54,6 @@ class RecursiveTreeView extends React.Component {
     const { classes, bcnIndex, ...restProps } = this.props;
     const { breadcrumb, value } = this.state;
  
-    console.log("EditSection:",{
-      value, bcnIndex, breadcrumb,
-    });
- 
     return (
       <TreeView
         className={classes.root}

@@ -94,7 +94,6 @@ class ChartDataHandler extends React.Component {
     if ( !found ) {
       return this.defaultMeta;
     }
-    console.log("ChartDataHandler: getMeta:", {dataset, bcnIndex, found});
     const {title, description, theme, yAxis, source} = found;
     return {
       title,
@@ -119,7 +118,6 @@ class ChartDataHandler extends React.Component {
     this.cancelDataUpdate = this.BcnData.data(
       dataset,
       (bcnData) => {
-        console.log("Widget/Data received:",bcnData);
         // Only update data if we didn't change confs in between
         if ( dataset === this.props.dataset ) {
           this.setState({

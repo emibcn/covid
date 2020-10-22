@@ -20,7 +20,6 @@ class CloseModal extends React.PureComponent {
 
     if ( !('history' in props) ||
          props.history.location.hash !== '' ) {
-      console.log("CloseModal: ", {props});
       global.setTimeout( () => props.history.push('#'), 10);
     }
   }

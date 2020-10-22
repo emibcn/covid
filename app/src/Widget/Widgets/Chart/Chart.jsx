@@ -5,7 +5,6 @@ import { ReferenceLine } from 'recharts';
 import ChartBcn from '../Common/Chart';
 
 const dataTransform = (dies, graph, chartsStyles=[]) => {
-  console.log("dataTransform:",chartsStyles);
   const reformatDate = (date) => date
     .split('/')
     .reverse()
@@ -15,6 +14,7 @@ const dataTransform = (dies, graph, chartsStyles=[]) => {
     dies[dies.length - 1]
   ].map( reformatDate );
   const dates = dies.map( reformatDate );
+
   return graph.data
     .map( ({data, label}, index) => ({
       data,
