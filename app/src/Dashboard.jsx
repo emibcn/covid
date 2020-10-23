@@ -16,8 +16,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
-/*
 import Badge from '@material-ui/core/Badge';
+/*
 import NotificationsIcon from '@material-ui/icons/Notifications';
 */
 
@@ -151,6 +151,7 @@ const Dashboard = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const shouldShowUpdateBadge = useMediaQuery(createMuiTheme().breakpoints.down('md')) && props.newServiceWorkerDetected;
 
   return (
     <AppThemeProvider type={ theme } >
@@ -165,7 +166,9 @@ const Dashboard = (props) => {
               onClick={handleDrawerOpen}
               className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
             >
-              <MenuIcon />
+              <Badge badgeContent={1} color={"secondary"} invisible={!shouldShowUpdateBadge}>
+                <MenuIcon />
+              </Badge>
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               { t("Covid Data") }{' '}
