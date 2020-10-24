@@ -92,8 +92,6 @@ class BcnDataHandler extends GHPages {
     // Find region name in link and children, recursively
     const found = this.findChild(null, dataset);
 
-    console.log("Backend/Bcn/data: params:",{dataset, callback, found});
-
     // TODO: We should do something else on error
     if (!found) {
       console.warn(`Could not find data in index: ${dataset}`, {
