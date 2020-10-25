@@ -11,6 +11,8 @@ import ErrorCatcher from './ErrorCatcher';
 import Dashboard from './Dashboard';
 import { WidgetsList } from './Widget';
 
+import BackendProvider from './Backend/Provider';
+
 // App Helmet: Controls HTML <head> elements with SideEffect
 // - Set a default title and title template, translated
 const AppHelmet = (props) => {
@@ -31,12 +33,14 @@ const AppProviders = (props) => {
   return (
     <TranslatorProvider translations={ props.translations }>
       <HelmetProvider>
-        <AppHelmet language={ props.language } />
-        <Router>
-          <div className='App' id='router-container'>
-            { props.children }
-          </div>
-        </Router>
+        <BackendProvider>
+          <AppHelmet language={ props.language } />
+          <Router>
+            <div className='App' id='router-container'>
+              { props.children }
+            </div>
+          </Router>
+        </BackendProvider>
       </HelmetProvider>
     </TranslatorProvider>
   );

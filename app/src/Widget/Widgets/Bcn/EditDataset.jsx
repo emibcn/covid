@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 
-import BcnData from '../../../Backend/Bcn';
+import { withBcnDataHandler } from '../../../Backend/Bcn/BcnContext';
 
 // From: https://material-ui.com/components/tree-view/#rich-object
 
@@ -38,14 +38,16 @@ class RecursiveTreeView extends React.Component {
       this.props.onChange(value);
     }
   }
- 
+
   componentWillMount = () => {
-    const bcnData = new BcnData(this.props.bcnIndex);
-    const {value} = this.props;
+    const { value, bcnIndex, bcnDataHandler } = this.props;
+
+    const bcnData = new bcnDataHandler(bcnIndex);
+
     this.setState({
       value,
       breadcrumb: bcnData
-        .findBreadcrumb(null, this.props.value)
+        .findBreadcrumb(null, value)
         .map(node => `${!('values' in node) ? 'DISABLED-' : ''}${node.code}`),
     });
   }
@@ -53,7 +55,7 @@ class RecursiveTreeView extends React.Component {
   render = (props) => {
     const { classes, bcnIndex, ...restProps } = this.props;
     const { breadcrumb, value } = this.state;
- 
+
     return (
       <TreeView
         className={classes.root}
@@ -72,4 +74,4 @@ class RecursiveTreeView extends React.Component {
   }
 }
 
-export default withStyles(styles)(RecursiveTreeView);
+export default withBcnDataHandler(withStyles(styles)(RecursiveTreeView));

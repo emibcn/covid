@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 
-import ChartData from '../../../Backend/Charts';
+import { withChartsDataHandler } from '../../../Backend/Charts/ChartsContext'
 
 // From: https://material-ui.com/components/tree-view/#rich-object
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 
 const RecursiveTreeView = (props) => {
   const classes = useStyles();
-  const { chartsIndex, division, population, value, onChange, ...restProps } = props;
+  const { chartsIndex, division, population, value, onChange, chartsDataHandler,...restProps } = props;
 
   const onNodeSelect = (event, value) => onChange(Number(value));
 
@@ -32,13 +32,13 @@ const RecursiveTreeView = (props) => {
 
   const {initialNode, found} = React.useMemo(
     () => {
-      const chartData = new ChartData(chartsIndex);
+      const chartData = new chartsDataHandler(chartsIndex);
       const initialNode = chartData.findInitialNode(division, population);
       const found = chartData.findBreadcrumb(initialNode, value).map(link => `${link.url}`);
 
       return {initialNode, found}
     },
-    [division,population,value,chartsIndex]
+    [division, population, value, chartsIndex, chartsDataHandler]
   );
 
   return (
@@ -56,4 +56,4 @@ const RecursiveTreeView = (props) => {
   );
 }
 
-export default RecursiveTreeView;
+export default withChartsDataHandler(RecursiveTreeView);
