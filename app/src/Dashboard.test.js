@@ -19,7 +19,7 @@ test('opens about dialog on initial hash', () => {
 
 test('opens about dialog on initial location hash', () => {
   const dashboard = render(
-    <Router initialEntries={[ '/#/#about' ]}><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
+    <Router initialEntries={[ '#about' ]}><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
   const closeButton = screen.getByText(/ModalRouter.Close/);
   expect(closeButton).toBeInTheDocument();
 });
