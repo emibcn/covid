@@ -20,7 +20,7 @@
     "react-helmet-async": "^1.0.6",
     "react-modal": "^3.11.2",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "3.4.0",
     "react-simple-storage": "^1.4.2",
     "react-svg": "^11.0.39",
     "react-tooltip": "^4.2.9",
@@ -52,5 +52,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-test-renderer": "^17.0.1"
   }
 }
