@@ -4,23 +4,8 @@ import './testSetup';
 import TestRenderer from 'react-test-renderer';
 
 import { MemoryRouter as Router } from 'react-router-dom';
-import Dashboard, {Copyright, AppThemeProvider, RoutesModal} from './Dashboard';
+import Dashboard, {Copyright} from './Dashboard';
 import Menu from './Menu';
-
-// Mock Widget/List, as this is not needed to test it here
-jest.mock("./ErrorCatcher", () => {
-  return {
-    __esModule: true,
-    default: ({origin}) => <div class='ErrorCatcher'>{ origin }</div>,
-    withErrorCatcher: (name, Component) => {
-      console.warn("Mocked withErrorCatcher");
-      return (props) => {
-        console.warn("Mocked withErrorCatcher");
-        return <div class='withErrorCatcher'>{ name }: { JSON.stringify(props) }</div>;
-      }
-    }
-  }
-});
 
 test('renders copyright link', () => {
   const { getByText } = render(<Router><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
@@ -35,20 +20,6 @@ test('opens about dialog on initial hash', () => {
 test('opens about dialog on initial location hash', () => {
   const dashboard = render(
     <Router initialEntries={[ '/#/#about' ]}><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
-  const closeButton = screen.getByText(/ModalRouter.Close/);
-  expect(closeButton).toBeInTheDocument();
-});
-
-test('opens about section', async () => {
-  const modal = render(
-      <Router initialEntries={[ '#/about' ]}><RoutesModal routeProps={{ language: "en-us" }} /></Router>);
-  const closeButton = screen.getByText(/ModalRouter.Close/);
-  expect(closeButton).toBeInTheDocument();
-});
-
-test('opens language selector', async () => {
-  const modal = render(
-      <Router initialEntries={[ '#/language' ]}><RoutesModal routeProps={{ language: "en-us" }} /></Router>);
   const closeButton = screen.getByText(/ModalRouter.Close/);
   expect(closeButton).toBeInTheDocument();
 });
@@ -77,4 +48,3 @@ test('change drawer open state', async () => {
     expect(setState).toHaveBeenCalledWith(false);
   });
 });
-
