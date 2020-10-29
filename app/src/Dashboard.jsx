@@ -23,11 +23,9 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import Menu from './Menu';
 import ModalRouter from './ModalRouter';
-import ErrorCatcher from './ErrorCatcher';
+import { withErrorCatcher } from './ErrorCatcher';
 import About from './About';
 import Language from './Language';
-
-const withErrorCatcher = (origin, component) => <ErrorCatcher {...{ origin , key: origin }}>{ component }</ErrorCatcher>;
 
 const Copyright = translate('Copyright')((props) => {
   const { t } = props;
@@ -163,6 +161,7 @@ const Dashboard = (props) => {
               edge="start"
               color="inherit"
               aria-label="open menu"
+              data-testid="open-menu"
               onClick={handleDrawerOpen}
               className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
             >
@@ -198,3 +197,4 @@ const Dashboard = (props) => {
 }
 
 export default translate('Widget')(Dashboard);
+export {Copyright, AppThemeProvider, RoutesModal};
