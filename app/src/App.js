@@ -27,19 +27,33 @@ const AppHelmet = (props) => {
 }
 
 // Concentrate all providers (4) used in the app into a single component
-const AppProviders = (props) => {
-  return (
-    <TranslatorProvider translations={ props.translations }>
-      <HelmetProvider>
-        <AppHelmet language={ props.language } />
-        <Router>
-          <div className='App' id='router-container'>
-            { props.children }
-          </div>
-        </Router>
-      </HelmetProvider>
-    </TranslatorProvider>
-  );
+const AppProviders = (props) => (
+  <TranslatorProvider translations={ props.translations }>
+    <HelmetProvider>
+      <AppHelmet language={ props.language } />
+      <Router>
+        <div className='App' id='router-container'>
+          { props.children }
+        </div>
+      </Router>
+    </HelmetProvider>
+  </TranslatorProvider>
+);
+
+const fixLocationHash = () => {
+  const decoded = decodeURIComponent(global.location.hash);
+  if ( decoded !==  '' && decoded !== global.location.hash ) {
+    const hash = decoded.replace(/[^#]*(#.*)$/, '$1');
+    global.location.replace(hash);
+  }
+}
+
+const getDefaultLanguage = (available) => {
+  const languageNav = navigator.language.toLowerCase();
+  return available
+    .find(language => language.key === languageNav)
+      ? languageNav
+      : 'ca-es';
 }
 
 class App extends React.Component {
@@ -48,19 +62,15 @@ class App extends React.Component {
     super();
 
     // Fix bad browser encoding HASH
-    const decoded = decodeURIComponent(global.location.hash);
-    if ( decoded !==  '' && decoded !== global.location.hash ) {
-      const hash = decoded.replace(/[^#]*(#.*)$/, '$1');
-      global.location.replace(hash);
-    }
+    fixLocationHash();
 
-    this.registration = false;
-    const languageNav = navigator.language.toLowerCase();
+    this.registration = false; // For App updates
+    const language = getDefaultLanguage(available);
     this.state = {
-      initializing: true,
-      newServiceWorkerDetected: false,
-      language: available.find(language => language.key === languageNav) ? languageNav : 'ca-es',
-      theme: false, // Use defined by user in browser
+      initializing: true,              // For Storage
+      newServiceWorkerDetected: false, // For App updates
+      language,
+      theme: false,                    // Use defined by user in browser
       tutorialSeen: false,
     };
   }
@@ -104,12 +114,14 @@ class App extends React.Component {
       >
 
         {/* Persistent state saver into localStorage */}
-        <Storage
-          parent={ this }
-          prefix='App'
-          blacklist={ ['newServiceWorkerDetected','initializing'] }
-          onParentStateHydrated={ () => this.setState({ initializing: false }) }
-        />
+        <ErrorCatcher origin='Storage'>
+          <Storage
+            parent={ this }
+            prefix='App'
+            blacklist={ ['newServiceWorkerDetected','initializing'] }
+            onParentStateHydrated={ () => this.setState({ initializing: false }) }
+          />
+        </ErrorCatcher>
 
         {/* Shows the app, with ErrorBoundaries */}
         <ErrorCatcher origin='Dashboard'>
@@ -132,7 +144,6 @@ class App extends React.Component {
             </ErrorCatcher>
           </Dashboard>
         </ErrorCatcher>
-
       </AppProviders>
     );
   }
@@ -143,3 +154,4 @@ App.propTypes = {
 };
 
 export default App;
+export {fixLocationHash, getDefaultLanguage}; // For tests
