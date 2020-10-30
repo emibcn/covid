@@ -16,13 +16,13 @@ jest.mock("@material-ui/core/AppBar", () => {
 });
 
 test('renders copyright link', () => {
-  const { getByText } = render(<Router><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
+  const { getByText } = render(<Router><Dashboard newServiceWorkerDetected={false} onLoadNewServiceWorkerAccept={() => {}} /></Router>);
   const copyrightElement = getByText(/Source code of/i);
   expect(copyrightElement).toBeInTheDocument();
 });
 
 test('renders closed AppBar', () => {
-  const dashboard = render(<Router><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
+  const dashboard = render(<Router><Dashboard newServiceWorkerDetected={false} onLoadNewServiceWorkerAccept={() => {}} /></Router>);
   const appBar = dashboard.getByTestId('app-bar');
 
   // Test computed style to NOT have marginLeft
@@ -61,7 +61,7 @@ test('alerts user when new service worker is detected', () => {
 
 test('opens about dialog on initial location hash', () => {
   const dashboard = render(
-    <Router initialEntries={[ '#about' ]}><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
+    <Router initialEntries={[ '#about' ]}><Dashboard newServiceWorkerDetected={false} onLoadNewServiceWorkerAccept={() => {}} /></Router>);
   const closeButton = screen.getByText(/ModalRouter.Close/);
   expect(closeButton).toBeInTheDocument();
 });
@@ -75,7 +75,7 @@ test('change drawer open state', async () => {
   let drawer;
   await TestRenderer.act(async () => {
     const dashboard = await TestRenderer.create(
-      <Router><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
+      <Router><Dashboard newServiceWorkerDetected={false} onLoadNewServiceWorkerAccept={() => {}} /></Router>);
     const instance = dashboard.root;
     drawer = instance.findByType(Menu);
   });
@@ -98,5 +98,5 @@ test('render opened drawer', async () => {
   useStateSpy.mockImplementation((init) => [true, setState]);
 
   const dashboard = await render(
-    <Router><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
+    <Router><Dashboard newServiceWorkerDetected={false} onLoadNewServiceWorkerAccept={() => {}} /></Router>);
 });

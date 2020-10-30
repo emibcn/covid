@@ -98,7 +98,14 @@ const MenuContent = translate('Menu')((props) => {
 // Renders the menu, responsive
 const Menu = translate('Menu')((props) => {
   const classes = useStyles();
-  const { handleDrawerOpen, handleDrawerClose, open, newServiceWorkerDetected, t } = props;
+  const {
+    handleDrawerOpen,
+    handleDrawerClose,
+    open,
+    newServiceWorkerDetected,
+    onLoadNewServiceWorkerAccept,
+    t
+  } = props;
   const theme = useTheme();
   const isBig = useMediaQuery(theme.breakpoints.up('md'));
   const DrawerComponent = isBig ? Drawer : SwipeableDrawer;
@@ -119,7 +126,7 @@ const Menu = translate('Menu')((props) => {
   const handleClickUpdate = (e) => {
     e.preventDefault();
     handleDrawerClose();
-    props.onLoadNewServiceWorkerAccept();
+    onLoadNewServiceWorkerAccept();
   };
 
   return (
@@ -158,6 +165,10 @@ const Menu = translate('Menu')((props) => {
 
 Menu.propTypes = {
   onLoadNewServiceWorkerAccept: PropTypes.func.isRequired,
+  handleDrawerOpen: PropTypes.func.isRequired,
+  handleDrawerClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  newServiceWorkerDetected: PropTypes.bool.isRequired,
 };
 
 export default Menu;
