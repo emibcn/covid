@@ -54,6 +54,7 @@
     ]
   },
   "devDependencies": {
+    "jest-matchmedia-mock": "^1.1.0",
     "mq-polyfill": "^1.1.8",
     "react-test-renderer": "^17.0.1"
   }
