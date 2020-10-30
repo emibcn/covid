@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -29,5 +30,9 @@ const AppThemeProvider = (props) => {
     </ThemeProvider>
   );
 }
+
+AppThemeProvider.propTypes = {
+  type: PropTypes.oneOf(['light', 'dark', false]),
+};
 
 export default AppThemeProvider;
