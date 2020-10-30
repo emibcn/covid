@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, createEvent, fireEvent, act, screen, cleanup } from '@testing-library/react';
+import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
 import './testSetup';
 import TestRenderer from 'react-test-renderer';
 
@@ -12,6 +12,14 @@ jest.mock("@material-ui/core/AppBar", () => {
   return {
     __esModule: true,
     default: ({children, className}) => <div className={className} data-testid="app-bar" >{ children }</div>,
+  };
+});
+
+jest.mock("react-dom", () => {
+  const original = jest.requireActual("react-dom");
+  return {
+    ...original,
+    createPortal: node => node,
   };
 });
 
@@ -89,4 +97,14 @@ test('change drawer open state', async () => {
     await drawer.props.handleDrawerClose();
     expect(setState).toHaveBeenCalledWith(false);
   });
+});
+
+test('render opened drawer', async () => {
+  // Spy on state change
+  const setState = jest.fn();
+  const useStateSpy = jest.spyOn(React, 'useState')
+  useStateSpy.mockImplementation((init) => [true, setState]);
+
+  const dashboard = await render(
+    <Router><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
 });
