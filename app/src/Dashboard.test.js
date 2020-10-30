@@ -15,14 +15,6 @@ jest.mock("@material-ui/core/AppBar", () => {
   };
 });
 
-jest.mock("react-dom", () => {
-  const original = jest.requireActual("react-dom");
-  return {
-    ...original,
-    createPortal: node => node,
-  };
-});
-
 test('renders copyright link', () => {
   const { getByText } = render(<Router><Dashboard onLoadNewServiceWorkerAccept={() => {}} /></Router>);
   const copyrightElement = getByText(/Source code of/i);
