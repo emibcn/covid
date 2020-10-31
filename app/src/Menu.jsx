@@ -112,9 +112,6 @@ const Menu = translate('Menu')((props) => {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   const toggleDrawer = (open) => (event) => {
-    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
     if (open) {
       handleDrawerOpen();
     }

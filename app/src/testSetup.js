@@ -30,6 +30,8 @@ beforeAll(() => {
       innerHeight: height,
       outerWidth: width,
       outerHeight: height,
+      clientWidth: width,
+      clientHeight: height,
     }).dispatchEvent(new this.Event('resize'))
   }
-})
+});
