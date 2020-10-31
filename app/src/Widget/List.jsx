@@ -11,15 +11,15 @@ import Paper from '@material-ui/core/Paper';
 import MenuAddWidget from './MenuAddWidget';
 import WidgetsTypes from './Widgets';
 
-import MapData from '../Backend/Maps';
-import ChartData from '../Backend/Charts';
-import BcnData from '../Backend/Bcn';
+import { withBcnDataHandler } from '../Backend/Bcn/BcnContext';
+import { withMapsDataHandler } from '../Backend/Maps/MapsContext';
+import { withChartsDataHandler } from '../Backend/Charts/ChartsContext';
 
 import Throtle from '../Throtle';
 import Slider from '../Slider';
 import Loading from '../Loading';
 
-import WidgetDataContextProvider from './DataContextProvider'; 
+import WidgetDataContextProvider from './DataContextProvider';
 import withPropHandler from './withPropHandler';
 
 // GUID generator: used to create unique dtemporal IDs for widgets
@@ -134,29 +134,23 @@ class WidgetsList extends React.PureComponent {
   // with excessive calls on mouse move
   throtle = new Throtle();
 
-  // Map Data backend
-  // TODO: Handle errors
-  MapData = new MapData();
-
-  // Chart Data backend
-  // TODO: Handle errors
-  ChartData = new ChartData();
-
-  // BCN Data backend
-  // TODO: Handle errors
-  BcnData = new BcnData();
-
   constructor(props) {
     super(props);
     // Generate initial list of unique IDs
     if ('widgets' in props) {
       this.updateIDs(props.widgets.length);
     }
+
+    this.bcnData = new props.bcnDataHandler();
+    this.chartsData = new props.chartsDataHandler();
+    this.mapData = new props.mapsDataHandler();
   }
 
   // Fetch data once mounted
   componentDidMount() {
-    this.MapData.days(
+    const { mapData, chartsData, bcnData } = this;
+
+    mapData.days(
       days => {
         // Are we on the last time serie element before update?
         const isLast =
@@ -186,34 +180,35 @@ class WidgetsList extends React.PureComponent {
 
         // Once data has been fetched, schedule next data update
         // Mind the timer on unmount
-        this.MapData.scheduleNextUpdate();
+        mapData.scheduleNextUpdate();
       });
-    this.ChartData.index(
+      chartsData.index(
       chartsIndex => {
 
         this.setState({ chartsIndex });
 
         // Once data has been fetched, schedule next data update
         // Mind the timer on unmount
-        this.ChartData.scheduleNextUpdate();
+        chartsData.scheduleNextUpdate();
       });
-    this.BcnData.index(
+      bcnData.index(
       bcnIndex => {
-
         this.setState({ bcnIndex });
 
         // Once data has been fetched, schedule next data update
         // Mind the timer on unmount
-        this.BcnData.scheduleNextUpdate();
+        bcnData.scheduleNextUpdate();
       });
   }
 
   // Cleanup side effects
   componentWillUnmount() {
+    const { mapData, chartsData, bcnData } = this;
+
     // Cancel next update timers
-    this.MapData.cancelUpdateSchedule();
-    this.ChartData.cancelUpdateSchedule();
-    this.BcnData.cancelUpdateSchedule();
+    bcnData.cancelUpdateSchedule();
+    chartsData.cancelUpdateSchedule();
+    mapData.cancelUpdateSchedule();
 
     // Cancel possible throtle timer
     this.throtle.clear();
@@ -355,12 +350,18 @@ const withShowMarkLabels = (Component) => {
 // withPropHandler: Handle params from providers (route + localStorage) into props
 // withStyles: Add `classes` prop for styling components
 // withShowMarkLabels: Add `showMarkLabels` breakpoint to sho/hide Slider mark labels depending on sreen size
+// withBcnDataHandler: Add `bcnDataHandler` prop to use bcn backend data
+// withMapsDataHandler: Add `mapsDataHandler` prop to use maps backend data
+// withChartsDataHandler: Add `chartsDataHandler` prop to use charts backend data
 const WidgetsListWithPropHandler =
   withPropHandler(
     withStyles(useStyles)(
       withShowMarkLabels(
-        WidgetsList
-  )));
+        withBcnDataHandler(
+          withMapsDataHandler(
+            withChartsDataHandler(
+              WidgetsList
+  ))))));
 
 // Manage some context providers details:
 // - pathFilter: How to split `location` (Route `path` prop)

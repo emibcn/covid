@@ -7,7 +7,7 @@ import {
   faEdit,
 } from '@fortawesome/free-solid-svg-icons'
 
-import BcnData from '../../../Backend/Bcn';
+import { withBcnDataHandler } from '../../../Backend/Bcn/BcnContext';
 
 import Chart from '../Common/Chart';
 
@@ -65,10 +65,10 @@ class ChartDataHandler extends React.Component {
     super(props);
 
     // Default values: first element of each's group
-    const { bcnIndex, dataset/*, section*/ } = props;
+    const { bcnDataHandler, bcnIndex, dataset/*, section*/ } = props;
 
     // TODO: Handle errors
-    this.BcnData = new BcnData(bcnIndex);
+    this.BcnData = new bcnDataHandler(bcnIndex);
     this.cancelDataUpdate = false;
 
     this.state = {
@@ -134,21 +134,26 @@ class ChartDataHandler extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const {
+      state: { bcnData },
+      props: { bcnDataHandler, dataset, bcnIndex }
+    } = this;
+
     // If bcnData is unset, gather new data
-    if( prevState.bcnData !== this.state.bcnData &&
-        this.state.bcnData === null ) {
+    if( prevState.bcnData !== bcnData &&
+        bcnData === null ) {
       this.updateData();
     }
     else if (
       // If params changed, unset bcnData
-      this.props.dataset !== prevProps.dataset ) {
+      dataset !== prevProps.dataset ) {
       this.setState({
         bcnData: null
       });
     }
-    else if ( this.props.bcnIndex !== prevProps.bcnIndex ) {
+    else if ( bcnIndex !== prevProps.bcnIndex ) {
       // If bcnIndex changed, re-create backend with new data
-      this.BcnData = new BcnData(this.props.bcnIndex);
+      this.BcnData = new bcnDataHandler(bcnIndex);
       this.setState({
         bcnData: null
       });
@@ -227,4 +232,4 @@ ChartDataHandler.propTypes = {
   dataset: PropTypes.string.isRequired,
 };
 
-export default ChartDataHandler;
+export default withBcnDataHandler(ChartDataHandler);
