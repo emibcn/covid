@@ -1,15 +1,8 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
 import './testSetup';
-import {
-  delay,
-  createStartTouchEventObject,
-  createMoveTouchEventObject,
-  createEndTouchEventObject
-} from './testHelpers';
 
 import Language from './Language';
-import available from "./i18n/available";
 
 test('renders language selector', () => {
   const onLanguageChange = jest.fn();
