@@ -27,6 +27,8 @@ test('renders error when some `render` throws an error and reloads page when the
   act(() => {
     errorCatcher = render(
       <ErrorCatcher>
+        {/* Buggy's siblings are not shown, either */}
+        <div>{ text }</div>
         <BuggyChild>
           <div>{ text }</div>
         </BuggyChild>
