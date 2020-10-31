@@ -7,7 +7,7 @@ import {
   faChartArea as faChart
 } from '@fortawesome/free-solid-svg-icons'
 
-import ChartData from '../../../Backend/Charts';
+import { withChartsDataHandler } from '../../../Backend/Charts/ChartsContext'
 
 import Chart from './Chart';
 import Edit from './Edit';
@@ -55,10 +55,16 @@ class ChartDataHandler extends React.Component {
     super(props);
 
     // Default values: first element of each's group
-    const { chartDivision, chartPopulation, chartRegion, chartsIndex } = props;
+    const {
+      chartDivision,
+      chartPopulation,
+      chartRegion,
+      chartsIndex,
+      chartsDataHandler,
+    } = props;
 
     // TODO: Handle errors
-    this.ChartData = new ChartData(chartsIndex);
+    this.ChartData = new chartsDataHandler(chartsIndex);
     this.cancelDataUpdate = false;
 
     this.state = {
@@ -114,23 +120,27 @@ class ChartDataHandler extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const {
+      state: { chartData },
+      props: { chartDivision, chartPopulation, chartRegion, chartsIndex, chartsDataHandler }
+    } = this;
+
     // If chartData is unset, gather new data
-    if( prevState.chartData !== this.state.chartData &&
-        this.state.chartData === null ) {
+    if( prevState.chartData !== chartData && chartData === null ) {
       this.updateData();
     }
     else if (
       // If params changed, unset chartData
-      this.props.chartDivision !== prevProps.chartDivision ||
-      this.props.chartPopulation !== prevProps.chartPopulation ||
-      this.props.chartRegion !== prevProps.chartRegion ) {
+      chartDivision !== prevProps.chartDivision ||
+      chartPopulation !== prevProps.chartPopulation ||
+      chartRegion !== prevProps.chartRegion ) {
       this.setState({
         chartData: null
       });
     }
-    else if ( this.props.chartsIndex !== prevProps.chartsIndex ) {
+    else if ( chartsIndex !== prevProps.chartsIndex ) {
       // If chartsIndex changed, re-create backend with new data
-      this.ChartData = new ChartData(this.props.chartsIndex);
+      this.ChartData = new chartsDataHandler(chartsIndex);
       this.setState({
         chartData: null
       });
@@ -292,4 +302,4 @@ ChartDataHandler.propTypes = {
   ]).isRequired,
 };
 
-export default ChartDataHandler;
+export default withChartsDataHandler(ChartDataHandler);

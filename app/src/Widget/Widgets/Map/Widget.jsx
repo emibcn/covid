@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import MapData from '../../../Backend/Maps';
+import { withMapsDataHandler } from '../../../Backend/Maps/MapsContext';
 
 import MapImage from './MapImage';
 import Edit from './Edit';
@@ -77,13 +78,13 @@ class MapDataHandler extends React.Component {
   constructor(props) {
     super(props);
 
-    // TODO: Handle errors
-    this.MapData = new MapData();
-    this.cancelDataUpdate = false;
-
     // Default values: first element of each's group
     // TODO: Get data from storage/router/props
-    const { mapKind, mapValue } = props;
+    const { mapKind, mapValue, mapsDataHandler } = props;
+
+    // TODO: Handle errors
+    this.MapData = new mapsDataHandler();
+    this.cancelDataUpdate = false;
 
     this.state = {
       mapData: null,
@@ -226,4 +227,4 @@ MapDataHandler.propTypes = {
   mapValue: PropTypes.string.isRequired,
 };
 
-export default MapDataHandler;
+export default withMapsDataHandler(MapDataHandler);
