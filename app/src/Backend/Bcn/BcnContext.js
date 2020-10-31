@@ -1,59 +1,31 @@
-import React, { Component } from 'react';
+import React, { createContext, useContext } from 'react';
 import BcnData from './index';
 
-const BcnContext = React.createContext();
+const BcnContext = createContext();
 
-function BcnProvider({children}) {
-  return (
-    <BcnContext.Provider value={BcnData}>
-      {children}
-    </BcnContext.Provider>
-  );
-}
+const BcnProvider = ({children}) => (
+  <BcnContext.Provider value={BcnData}>
+    {children}
+  </BcnContext.Provider>
+);
 
-function BcnConsumer({children}) {
-  return (
-    <BcnContext.Consumer>
-      {context => {
-        if (context === undefined) {
-          throw new Error('BcnConsumer must be used within a BcnProvider');
-        }
-
-        return children(context);
-      }}
-    </BcnContext.Consumer>
-  );
-}
-
-function useBcnData() {
-  const context = React.useContext(BcnContext);
+const useBcnData = () => {
+  const context = useContext(BcnContext);
 
   if (context === undefined) {
-    throw new Error('useBcnData must be used within a BcnProvider');
+    throw new Error('BcnData must be used within a BcnProvider');
   }
 
   return context;
 }
 
-function withBcnDataHandler(WrappedComponent) {
-  return (
-    class GetBcnData extends Component {
-      render() {
-        return (
-          <BcnContext.Consumer>
-            {context => {
-              if (context === undefined) {
-                throw new Error('BcnConsumer must be used within a BcnProvider');
-              }
+const BcnConsumer = ({children}) => children(useBcnData());
 
-              return <WrappedComponent {...this.props} bcnDataHandler={context} />;
-            }}
-          </BcnContext.Consumer>
-        );
-      }
-    }
-  );
-}
+const withBcnDataHandler = (WrappedComponent) => (props) => (
+  <BcnConsumer>
+    { context => <WrappedComponent {...props} bcnDataHandler={context} /> }
+  </BcnConsumer>
+);
 
 export default BcnProvider;
 export { withBcnDataHandler, BcnConsumer, useBcnData, BcnContext };

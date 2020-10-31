@@ -1,59 +1,31 @@
-import React, { Component } from 'react';
+import React, { createContext, useContext } from 'react';
 import MapsData from './index';
 
-const MapsContext = React.createContext();
+const MapsContext = createContext();
 
-function MapsProvider({children}) {
-  return (
-    <MapsContext.Provider value={MapsData}>
-      {children}
-    </MapsContext.Provider>
-  );
-}
+const MapsProvider = ({children}) => (
+  <MapsContext.Provider value={MapsData}>
+    {children}
+  </MapsContext.Provider>
+);
 
-function MapsConsumer({children}) {
-  return (
-    <MapsContext.Consumer>
-      {context => {
-        if (context === undefined) {
-          throw new Error('MapsConsumer must be used within a MapsProvider');
-        }
-
-        return children(context);
-      }}
-    </MapsContext.Consumer>
-  );
-}
-
-function useMapsData() {
-  const context = React.useContext(MapsContext);
+const useMapsData = () => {
+  const context = useContext(MapsContext);
 
   if (context === undefined) {
-    throw new Error('useMapsData must be used within a MapsProvider');
+    throw new Error('MapsData must be used within a MapsProvider');
   }
 
   return context;
 }
 
-function withMapsDataHandler(WrappedComponent) {
-  return (
-    class GetMapsData extends Component {
-      render() {
-        return (
-          <MapsContext.Consumer>
-            {context => {
-              if (context === undefined) {
-                throw new Error('MapsConsumer must be used within a MapsProvider');
-              }
+const MapsConsumer = ({children}) => children(useMapsData())
 
-              return <WrappedComponent {...this.props} mapsDataHandler={context} />;
-            }}
-          </MapsContext.Consumer>
-        );
-      }
-    }
-  );
-}
+const withMapsDataHandler = (WrappedComponent) => (props) => (
+  <MapsConsumer>
+    {context =>  <WrappedComponent {...props} mapsDataHandler={context} />}
+  </MapsConsumer>
+);
 
 export default MapsProvider;
 export { withMapsDataHandler, MapsConsumer, useMapsData, MapsContext };
