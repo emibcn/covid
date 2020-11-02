@@ -13,7 +13,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 
 import Menu from './Menu';
 
-// Mock HTML elements' clientWidth/clientHeight
+// Mock HTML elements' clientWidth/clientHeight to be able to test swipe
 Element.prototype.getBoundingClientRect = jest.fn(() => ({
   width: 200,
   height: 20,
