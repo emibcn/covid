@@ -39,6 +39,7 @@ test('does not executes more than once per timeout', async () => {
   expect(cb).toHaveBeenCalledTimes(3);
 
   // Cleanup
+  // Should Mock clearTimeout instead?
   const timer1 = throtler.timer;
   throtler.clear();
   const timer2 = throtler.timer;
