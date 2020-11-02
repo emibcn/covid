@@ -2,9 +2,9 @@ import React from 'react';
 import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import './testSetup';
-import {delay} from './testHelpers';
+import { delay, LocationDisplay } from './testHelpers';
 
-import { MemoryRouter as Router, useLocation } from 'react-router-dom';
+import { MemoryRouter as Router } from 'react-router-dom';
 
 import List from '@material-ui/core/List';
 
@@ -23,18 +23,9 @@ test('renders ListItemLink', async () => {
   expect(withoutIcon.querySelector('[role="icon"]')).toBe(null);
 });
 
-test('renders MenuItems', async () => {
+test('renders MenuItems', () => {
   let menu;
   let buttons;
-
-  const LocationDisplay = () => {
-    const location = useLocation()
-    return (
-      <div data-testid="location-display">
-        { location.hash }
-      </div>
-    )
-  }
 
   const menuCreator = (initial) => (
     <Router initialEntries={[ initial ]}>
@@ -51,7 +42,7 @@ test('renders MenuItems', async () => {
     expect(buttons.length).toBe(2);
   });
 
-  await act( async () => {
+  act(() => {
     for (const button of buttons) {
       // Simulate a click in a hash route
       const url = button.href.replace(/^[^#]*/, '');
@@ -64,4 +55,3 @@ test('renders MenuItems', async () => {
     }
   });
 });
-
