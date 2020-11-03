@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, screen } from '@testing-library/react';
-import { delay } from './testHelpers';
 
+import { delay, catchConsoleError } from './testHelpers';
 import Slider from './Slider';
 
 test('renders slider', async () => {
@@ -33,10 +33,11 @@ test('renders slider', async () => {
   let slider;
   let playPause;
   act(() => {
-    slider = render(objectCreator(values[ values.length - 1 ]));
+    // Silence error/warning in external library
+    catchConsoleError( () => {
+      slider = render(objectCreator(values[ values.length - 1 ]));
+    });
 
-    slider.debug();
- 
     const sliderEl = slider.getByRole("slider");
     expect(sliderEl).toBeInTheDocument();
 

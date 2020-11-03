@@ -1,5 +1,8 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
+
+import { MemoryRouter as Router } from 'react-router-dom';
+
 import './testSetup';
 import {
   delay,
@@ -7,10 +10,6 @@ import {
   createMoveTouchEventObject,
   createEndTouchEventObject
 } from './testHelpers';
-import TestRenderer from 'react-test-renderer';
-
-import { MemoryRouter as Router } from 'react-router-dom';
-
 import Menu from './Menu';
 
 // Mock HTML elements' clientWidth/clientHeight to be able to test swipe

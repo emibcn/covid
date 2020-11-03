@@ -3,6 +3,24 @@ import { useLocation } from 'react-router-dom';
 
 const delay = (millis) => new Promise((resolve) => setTimeout(resolve, millis));
 
+const catchConsoleWarn = (cb, severity='warn') => {
+  const output = [];
+  const originalWarn = console[severity];
+  const mockedWarn = jest.fn(msg => output.push(msg));
+  console[severity] = mockedWarn;
+  const value = cb();
+  console[severity] = originalWarn;
+  return {
+    value,
+    output,
+    fn: mockedWarn,
+  };
+}
+
+const catchConsoleError = (cb) => catchConsoleWarn(cb, 'error');
+const catchConsoleLog = (cb) => catchConsoleWarn(cb, 'log');
+const catchConsoledir = (cb) => catchConsoleWarn(cb, 'dir');
+
 const createClientXY = (x, y) => ({
   clientX: x,
   clientY: y,
@@ -37,4 +55,8 @@ export {
   createMoveTouchEventObject,
   createEndTouchEventObject,
   LocationDisplay,
+  catchConsoleWarn,
+  catchConsoleError,
+  catchConsoleLog,
+  catchConsoledir,
 };

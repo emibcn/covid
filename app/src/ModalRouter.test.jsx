@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
-import './testSetup';
-import { delay, LocationDisplay } from './testHelpers';
 
 import { MemoryRouter as Router, Route } from 'react-router-dom';
 
+import './testSetup';
+import { delay, LocationDisplay } from './testHelpers';
 import ModalRouter from './ModalRouter';
 
 test('renders ModalRouter and close by clicking the button', async () => {

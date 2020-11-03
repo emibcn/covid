@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
-import './testSetup';
 
+import './testSetup';
+import { catchConsoleError } from './testHelpers';
 import ErrorCatcher from './ErrorCatcher';
 
 test('renders correctly its children', () => {
@@ -25,15 +26,20 @@ test('renders error when some `render` throws an error and reloads page when the
 
   let errorCatcher;
   act(() => {
-    errorCatcher = render(
-      <ErrorCatcher>
-        {/* Buggy's siblings are not shown, either */}
-        <div>{ text }</div>
-        <BuggyChild>
+    const {output, fn} = catchConsoleError( () => {
+      errorCatcher = render(
+        <ErrorCatcher>
+          {/* Buggy's siblings are not shown, either */}
           <div>{ text }</div>
-        </BuggyChild>
-      </ErrorCatcher>
-    );
+          <BuggyChild>
+            <div>{ text }</div>
+          </BuggyChild>
+        </ErrorCatcher>
+      );
+    });
+
+    expect(fn).toHaveBeenCalledTimes(2);
+    expect(output[0].includes(error)).toBe(true);
 
     const childError = errorCatcher.getByText(error);
     expect(childError).toBeInTheDocument();

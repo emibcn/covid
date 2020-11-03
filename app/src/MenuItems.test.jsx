@@ -1,13 +1,12 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
-import './testSetup';
-import { delay, LocationDisplay } from './testHelpers';
 
 import { MemoryRouter as Router } from 'react-router-dom';
-
 import List from '@material-ui/core/List';
 
+import './testSetup';
+import { delay, LocationDisplay } from './testHelpers';
 import { MainMenuItems, SecondaryMenuItems, ListItemLink } from './MenuItems';
 
 test('renders ListItemLink', async () => {

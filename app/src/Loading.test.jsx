@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
-import './testSetup';
 
+import './testSetup';
 import Loading from './Loading';
 
 test('renders loading image', () => {

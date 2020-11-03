@@ -1,14 +1,8 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, screen } from '@testing-library/react';
+
 import './testSetup';
-
-import App, {fixLocationHash, getDefaultLanguage} from './App';
-
-test('renders copyright link', () => {
-  const { getByText } = render(<App onLoadNewServiceWorkerAccept={() => {}} />);
-  const linkElement = getByText(/Source code of/i);
-  expect(linkElement).toBeInTheDocument();
-});
+import App, { fixLocationHash, getDefaultLanguage } from './App';
 
 // Mock Widget/List, as this is not needed to test it here
 jest.mock("./Widget", () => {
@@ -28,8 +22,14 @@ test('uses default language `ca-es` when navigator language is unknown', () => {
   expect(getDefaultLanguage([])).toBe('ca-es');
 });
 
+test('renders copyright link', () => {
+  const { getByText } = render(<App onLoadNewServiceWorkerAccept={() => {}} />);
+  const linkElement = getByText(/Source code of/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
 test('detects navigator language', () => {
-  const languageGetter = jest.spyOn(window.navigator, 'language', 'get')
+  const languageGetter = jest.spyOn(window.navigator, 'language', 'get');
   languageGetter.mockReturnValue('es-ES');
   expect(getDefaultLanguage([{key: 'es-es'}])).toBe('es-es');
 });

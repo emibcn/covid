@@ -1,10 +1,8 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
-import './testSetup';
-import TestRenderer from 'react-test-renderer';
-
 import MatchMediaMock from 'jest-matchmedia-mock';
 
+import './testSetup';
 import AppThemeProvider from './AppThemeProvider';
 
 let matchMedia;

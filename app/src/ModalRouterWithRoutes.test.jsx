@@ -1,8 +1,9 @@
 import React from 'react';
-import { MemoryRouter as Router } from 'react-router-dom';
 import { render, createEvent, fireEvent, act, screen } from '@testing-library/react';
-import './testSetup';
 
+import { MemoryRouter as Router } from 'react-router-dom';
+
+import './testSetup';
 import ModalRouterWithRoutes from './ModalRouterWithRoutes';
 
 // Mock ErrorCatcher, as this is not needed to test it here
