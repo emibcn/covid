@@ -54,11 +54,11 @@ test('renders slider', async () => {
     expect(onChange).toHaveBeenCalledTimes(0);
 
     // Should have changed
-    await delay(41);
+    await delay(40);
     expect(onChange).toHaveBeenCalledTimes(1);
 
     // Should have changed again
-    await delay(41);
+    await delay(40);
     expect(onChange).toHaveBeenCalledTimes(2);
 
     // As the rendered value is the last one, the
