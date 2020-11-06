@@ -4,6 +4,13 @@ import { render, createEvent, fireEvent, act, screen } from '@testing-library/re
 import '../testSetup';
 import App from '../App';
 
+jest.mock("../Widget", () => {
+  return {
+    __esModule: true,
+    WidgetsList: () => <div>WidgetsList</div>,
+  };
+});
+
 test('renders copyright link', () => {
   const { getByText } = render(<App onLoadNewServiceWorkerAccept={() => {}} />);
   const linkElement = getByText(/Source code of/i);

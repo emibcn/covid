@@ -41,6 +41,14 @@ jest.mock("./Dashboard", () => {
   };
 });
 
+jest.mock("./Widget", () => {
+  return {
+    __esModule: true,
+    WidgetsList: () => <div>WidgetsList</div>,
+  };
+});
+
+// Mock available languages
 jest.mock("./i18n/available", () => {
   return {
     __esModule: true,
@@ -49,13 +57,6 @@ jest.mock("./i18n/available", () => {
       { key: "ca-es", label: "Tested ca-es", value: {locale: "ca-es"} },
       { key: "es-es", label: "Tested es-es", value: {locale: "es-es"} },
     ],
-  };
-});
-
-jest.mock("./Widget", () => {
-  return {
-    __esModule: true,
-    WidgetsList: () => <div>WidgetsList</div>,
   };
 });
 
