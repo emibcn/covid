@@ -3,7 +3,7 @@ const common = {
     "Covid Data": "Datos Covid",
     "Refactored": "Refactorizada",
     "Close": "Cerrar",
-    "About": "Sobre...",
+    "About...": "Sobre...",
     "Language": "Idioma",
     "Help": "Ayuda",
     "Yes": "Sí",
