@@ -85,12 +85,14 @@ jobs:
         label: 'Coverage'
         status: ${{ steps.coverage.outputs.coverage-rounded-display }}
         color: ${{
-          steps.coverage.outputs.coverage > 90 && 'green'         ||
-          steps.coverage.outputs.coverage > 80 && 'yellow,green'  ||
-          steps.coverage.outputs.coverage > 70 && 'yellow'        ||
-          steps.coverage.outputs.coverage > 60 && 'orange,yellow' ||
-          steps.coverage.outputs.coverage > 50 && 'orange'        ||
-          steps.coverage.outputs.coverage > 40 && 'red,orange'    ||
+          steps.coverage.outputs.coverage > 90 && 'green'              ||
+          steps.coverage.outputs.coverage > 80 && 'yellow,green'       ||
+          steps.coverage.outputs.coverage > 70 && 'yellow'             ||
+          steps.coverage.outputs.coverage > 60 && 'orange,yellow'      ||
+          steps.coverage.outputs.coverage > 50 && 'orange'             ||
+          steps.coverage.outputs.coverage > 40 && 'red,orange'         ||
+          steps.coverage.outputs.coverage > 30 && 'red,red,orange'     ||
+          steps.coverage.outputs.coverage > 20 && 'red,red,red,orange' ||
           'red' }}
         path: test-coverage.svg
 
