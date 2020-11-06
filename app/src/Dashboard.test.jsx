@@ -5,7 +5,7 @@ import './testSetup';
 import { delay } from './testHelpers';
 
 import { MemoryRouter as Router } from 'react-router-dom';
-import Dashboard, { Copyright } from './Dashboard';
+import Dashboard from './Dashboard';
 
 // Mock @material-ui/core/AppBar to add `data-testid` attrib
 jest.mock("@material-ui/core/AppBar", () => {
@@ -39,6 +39,14 @@ jest.mock("./Menu", () => {
         </div>
       </div>
     ),
+  };
+});
+
+// Mock ./About
+jest.mock("./About", () => {
+  return {
+    __esModule: true,
+    default: (props) => <div data-testid="mock-about">About</div>,
   };
 });
 
