@@ -1,13 +1,11 @@
 import React from 'react';
 import { render, createEvent, fireEvent, act, waitFor, screen, cleanup } from '@testing-library/react';
-import TestRenderer from 'react-test-renderer';
 
 import './testSetup';
 import { delay } from './testHelpers';
 
 import { MemoryRouter as Router } from 'react-router-dom';
 import Dashboard, { Copyright } from './Dashboard';
-import Menu from './Menu';
 
 // Mock @material-ui/core/AppBar to add `data-testid` attrib
 jest.mock("@material-ui/core/AppBar", () => {
@@ -19,6 +17,26 @@ jest.mock("@material-ui/core/AppBar", () => {
         data-testid="app-bar"
       >
         { children }
+      </div>
+    ),
+  };
+});
+
+// Mock ./Menu to test Dashboard's inline setOpen functions
+jest.mock("./Menu", () => {
+  return {
+    __esModule: true,
+    default: (props) => (
+      <div data-testid="menu-mock">
+        <button data-testid="menu-mock-open" onClick={ props.handleDrawerOpen }>
+          Open
+        </button>
+        <button data-testid="menu-mock-close" onClick={ props.handleDrawerClose }>
+          Close
+        </button>
+        <div data-testid="menu-mock-status">
+          { props.open ? "Opened" : "Closed" }
+        </div>
       </div>
     ),
   };
@@ -100,36 +118,37 @@ test('opens about dialog on initial location hash', () => {
   expect(closeButton).toBeInTheDocument();
 });
 
-// TODO: Stop using TestRenderer. Mock Drawer?
 test('change drawer open state', async () => {
   // Spy on state change
   const setState = jest.fn();
   const useStateSpy = jest.spyOn(React, 'useState')
   useStateSpy.mockImplementation((init) => [init, setState]);
 
-  let drawer;
-  await TestRenderer.act(async () => {
-    const dashboard = await TestRenderer.create( objectCreator({
+  let dashboard;
+  await act(async () => {
+    dashboard = await render( objectCreator({
       newServiceWorkerDetected: false,
       onLoadNewServiceWorkerAccept: () => {},
     }));
 
-    const instance = dashboard.root;
-    drawer = instance.findByType(Menu);
+    const status = dashboard.getByTestId("menu-mock-status");;
+    expect(status).toHaveTextContent("Closed");
   });
 
-  await TestRenderer.act(async () => {
-    await drawer.props.handleDrawerOpen();
+  await act(async () => {
+    const open = dashboard.getByTestId("menu-mock-open");
+    fireEvent.click(open);
     expect(setState).toHaveBeenCalledWith(true);
   });
 
-  await TestRenderer.act(async () => {
-    await drawer.props.handleDrawerClose();
+  await act(async () => {
+    const close = dashboard.getByTestId("menu-mock-close");
+    fireEvent.click(close);
     expect(setState).toHaveBeenCalledWith(false);
   });
 });
 
-test('render opened drawer', async () => {
+test('render initially opened drawer', async () => {
   // Spy on state change
   const setState = jest.fn();
   const useStateSpy = jest.spyOn(React, 'useState')
@@ -139,4 +158,7 @@ test('render opened drawer', async () => {
     newServiceWorkerDetected: false,
     onLoadNewServiceWorkerAccept: () => {},
   }));
+
+  const status = dashboard.getByTestId("menu-mock-status");;
+  expect(status).toHaveTextContent("Opened");
 });
