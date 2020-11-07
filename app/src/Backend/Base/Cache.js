@@ -12,6 +12,12 @@ const hashStr = str => {
   }, 0)
 }
 
+const log = (...args) => {
+  if (['development', 'test'].includes(process.env.NODE_ENV)) {
+    console.log(...args);
+  }
+}
+
 // Handles an element inside the cache
 class FetchCacheElement {
   signal = null;
@@ -39,9 +45,7 @@ class FetchCacheElement {
   // Filters out non-error "Connection aborted"
   catchFetchErrors = (err) => {
     if (err.name === 'AbortError' ) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`Connection aborted for ${this.url}`, err);
-      }
+      log(`Connection aborted for ${this.url}`, err);
     }
     else {
       err.message = `${this.url}: ${err.message}`;
@@ -83,9 +87,7 @@ class FetchCacheElement {
       )).then( onSuccess );
     }
     
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`Added listener to ${this.url}: ${this.listeners.length - 1}`);
-    }
+    log(`Added listener to ${this.url}: ${this.listeners.length - 1}`);
 
     return () => this.removeListener( onSuccess );
   }
@@ -99,15 +101,13 @@ class FetchCacheElement {
       .find( l => l.listener.onSuccess === onSuccess);
 
     if ( found ) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`Remove listener from ${this.url}: ${found.index}`);
-      }
+      log(`Remove listener from ${this.url}: ${found.index}`);
 
       // Remove element from array
       this.listeners.splice(found.index, 1);
     }
     else {
-      console.warning(`Remove listener from ${this.url}: Listener not found`);
+      console.warn(`Remove listener from ${this.url}: Listener not found`);
     }
 
     // If there is an ongoing fetch and there are no more listeners left, abort the fetch
@@ -154,7 +154,7 @@ class FetchCacheElement {
   }
 
   // Sends a HEAD request to download URL header's `last-modified` value and
-  // returns the comparison against saved value: `true` id new one is higher
+  // returns the comparison against saved value: `true` if new one is higher
   checkIfNeedUpdate = (onSuccess, onError) => {
     fetch( this.url, { method: 'HEAD' })
       .then( this.handleFetchErrors )
@@ -173,26 +173,20 @@ class FetchCacheElement {
 
           // Are there listeners?
           if ( this.listeners.length > 0 ) {
-            if (process.env.NODE_ENV === 'development') {
-              console.log(`${this.url}: Fetch it!`);
-            }
+            log(`${this.url}: Fetch it!`);
             this.fetch(resolve);
           }
           else {
             // Resolve without doing nothing
             // Someone downloaded it, but unregistered from it: changed data source
-            if (process.env.NODE_ENV === 'development') {
-              console.log(`${this.url}: Someone downloaded it, but unregistered from it: changed data source`);
-            }
+            log(`${this.url}: Someone downloaded it, but unregistered from it: changed data source`);
             resolve();
           }
         }
         else {
           // Resolve without doing nothing
           // It was never downloaded
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`${this.url}: It was never downloaded`);
-          }
+          log(`${this.url}: It was never downloaded`);
           resolve();
         }
       }
@@ -234,7 +228,7 @@ class FetchCache {
   }
 
   // Sends a HEAD request to download URL header's `last-modified` value and
-  // returns the comparison against saved value: `true` id new one is higher
+  // returns the comparison against saved value: `true` if new one is higher
   checkIfNeedUpdate = (url, onSuccess, onError) => {
     const id = hashStr(url);
     this.data[id].checkIfNeedUpdate(onSuccess, onError);
@@ -248,10 +242,8 @@ class FetchCache {
         (resolve, reject) => {
           // Resolve without doing nothing
           // It was never downloaded
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`${url}: It was never downloaded`);
-          }
-          resolve();
+          log(`${url}: It was never downloaded`);
+          resolve(true);
         }
       ))
     }
