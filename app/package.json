@@ -36,7 +36,8 @@
     "eject": "react-scripts eject",
     "lint": "node_modules/.bin/eslint --ext js src",
     "sw-epilog": "cat src/sw-epilog.js >> build/service-worker.js",
-    "pubgh": "mkdir -p ../docs && rm -Rf ../docs/* build/.*.swp && mv -v build/* ../docs/ && rmdir -v build"
+    "pubgh": "mkdir -p ../docs && rm -Rf ../docs/* build/.*.swp && mv -v build/* ../docs/ && rmdir -v build",
+    "clean": "rm -R ../docs/*"
   },
   "eslintConfig": {
     "extends": "react-app"
