@@ -5,10 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches:
-      - '*'
-      - '!badges'
-      - '!gh-pages'
+    branches: [ master ]
     paths-ignore:
       # Can we use '**.md' ?
       - 'README.md'
