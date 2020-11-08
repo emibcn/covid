@@ -9,7 +9,7 @@ const hashStr = str => {
     .reduce( (hash, int) => {
       const hashTmp = ((hash << 5) - hash) + int;
       return hashTmp & hashTmp; // Convert to 32bit integer
-  }, 0)
+    }, 0)
 }
 
 const log = (...args) => {
@@ -58,9 +58,7 @@ class FetchCacheElement {
 
   // Handle a fetch error by calling all the listeners' onError in the queue
   onError = (error) => {
-    this.listeners.forEach( listener => {
-      listener.onError(error);
-    });
+    this.listeners.forEach( listener => listener.onError(error));
  
     this.cleanFetch();
   };
@@ -142,6 +140,7 @@ class FetchCacheElement {
   // - If there is an error, processes all error listeners
   fetch = (callback = () => {}) => {
     this.signal = new AbortController();
+    this.invalidated = false;
     return fetch( this.url, { signal: this.signal.signal })
       .then( this.handleFetchErrors )
       .then( response => response.json().then( result => ({
