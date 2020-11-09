@@ -5,10 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches:
-      - '*'
-      - '!badges'
-      - '!gh-pages'
+    branches: [ master ]
     paths-ignore:
       # Can we use '**.md' ?
       - 'README.md'
@@ -51,8 +48,11 @@ jobs:
       run: |
         cd app
         yarn install
-        # Disabled for now
-        yarn test -- --coverage || true
+        # Disabled exit until we reach at least 50% coverage
+        yarn test --color --coverage || true
+        # Ensure we can build
+        yarn build
+        yarn clean
 
     # Coverage badges will be updated on any branch
     # and saved into a dedicated one
@@ -85,12 +85,14 @@ jobs:
         label: 'Coverage'
         status: ${{ steps.coverage.outputs.coverage-rounded-display }}
         color: ${{
-          steps.coverage.outputs.coverage > 90 && 'green'         ||
-          steps.coverage.outputs.coverage > 80 && 'yellow,green'  ||
-          steps.coverage.outputs.coverage > 70 && 'yellow'        ||
-          steps.coverage.outputs.coverage > 60 && 'orange,yellow' ||
-          steps.coverage.outputs.coverage > 50 && 'orange'        ||
-          steps.coverage.outputs.coverage > 40 && 'red,orange'    ||
+          steps.coverage.outputs.coverage > 90 && 'green'              ||
+          steps.coverage.outputs.coverage > 80 && 'yellow,green'       ||
+          steps.coverage.outputs.coverage > 70 && 'yellow'             ||
+          steps.coverage.outputs.coverage > 60 && 'orange,yellow'      ||
+          steps.coverage.outputs.coverage > 50 && 'orange'             ||
+          steps.coverage.outputs.coverage > 40 && 'red,orange'         ||
+          steps.coverage.outputs.coverage > 30 && 'red,red,orange'     ||
+          steps.coverage.outputs.coverage > 20 && 'red,red,red,orange' ||
           'red' }}
         path: test-coverage.svg
 

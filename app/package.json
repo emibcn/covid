@@ -20,7 +20,7 @@
     "react-helmet-async": "^1.0.6",
     "react-modal": "^3.11.2",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "3.4.0",
     "react-simple-storage": "^1.4.2",
     "react-svg": "^11.0.39",
     "react-tooltip": "^4.2.9",
@@ -36,7 +36,8 @@
     "eject": "react-scripts eject",
     "lint": "node_modules/.bin/eslint --ext js src",
     "sw-epilog": "cat src/sw-epilog.js >> build/service-worker.js",
-    "pubgh": "mkdir -p ../docs && rm -Rf ../docs/* build/.*.swp && mv -v build/* ../docs/ && rmdir -v build"
+    "pubgh": "mkdir -p ../docs && rm -Rf ../docs/* build/.*.swp && mv -v build/* ../docs/ && rmdir -v build",
+    "clean": "rm -R ../docs/*"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -52,5 +53,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jest-matchmedia-mock": "^1.1.0",
+    "mq-polyfill": "^1.1.8"
   }
 }

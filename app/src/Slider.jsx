@@ -150,10 +150,10 @@ class Slider extends React.PureComponent {
           { ...restProps }
         />
         <PlayPauseButton
-           className={ playPause }
-           onPlay={ this.onPlay }
-           onPause={ this.onPause }
-           isPlaying={ isPlaying }
+          className={ playPause }
+          onPlay={ this.onPlay }
+          onPause={ this.onPause }
+          isPlaying={ isPlaying }
         />
       </>
     )

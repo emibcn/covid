@@ -14,7 +14,7 @@ class About extends React.Component {
       <>
         <h1 id="modal_heading">
           <FontAwesomeIcon icon={ faAbout } style={{ marginRight: '.5em' }} />
-          { t("About") }
+          { t("About...") }
         </h1>
         <div id="modal_description" style={{ textAlign: 'left' }}>
           <p>

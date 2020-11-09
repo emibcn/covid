@@ -349,7 +349,7 @@ const withShowMarkLabels = (Component) => {
 
 // withPropHandler: Handle params from providers (route + localStorage) into props
 // withStyles: Add `classes` prop for styling components
-// withShowMarkLabels: Add `showMarkLabels` breakpoint to sho/hide Slider mark labels depending on sreen size
+// withShowMarkLabels: Add `showMarkLabels` breakpoint to show/hide Slider mark labels depending on sreen size
 // withBcnDataHandler: Add `bcnDataHandler` prop to use bcn backend data
 // withMapsDataHandler: Add `mapsDataHandler` prop to use maps backend data
 // withChartsDataHandler: Add `chartsDataHandler` prop to use charts backend data

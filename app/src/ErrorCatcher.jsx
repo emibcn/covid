@@ -94,4 +94,7 @@ ErrorCatcher.propTypes = {
   sendEvent: PropTypes.func.isRequired,
 };
 
+const withErrorCatcher = (origin, component) => <ErrorCatcher {...{ origin , key: origin }}>{ component }</ErrorCatcher>;
+
 export default translate('ErrorCatcher')(ErrorCatcher);
+export {withErrorCatcher};

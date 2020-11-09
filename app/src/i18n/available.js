@@ -5,7 +5,7 @@ import pl_pl from "./pl-pl.lang.js";
 import nb_no from "./nb-no.lang.js";
 
 // Exports each language with more locale codes
-export default [
+const available = [
   { key: "en", label: en_en.name, value: en_en },
   { key: "en-en", label: en_en.name, value: en_en },
   { key: "en-us", label: en_en.name, value: en_en },
@@ -18,3 +18,5 @@ export default [
   { key: "pl-pl", label: pl_pl.name, value: pl_pl },
   { key: "nb-no", label: nb_no.name, value: nb_no },
 ];
+
+export default available;

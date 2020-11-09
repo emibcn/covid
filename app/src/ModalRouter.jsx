@@ -16,7 +16,7 @@ import { translate } from 'react-translate'
 
 class CloseModal extends React.PureComponent {
   constructor(props) {
-    super();
+    super(props);
 
     if ( !('history' in props) ||
          props.history.location.hash !== '' ) {
@@ -39,7 +39,8 @@ class ModalRouterInner extends React.PureComponent {
     this.state = {
       ...this.getPathState(props.location),
       autoForce: false,
-      forced: props.force,
+      forced: false,
+      mounted: false,
     };
   }
 
@@ -55,6 +56,10 @@ class ModalRouterInner extends React.PureComponent {
   componentDidMount() {
     // Register history change event listener
     this.unlisten = this.history.listen(this.handleHistoryChange);
+    this.setState({
+      ...this.getPathState(this.props.location),
+      mounted: true,
+    });
   }
 
   componentWillUnmount() {
@@ -70,7 +75,6 @@ class ModalRouterInner extends React.PureComponent {
 
     // Remember old URL when forcing
     if ( this.props.force !== false &&
-         this.props.force !== prevProps.force &&
          this.state.forced !== this.props.force ) {
       this.setState({ forced: this.props.force });
     }
@@ -93,6 +97,7 @@ class ModalRouterInner extends React.PureComponent {
   openModal = () => this.setState({ modalIsOpen: true });
 
   closeModal = (propsClose={}) => {
+
     if ( !('history' in propsClose) ||
          propsClose.history.location.path !== '' ) {
 
@@ -112,28 +117,27 @@ class ModalRouterInner extends React.PureComponent {
 
   render() {
     const { children, initializing, force, fullScreen, t } = this.props;
-    const { autoForce, path, forced } = this.state;
+    const { mounted, autoForce, path, forced, modalIsOpen } = this.state;
 
-    if ( initializing ) {
+    if ( initializing || !mounted) {
       return null;
     }
 
     // Redirect to forced URL
-    if ( force !== false && force !== path ) {
+    if ( force !== false && force !== path && force !== forced ) {
       return <Redirect push to={{ hash: force }} />;
     }
 
     // If previously have been forced when showing a modal,
     // force to go back there once the forced has been visited
     if (  autoForce !== false &&
-          autoForce !== path &&
-          forced !== path ) {
+          autoForce !== path ) {
       return <Redirect push to={{ hash: autoForce }} />;
     }
 
     return (
       <Dialog
-        open={ this.state.modalIsOpen }
+        open={ modalIsOpen }
         onClose={ this.closeModal }
         /* Be fullsreen on `sm` sreens */
         fullScreen={ fullScreen }

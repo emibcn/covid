@@ -53,7 +53,7 @@ const MainMenuItems = translate('Menu')((props) => {
   return (
     <div>
       {/* <ListItemLink to="/" primary={ "Dashboard" } icon={ <DashboardIcon /> } /> */}
-      <ListItemLink to="#about" primary={ t("About") } icon={ <FontAwesomeIcon style={{ fontSize: '1.5rem' }} icon={ faAbout } /> } />
+      <ListItemLink to="#about" primary={ t("About...") } icon={ <FontAwesomeIcon style={{ fontSize: '1.5rem' }} icon={ faAbout } /> } />
       <ListItemLink to="#language" primary={ t("Language") } icon={ <FontAwesomeIcon style={{ fontSize: '1.5rem' }} icon={ faLanguage } /> } />
     </div>
   )

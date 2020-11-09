@@ -1,13 +1,11 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 
 import clsx from 'clsx';
 import { translate } from 'react-translate'
 
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -22,12 +20,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 */
 
 import Menu from './Menu';
-import ModalRouter from './ModalRouter';
-import ErrorCatcher from './ErrorCatcher';
-import About from './About';
-import Language from './Language';
-
-const withErrorCatcher = (origin, component) => <ErrorCatcher {...{ origin , key: origin }}>{ component }</ErrorCatcher>;
+import ModalRouterWithRoutes from './ModalRouterWithRoutes';
+import AppThemeProvider from './AppThemeProvider';
 
 const Copyright = translate('Copyright')((props) => {
   const { t } = props;
@@ -46,32 +40,6 @@ const Copyright = translate('Copyright')((props) => {
     </Typography>
   );
 });
-
-const AppThemeProvider = (props) => {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const { type, children } = props;
-
-  const theme = React.useMemo(
-    () =>
-      createMuiTheme({
-        palette: {
-          type: type ?
-                  type :
-                  prefersDarkMode ?
-                    'dark' :
-                    'light',
-        },
-      }),
-    [prefersDarkMode, type],
-  );
-
-  return (
-    <ThemeProvider theme={ theme }>
-      <CssBaseline />
-      { children }
-    </ThemeProvider>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -117,29 +85,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RoutesModal = (props) => {
-  const { language, onLanguageChange } = props.routeProps;
-  return (
-    <ModalRouter force={ false } >
-      <Route
-        exact
-        path='about'
-        render={ props => withErrorCatcher('About', <About />) }
-      />
-      <Route
-        exact
-        path="language"
-        render={(props) =>
-          withErrorCatcher(
-            "Language",
-            <Language language={language} onLanguageChange={onLanguageChange} />
-          )
-        }
-      />
-    </ModalRouter>
-  )
-};
-
 const Dashboard = (props) => {
   const classes = useStyles();
   const { children, theme, t, ...restProps } = props;
@@ -155,7 +100,7 @@ const Dashboard = (props) => {
 
   return (
     <AppThemeProvider type={ theme } >
-      <RoutesModal routeProps={props} />
+      <ModalRouterWithRoutes routeProps={props} />
       <div id="root" className={classes.root}>
         <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
           <Toolbar className={classes.toolbar}>
@@ -163,6 +108,7 @@ const Dashboard = (props) => {
               edge="start"
               color="inherit"
               aria-label="open menu"
+              data-testid="open-menu"
               onClick={handleDrawerOpen}
               className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
             >
@@ -198,3 +144,4 @@ const Dashboard = (props) => {
 }
 
 export default translate('Widget')(Dashboard);
+export {Copyright};
