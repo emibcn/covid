@@ -32,6 +32,7 @@ yarn start
 - If a file gets too big (1-2 pages), try to separate logic into different components ([composition](https://reactjs.org/docs/components-and-props.html#extracting-components), [HOC](https://reactjs.org/docs/higher-order-components.html), externalize non-React code, ...). There are already some files too big. They are in the TODO list.
 - When styling (CSS, style attribute, SASS, SCSS), try to use [MaterialUI Styles](https://material-ui.com/styles/basics/).
 - When creating new components (especially, interactive ones), look into [MaterialUI Components](https://material-ui.com/components/box/). If you find one that can do what you need, it will already be integrated with the rest of the app, easier to develop and easier to maintain.
+- Add or adapt the tests to reflex what you have done, or open a new issue asking for help on that. Currently, tests are a Work In Progress, but highly desired. Looks boring, but tests rules :+1: !
 
 ## How you can help
 
