@@ -3,12 +3,17 @@ import { useLocation } from 'react-router-dom';
 
 const delay = (millis) => new Promise((resolve) => setTimeout(resolve, millis));
 
-const catchConsoleWarn = (cb, severity='warn') => {
+const catchConsoleWarn = async (cb, severity='warn') => {
   const output = [];
   const originalWarn = console[severity];
-  const mockedWarn = jest.fn(msg => output.push(msg));
+  const mockedWarn = jest.fn((msg, ...rest) => {
+    output.push(msg);
+    if (rest) {
+      output.push(`${rest}`);
+    }
+  });
   console[severity] = mockedWarn;
-  const value = cb();
+  const value = await cb();
   console[severity] = originalWarn;
   return {
     value,
@@ -17,9 +22,9 @@ const catchConsoleWarn = (cb, severity='warn') => {
   };
 }
 
-const catchConsoleError = (cb) => catchConsoleWarn(cb, 'error');
-const catchConsoleLog = (cb) => catchConsoleWarn(cb, 'log');
-const catchConsoledir = (cb) => catchConsoleWarn(cb, 'dir');
+const catchConsoleError = async (cb) => await catchConsoleWarn(cb, 'error');
+const catchConsoleLog = async (cb) => await catchConsoleWarn(cb, 'log');
+const catchConsoleDir = async (cb) => await catchConsoleWarn(cb, 'dir');
 
 const createClientXY = (x, y) => ({
   clientX: x,
@@ -49,6 +54,51 @@ const LocationDisplay = ({member='hash'}) => {
   )
 }
 
+// Helper to mock and test fetch
+class MockFetch {
+  original = null;
+  options = {
+    date: new Date(),
+    throwError: false,
+    responseOptions: () => ({
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'last-modified': this.options.date.toString(),
+      }
+    }),
+  }
+
+  mock = () => {
+    // Mock fetch
+    if (this.original == null) {
+      this.original = window.fetch;
+      window.fetch = jest.fn( async (url, options) => {
+        await delay(500);
+        if (this.options.throwError !== false) {
+          throw this.options.throwError;
+        }
+        return new Response(
+          JSON.stringify({tested: true, url}),
+          this.options.responseOptions.bind(this)()
+        );
+      });
+    }
+  }
+
+  unmock = () => {
+    // Unmock fetch
+    window.fetch = this.original;
+    this.original = null;
+  }
+}
+
+class AbortError extends Error {
+  constructor(...args) {
+    super(...args);
+    this.name = "AbortError";
+  }
+}
+
 export {
   delay,
   createStartTouchEventObject,
@@ -58,5 +108,7 @@ export {
   catchConsoleWarn,
   catchConsoleError,
   catchConsoleLog,
-  catchConsoledir,
+  catchConsoleDir,
+  MockFetch,
+  AbortError,
 };

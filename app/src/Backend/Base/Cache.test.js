@@ -1,6 +1,6 @@
 import cache from './Cache';
 
-import { delay } from '../../testHelpers';
+import { delay, MockFetch, AbortError } from '../../testHelpers';
 
 /*
   TODO:
@@ -9,33 +9,13 @@ import { delay } from '../../testHelpers';
    - Count some more calls to fetch
 */
 
-let fetchOriginal;
-let fetchDate = new Date();
-let fetchThrowError = false;
-let fetchResponseOptions = () => ({
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8',
-    'last-modified': fetchDate.toString(),
-  }
-});
+let mockedFetch = new MockFetch();
 beforeAll(() => {
-  // Mock fetch
-  fetchOriginal = window.fetch;
-  window.fetch = jest.fn( async (url, options) => {
-    await delay(500);
-    if (fetchThrowError !== false) {
-      throw fetchThrowError;
-    }
-    return new Response(
-      JSON.stringify({tested: true, url}),
-      fetchResponseOptions()
-    );
-  });
+  mockedFetch.mock();
 });
 
 afterAll(() => {
-  // Unmock fetch
-  window.fetch = fetchOriginal;
+  mockedFetch.unmock();
 });
 
 // Rethrow jest expect' errors
@@ -107,10 +87,10 @@ test('cache correctly invalidates an unsubscribed URL', async (done) => {
   // Unsubscribe both URLs
   unsubscribe();
 
-  // TODO: catch and test warning message
+  // TODO: catch and test log message 'Someone downloaded it, but unregistered from it: changed data source'
   await cache.invalidate(url);
 
-  fetchDate = new Date();
+  mockedFetch.options.date = new Date();
   cache.checkIfNeedUpdate(
     url,
     (needUpdate) => {
@@ -137,7 +117,7 @@ test('cache correctly invalidates a subscribed URL and detects if it needs an up
   }));
 
   // Mock a backend update and check if it is detected
-  fetchDate = new Date();
+  mockedFetch.options.date = new Date();
   await (new Promise(resolve => {
     cache.checkIfNeedUpdate(
       url,
@@ -238,14 +218,8 @@ test('cache fetch collects error', async () => {
 
 test('cache fetch does not collects AbortError', async () => {
   const url = "test6";
-  class AbortError extends Error {
-    constructor(...args) {
-      super(...args);
-      this.name = "AbortError";
-    }
-  }
-  const fetchThrowErrorOld = fetchThrowError;
-  fetchThrowError = new AbortError("Testing abort errors");
+  const fetchThrowErrorOld = mockedFetch.options.throwError;
+  mockedFetch.options.throwError = new AbortError("Testing abort errors");
 
   const notToBeCalled = jest.fn();
 
@@ -260,16 +234,17 @@ test('cache fetch does not collects AbortError', async () => {
 
   expect(notToBeCalled).toBeCalledTimes(0);
   unsubs();
-  fetchThrowError = fetchThrowErrorOld;
+  mockedFetch.options.throwError = fetchThrowErrorOld;
 });
 
 test('cache fetch collects network and server errors', async () => {
-  // Mock fetchResponseOptions
-  const fetchResponseOptionsOld = fetchResponseOptions;
   const url = "test7";
 
+  // Mock fetchResponseOptions
+  const fetchResponseOptionsOld = mockedFetch.options.responseOptions;
+
   // Test server error
-  fetchResponseOptions = () => ({
+  mockedFetch.options.responseOptions = () => ({
     status: 401,
     statusText: "Testing unauthorized request",
     ok: false,
@@ -284,14 +259,15 @@ test('cache fetch collects network and server errors', async () => {
         reject();
       },
       (error) => {
-        expect(error.message).toBe(`${url}: ${fetchResponseOptions().statusText}`);
+        expect(error.message)
+          .toBe(`${url}: Cache Element backend: ${mockedFetch.options.responseOptions().statusText}`);
         resolve();
       }
     );
   }));
 
   // Test network error
-  fetchResponseOptions = () => ({
+  mockedFetch.options.responseOptions = () => ({
     status: 599,
     statusText: "Testing 599 Network Timeout",
   });
@@ -304,7 +280,8 @@ test('cache fetch collects network and server errors', async () => {
         reject();
       },
       (error) => {
-        expect(error.message).toStrictEqual(`${url}: ${fetchResponseOptions().statusText}`);
+        expect(error.message)
+          .toBe(`${url}: Cache Element backend: ${mockedFetch.options.responseOptions().statusText}`);
         resolve();
       }
     );
@@ -313,5 +290,5 @@ test('cache fetch collects network and server errors', async () => {
   unsubs();
 
   // Unmock fetchResponseOptions
-  fetchResponseOptions = fetchResponseOptionsOld;
+  mockedFetch.options.responseOptions = fetchResponseOptionsOld;
 });

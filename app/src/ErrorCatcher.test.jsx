@@ -17,7 +17,7 @@ test('renders correctly its children', () => {
   expect(child).toBeInTheDocument();
 });
 
-test('renders error when some `render` throws an error and reloads page when the button is clicked', () => {
+test('renders error when some `render` throws an error and reloads page when the button is clicked', async () => {
   const text = "I'm a child";
   const error = "I'm an error";
   const BuggyChild = (props) => {
@@ -25,8 +25,8 @@ test('renders error when some `render` throws an error and reloads page when the
   };
 
   let errorCatcher;
-  act(() => {
-    const {output, fn} = catchConsoleError( () => {
+  await act(async () => {
+    const {output, fn} = await catchConsoleError( () => {
       errorCatcher = render(
         <ErrorCatcher>
           {/* Buggy's siblings are not shown, either */}
