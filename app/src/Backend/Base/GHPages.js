@@ -1,6 +1,12 @@
 import Common from './Common';
 import cache from './Cache';
 
+const log = (...args) => {
+  if (['development', 'test'].includes(process.env.NODE_ENV)) {
+    console.log(...args);
+  }
+}
+
 // Handle data backend and cache for backends at GH Pages
 // This is not a singleton: unique error handlers
 class GHPages extends Common {
@@ -23,13 +29,11 @@ class GHPages extends Common {
   // Checks if `index` URL has updates
   // If HEAD request succeeds, calls callback with bool (`true` if update is needed)
   checkUpdate = (callback, onError = () => {}) => {
-    cache.checkIfNeedUpdate(
+    return cache.checkIfNeedUpdate(
       this.indexUrl,
-      updateNeeded => {
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`${this.name}: update needed: ${updateNeeded}`);
-        }
-        callback(updateNeeded);
+      async (updateNeeded) => {
+        log(`${this.name}: update needed: ${updateNeeded}`);
+        await callback(updateNeeded);
       },
       error => {
         console.error(`${this.name}: updating data from backend:`, error);
@@ -46,15 +50,13 @@ class GHPages extends Common {
 
   // Updates all sources, sequentially
   updateAll = (callback) => {
-    (async (callback) => {
+    return (async (callback) => {
 
       // Invalidate each active JSON first
       await this.invalidateAll();
 
       // Finally, invalidate the `index` JSON
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`${this.name}: Invalidate index`);
-      }
+      log(`${this.name}: Invalidate index`);
 
       await cache.invalidate( this.indexUrl );
 
@@ -65,9 +67,9 @@ class GHPages extends Common {
   // Updates all sources if needed
   // Always calls callback with a boolean argument indicating if an update was made
   updateIfNeeded = (callback) => {
-    this.checkUpdate( (updateNeeded) => {
+    return this.checkUpdate( async (updateNeeded) => {
       if (updateNeeded) {
-        this.updateAll(() => callback(true));
+        await this.updateAll(() => callback(true));
       }
       else {
         callback(false);
@@ -89,9 +91,7 @@ class GHPages extends Common {
       ? this.millisToNextUpdate()
       : millis;
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`${this.name}: Next update on ${new Date( (new Date()).getTime() + nextMillis )}`);
-    }
+    log(`${this.name}: Next update on ${new Date( (new Date()).getTime() + nextMillis )}`);
 
     // If data has been updated and `recursive` is true, re-schedule data update for the next day
     // Else (recursive || not recursive but data NOT updated), schedule data update in 5 minutes

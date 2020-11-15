@@ -10,15 +10,18 @@ class Common {
   // Used to stop pending fetches when user changes the date
   controller = new AbortController();
 
-  constructor(props) {
-    this.onUpdate = props && props.onUpdate ? props.onUpdate : noop;
-    this.onError = props && props.onError ? props.onError : noop;
+  // Overload to do something useful with errors
+  onError = noop;
+
+  // Can overload onError also on instantiation time
+  constructor({onError} = {}) {
+    this.onError = onError || this.onError;
   }
 
   // Abort the abort controller and clean it up creating a new one for next fetches
   // Add here all side-effects cancelling (fetches, timers, etc)
   // Remember to call super() when subclassing
-  abort() {
+  abort = () => {
     this.controller.abort();
     this.controller = new AbortController();
   }
@@ -27,19 +30,21 @@ class Common {
   handleFetchErrors = (response) => {
     // Raise succeeded non-ok responses
     if ( !response.ok ) {
-      return new Error(`${this.name} backend: ${response.statusText}`);
+      throw new Error(response.statusText);
     }
     return response;
   }
 
   // Catches fetch errors, original or 'self-raised', and throws to `onError` prop
   // Filters out non-error "Connection aborted"
+  catchFetchErrorsMessage = (err) => `${this.name} backend: ${err.message}`;
+  catchFetchErrorsAbortMessage = (err) => 'Connection aborted';
   catchFetchErrors = (err) => {
     if ( err.name === 'AbortError' ) {
-      console.log('Connection aborted', err);
+      console.log(this.catchFetchErrorsAbortMessage());
     }
     else {
-      err.message = `${this.name} backend: ${err.message}`;
+      err.message = this.catchFetchErrorsMessage(err);
       this.onError(err);
     }
   }
