@@ -65,11 +65,11 @@ jobs:
         rounded-precision: 2
         filename: "app/coverage/clover.xml"
 
-    - name: Test debug: show branch name and origin branch name
+    - name: Test debug - show branch name and origin branch name
       shell: bash
       run: |
         echo "PULL HEAD REF: ${{ github.head_ref }}"
-        echo "GITHUB REF: ${GITHUB_REF#refs/heads/}"
+        echo "GITHUB REF: ${GITHUB_REF}"
 
     - name: Extract branch name
       if: ${{ github.event_name != 'pull_request' }}
