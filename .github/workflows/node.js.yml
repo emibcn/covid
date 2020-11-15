@@ -65,16 +65,19 @@ jobs:
         rounded-precision: 2
         filename: "app/coverage/clover.xml"
 
-    - name: Test debug - show branch name and origin branch name
+    - name: Extract branch name
       shell: bash
       run: |
-        echo "PULL HEAD REF: ${{ github.head_ref }}"
-        echo "GITHUB REF: ${GITHUB_REF}"
-
-    - name: Extract branch name
-      if: ${{ github.event_name != 'pull_request' }}
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        TMP_PULL_HEAD_REF="${{ github.head_ref }}"
+        TMP_GITHUB_REF="${GITHUB_REF#refs/heads/}"
+        EXPORT_VALUE=""
+        if [ "${TMP_PULL_HEAD_REF}" != "" ]
+        then
+            EXPORT_VALUE="${TMP_PULL_HEAD_REF}"
+        else
+            EXPORT_VALUE="${TMP_GITHUB_REF}"
+        fi
+        echo "##[set-output name=branch;]$(echo ${EXPORT_VALUE})"
       id: extract_branch
 
     - uses: actions/checkout@v2
@@ -84,7 +87,7 @@ jobs:
 
     # Use the output from the `coverage` step
     - name: Generate the badge SVG image
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/master' }}
       uses: emibcn/badge-action@v1
       id: badge
       with:
@@ -103,7 +106,7 @@ jobs:
         path: test-coverage.svg
 
     - name: Commit badge
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/master' }}
       env:
         BRANCH: ${{ steps.extract_branch.outputs.branch }}
         FILE: 'test-coverage.svg'
@@ -117,7 +120,7 @@ jobs:
         # Will give error if badge did not changed
         git commit -m "Add/Update badge" || true
     - name: Push badge commit
-      if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/master' }}
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
