@@ -1,4 +1,4 @@
-import Common from './Common';
+import Common, {log} from './Common';
 
 // Transform a string into a smaller/hash one of it
 const hashStr = str => {
@@ -12,12 +12,6 @@ const hashStr = str => {
       const hashTmp = ((hash << 5) - hash) + int;
       return hashTmp & hashTmp; // Convert to 32bit integer
     }, 0)
-}
-
-const log = (...args) => {
-  if (['development', 'test'].includes(process.env.NODE_ENV)) {
-    console.log(...args);
-  }
 }
 
 // Handles an element inside the cache
@@ -69,7 +63,7 @@ class FetchCacheElement extends Common {
       )).then( onSuccess );
     }
     
-    log(`Added listener to ${this.url}: ${this.listeners.length - 1}`);
+    this.log(`Added listener to ${this.url}: ${this.listeners.length - 1}`);
 
     return () => this.removeListener( onSuccess );
   }
@@ -83,7 +77,7 @@ class FetchCacheElement extends Common {
       .find( l => l.listener.onSuccess === onSuccess);
 
     if ( found ) {
-      log(`Remove listener from ${this.url}: ${found.index}`);
+      this.log(`Remove listener from ${this.url}: ${found.index}`);
 
       // Remove element from array
       this.listeners.splice(found.index, 1);
@@ -157,20 +151,20 @@ class FetchCacheElement extends Common {
 
           // Are there listeners?
           if ( this.listeners.length > 0 ) {
-            log(`${this.url}: Fetch it!`);
+            this.log(`${this.url}: Fetch it!`);
             this.fetch(resolve);
           }
           else {
             // Resolve without doing nothing
             // Someone downloaded it, but unregistered from it: changed data source
-            log(`${this.url}: Someone downloaded it, but unregistered from it: changed data source`);
+            this.log(`${this.url}: Someone downloaded it, but unregistered from it: changed data source`);
             resolve();
           }
         }
         else {
           // Resolve without doing nothing
           // It was never downloaded
-          log(`${this.url}: It was never downloaded`);
+          this.log(`${this.url}: It was never downloaded`);
           resolve();
         }
       }
@@ -192,6 +186,7 @@ class FetchCache {
   data = {};
 
   name = "Cache manager";
+  log = log;
 
   // Handles fetch requests:
   // - Creates a new fetch if it's the first time for this URL
@@ -226,7 +221,7 @@ class FetchCache {
         (resolve, reject) => {
           // Resolve without doing nothing
           // It was never downloaded
-          log(`${url}: It was never downloaded`);
+          this.log(`${url}: It was never downloaded`);
           resolve(true);
         }
       ))

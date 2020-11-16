@@ -1,5 +1,11 @@
 const noop = () => {};
 
+const log = (...args) => {
+  if (['development', 'test'].includes(process.env.NODE_ENV)) {
+    console.log(...args);
+  }
+}
+
 class Common {
 
   // Visible backend name
@@ -48,6 +54,9 @@ class Common {
       this.onError(err);
     }
   }
+
+  log = log;
 }
 
 export default Common;
+export {log};

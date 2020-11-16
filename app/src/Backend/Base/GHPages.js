@@ -1,12 +1,6 @@
 import Common from './Common';
 import cache from './Cache';
 
-const log = (...args) => {
-  if (['development', 'test'].includes(process.env.NODE_ENV)) {
-    console.log(...args);
-  }
-}
-
 // Handle data backend and cache for backends at GH Pages
 // This is not a singleton: unique error handlers
 class GHPages extends Common {
@@ -32,7 +26,7 @@ class GHPages extends Common {
     return cache.checkIfNeedUpdate(
       this.indexUrl,
       async (updateNeeded) => {
-        log(`${this.name}: update needed: ${updateNeeded}`);
+        this.log(`${this.name}: update needed: ${updateNeeded}`);
         await callback(updateNeeded);
       },
       error => {
@@ -56,7 +50,7 @@ class GHPages extends Common {
       await this.invalidateAll();
 
       // Finally, invalidate the `index` JSON
-      log(`${this.name}: Invalidate index`);
+      this.log(`${this.name}: Invalidate index`);
 
       await cache.invalidate( this.indexUrl );
 
@@ -91,7 +85,7 @@ class GHPages extends Common {
       ? this.millisToNextUpdate()
       : millis;
 
-    log(`${this.name}: Next update on ${new Date( (new Date()).getTime() + nextMillis )}`);
+    this.log(`${this.name}: Next update on ${new Date( (new Date()).getTime() + nextMillis )}`);
 
     // If data has been updated and `recursive` is true, re-schedule data update for the next day
     // Else (recursive || not recursive but data NOT updated), schedule data update in 5 minutes

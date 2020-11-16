@@ -1,4 +1,4 @@
-import { delay, MockFetch, AbortError } from '../../testHelpers';
+import { delay, MockFetch, AbortError, catchConsoleLog } from '../../testHelpers';
 
 import Common from './Common';
 
@@ -62,10 +62,13 @@ test('Common does not calls onUpdate nor onError when thrown error is an AbortEr
   const testCommon = new TestCommon(options);
   const fetchThrowErrorOld = mockedFetch.options.throwError;
   mockedFetch.options.throwError = new AbortError("Testing abort errors");
-  await testCommon.subscribe(url);
+  const {output} = await catchConsoleLog( async () => {
+    await testCommon.subscribe(url);
+  });
 
   expect(options.onUpdate).toHaveBeenCalledTimes(0);
   expect(options.onError).toHaveBeenCalledTimes(0);
+  expect(output[0].includes("Connection aborted")).toBe(true);
   mockedFetch.options.throwError = fetchThrowErrorOld;
 });
 
