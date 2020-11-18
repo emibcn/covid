@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import MenuAddWidget from './MenuAddWidget';
 import WidgetsTypes from './Widgets';
+import SortableWidgetContainer from './SortableWidgetContainer';
 
 import { withBcnDataHandler } from '../Backend/Bcn/BcnContext';
 import { withMapsDataHandler } from '../Backend/Maps/MapsContext';
@@ -304,29 +304,18 @@ class WidgetsList extends React.PureComponent {
           </div>
         </Paper>
 
-        {/* Widgets container */}
-        <Grid container spacing={3} className={classes.widgetsContainer}>
-          {/* Widgets list */}
-          { widgets.map( (widget, index) => {
-              const { Component } = WidgetsTypes.find(w => w.key === widget.type );
-              return (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={ this.widgetsIds[index] }>
-                  <Component
-                    id={ this.widgetsIds[index] }
-                    key={ this.widgetsIds[index] }
-                    days={ days }
-                    chartsIndex={ chartsIndex }
-                    bcnIndex={ bcnIndex }
-                    indexValues={ current }
-                    onChangeData={ this.onChangeData }
-                    onRemove={ this.onRemove }
-                    { ...widget.payload }
-                  />
-                </Grid>
-              )
-            })
-          }
-        </Grid>
+        {/* Container that displays the widgets */}
+        <SortableWidgetContainer 
+          bcnIndex={bcnIndex}
+          chartsIndex={chartsIndex}
+          days={days}
+          indexValues={current}
+          onChangeData={this.onChangeData}
+          onRemove={this.onRemove}
+          onReorder={this.props.onChangeData}
+          widgets={widgets}
+          widgetsIds={this.widgetsIds}
+        />
       </>
     );
   }

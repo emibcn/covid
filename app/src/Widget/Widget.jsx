@@ -2,6 +2,8 @@ import React from 'react';
 
 import { translate } from 'react-translate'
 
+import { SortableHandle } from 'react-sortable-hoc';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -16,6 +18,11 @@ import WidgetActions from './Actions';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
+  },
+  draggableWidgetTitle: {
+    '&:hover': {
+      cursor: 'move',
+    },
   },
 }));
 
@@ -49,18 +56,29 @@ const withWidget = (sectionsOrig) => {
   // Get a shortcut to view's render function
   const View = sections.view.render;
 
+  const WidgetDragHandle = SortableHandle((props) => {
+    const { children } = props;
+    const classes = useStyles();
+  
+    return (
+      <div className={classes.draggableWidgetTitle}>
+        {children}
+      </div>
+    );
+  })
+
   // Renders the view with a header containing the title and the menu with the rest of sections
   const Widget = (props) => {
     const classes = useStyles();
     // Prevent trigger actions components update when changing the day
     const { indexValues, ...restProps } = props;
     const action = <WidgetActions { ...restProps } sections={ sections } />;
-
+    const title = <WidgetDragHandle>{sections.view.title(props)||props.name}</WidgetDragHandle>
     return (
       <Card className={classes.root}>
         <CardHeader
           action={ action }
-          title={ sections.view.title(props)||props.name }
+          title={ title }
           subheader={ props.subtitle }
         />
         <CardContent>
