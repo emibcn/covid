@@ -8,23 +8,19 @@ import MapDataStatic from './MapDataStatic';
 class MapDataHandler extends GHPages {
   // Visible backend name
   name = "Maps JSON Files";
+
+  // Overload "abstract" member
   indexUrl = MapDataStatic.days;
 
   // Used to update the data at official schedule
-  // Official schedule's at 10am. It often is some minutes later.
-  // GH Pages cache backend Workflow schedule is at 10:30 and lasts few minutes (less than 5).
-  // We schedule at 10:35
-  timerDataUpdate = false;
   officialUpdateTime = "10:35".split(':');
 
   // Invalidate all URLs, except index
   invalidateAll = async () => {
     // Invalidate each map JSON first
-    for(let kind of MapDataHandler.kinds()) {
-      for(let value of MapDataHandler.values(kind)) {
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`Invalidate ${kind} - ${value}`);
-        }
+    for (const kind of MapDataHandler.kinds()) {
+      for (const value of MapDataHandler.values(kind)) {
+        this.log(`Invalidate ${kind} - ${value}`);
         await cache.invalidate( MapDataStatic.kind[kind].values[value] );
       };
     };

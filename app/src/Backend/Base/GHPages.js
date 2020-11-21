@@ -14,7 +14,7 @@ class GHPages extends Common {
   timerDataUpdate = false;
   officialUpdateTime = "10:35".split(':');
 
-  indexUrl = '';
+  indexUrl = ''; // Needs to be declared in extended classes
 
   /*
      Handle data update and cache invalidation

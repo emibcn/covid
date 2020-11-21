@@ -11,7 +11,6 @@ import {
 /*
   TODO:
    - Add test for fetch without declaring onError (throw in onSuccess and catch with expect?)
-   - Capture and test logs
    - Count some more calls to fetch
 */
 

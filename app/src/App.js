@@ -11,7 +11,7 @@ import ErrorCatcher from './ErrorCatcher';
 import Dashboard from './Dashboard';
 import { WidgetsList } from './Widget';
 
-import BackendProvider from './Backend/Provider';
+import { BackendProvider } from './Backend';
 
 // App Helmet: Controls HTML <head> elements with SideEffect
 // - Set a default title and title template, translated
