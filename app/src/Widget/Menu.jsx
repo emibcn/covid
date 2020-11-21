@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { translate } from 'react-translate'
 
@@ -91,5 +92,12 @@ const WidgetMenu = (props) => {
     </div>
   );
 }
+
+WidgetMenu.propTypes = {
+  id: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  // [optionID('view','edit','legend',...)]: {icon: string, label: string/fn }
+  options: PropTypes.object.isRequired,
+};
 
 export default translate('Widget')(WidgetMenu);

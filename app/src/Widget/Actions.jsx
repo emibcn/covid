@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { translate } from 'react-translate'
 
@@ -34,9 +35,8 @@ class DraggableResponsiveDialogUntranslated extends React.PureComponent {
 
   render() {
     const { open } = this.state;
-    const { id } = this.props;
     // Get `restProps` to child renders
-    const { sections, fullScreen, t, ...restProps } = this.props;
+    const { id, sections, fullScreen, t, ...restProps } = this.props;
     // Get shortcut to content & title render functions
     const Content = open ? sections[open].render : () => {};
     const Title = open ? sections[open].title : () => {};
@@ -80,6 +80,12 @@ class DraggableResponsiveDialogUntranslated extends React.PureComponent {
 }
 
 const DraggableResponsiveDialog = translate('Widget')(DraggableResponsiveDialogUntranslated);
+
+DraggableResponsiveDialog.propTypes = {
+  id: PropTypes.string.isRequired,
+  // [sectionID('view','edit','legend',...)]: {icon: string, label: string/fn }
+  sections: PropTypes.object.isRequired,
+};
 
 // Get fullScreen prop using MediaQuery
 const withFullScreen = (Component) => {
