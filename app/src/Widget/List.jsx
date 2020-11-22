@@ -29,11 +29,6 @@ const guidGenerator = () => "a-"+S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S
 // UI Material styles/classes
 const useStyles = (theme) => ({
   appBarSpacer: theme.mixins.toolbar,
-  widgetsContainer: {
-    zIndex: 10,
-    width: '100%',
-    margin: 0,
-  },
   paper: {
     padding: theme.spacing(2),
     display: 'flex',
@@ -254,6 +249,25 @@ class WidgetsList extends React.PureComponent {
     return this.props.onChangeData({ widgets: widgetsNew });
   }
 
+  // Handle widgets reordering
+  // Takes care of both `this.widgetsIds` and `this.props.widgets`
+  onReorder = (oldIndex, newIndex) => {
+    // Reorder ID
+    const id = this.widgetsIds[oldIndex];
+    this.widgetsIds.splice(oldIndex, 1);
+    this.widgetsIds.splice(newIndex, 0, id);
+
+    // Reorder data (keep props immutable)
+    // Use `widgets.filter` to clone original array
+    const { widgets } = this.props;
+    const widget = widgets[oldIndex];
+    const widgetsNew = widgets.filter((w, index) => index !== oldIndex);
+    widgetsNew.splice(newIndex, 0, widget);
+
+    // Save data
+    return this.props.onChangeData({ widgets: widgetsNew });
+  }
+
   render() {
 
     // KISS Loading
@@ -312,7 +326,7 @@ class WidgetsList extends React.PureComponent {
           indexValues={current}
           onChangeData={this.onChangeData}
           onRemove={this.onRemove}
-          onReorder={this.props.onChangeData}
+          onReorder={this.onReorder}
           widgets={widgets}
           widgetsIds={this.widgetsIds}
         />

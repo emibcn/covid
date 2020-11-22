@@ -4,8 +4,6 @@ import { Grid, makeStyles } from '@material-ui/core';
 
 import WidgetsTypes from './Widgets';
 
-import arrayMove from 'array-move';
-
 const useStyles = makeStyles({
   // Fixing some spotty behavior with the cursor style changing when dragging an item
   // See this issue for more info: https://github.com/clauderic/react-sortable-hoc/issues/212
@@ -82,8 +80,7 @@ const SortableWidgetContainer = (props) => {
 
   // Handle reordering of widgets after dragging and dropping
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    const reorderedWidgets = arrayMove(widgets, oldIndex, newIndex);
-    onReorder({ widgets: reorderedWidgets })
+    onReorder(oldIndex, newIndex);
   };
 
   return (
