@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import clsx from 'clsx';
-
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-
+import ListHeader from './ListHeader';
 import MenuAddWidget from './MenuAddWidget';
 import WidgetsTypes from './Widgets';
 import SortableWidgetContainer from './SortableWidgetContainer';
@@ -25,61 +21,6 @@ import withStorageHandler from './withStorageHandler';
 const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 const guidGenerator = () => "a-"+S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4();
 
-// UI Material styles/classes
-const useStyles = (theme) => ({
-  appBarSpacer: theme.mixins.toolbar,
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  fixed: {
-    position: 'sticky',
-    top: 0,
-    zIndex: 1200,
-    padding: 0,
-    // Not using it, adds a scrolling slider to the container on some screens
-    paddingBottom: 1,
-  },
-  sliderContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(.5),
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    // Marks labels not shown under 'md'
-    [theme.breakpoints.up('md')]: {
-      marginBottom: theme.spacing(1),
-      alignItems: 'flex-start',
-    },
-    // This is for non-mouse pointers, which need some extra space for usability
-    // Not using it, adds a scrolling slider to the container on some screens
-    // eslint-disable-next-line no-useless-computed-key
-    ['@media (pointer: coarse)']: {
-      [theme.breakpoints.up('md')]: {
-        marginTop: theme.spacing(.5),
-        paddingBottom: theme.spacing(1),
-      },
-      [theme.breakpoints.down('sm')]: {
-        paddingBottom: theme.spacing(.1),
-      },
-    }
-  },
-  // Save some space in buttons for small devices
-  addButton: {
-    padding: 0,
-    fontSize: theme.spacing(4),
-    boxShadow: '3px 3px 5px 2px rgba(100, 100, 100, .3)',
-    borderRadius: 3,
-    [theme.breakpoints.up('md')]: {
-      fontSize: theme.spacing(6),
-    },
-  },
-});
-
 // Renders widgets list
 // - Manages days list (using backend) and current selected day with a Slider
 // - Receives managed plugins params from props (with context providers and consumer)
@@ -98,8 +39,6 @@ class WidgetsList extends React.PureComponent {
     chartsIndex: null,
     bcnIndex: null,
     current: null,
-    marks: [],
-    marksSmall: [],
   }
 
   // Widgets list temporal IDs
@@ -237,38 +176,25 @@ class WidgetsList extends React.PureComponent {
       return <Loading />;
     }
 
-    const { widgets, classes } = this.props;
+    const { widgets } = this.props;
     const { days, chartsIndex, bcnIndex, current } = this.state;
-    const fixedPaper = clsx(classes.paper, classes.fixed);
 
     return (
       <>
-        <Paper className={ fixedPaper } elevation={ 2 }>
-          {/* Space used by the App Bar fixed positioned */}
-          <div className={ classes.appBarSpacer } />
-          {/*
-          <Container maxWidth="lg" className={classes.container}>
-            <h3>HELLO WORLD!</h3>
-          </Container>
-          */}
+        <ListHeader>
+          {/* Add an item */}
+          <MenuAddWidget
+            onAdd={ this.onAdd }
+            options={ WidgetsTypes }
+          />
 
-          <div className={ classes.sliderContainer } >
-
-            {/* Add an item */}
-            <MenuAddWidget
-              onAdd={ this.onAdd }
-              className={ classes.addButton }
-              options={ WidgetsTypes }
-            />
-
-            {/* Days display & Current manager */}
-            <DateSlider
-              days={ days }
-              current={ current || 0 }
-              onSetDate={ this.onSetDate }
-            />
-          </div>
-        </Paper>
+          {/* Days display & Current manager */}
+          <DateSlider
+            days={ days }
+            current={ current || 0 }
+            onSetDate={ this.onSetDate }
+          />
+        </ListHeader>
 
         {/* Container that displays the widgets */}
         <SortableWidgetContainer 
@@ -299,12 +225,11 @@ WidgetsList.propTypes = {
 // withChartsDataHandler: Add `chartsDataHandler` prop to use charts backend data
 const WidgetsListWithHOCs =
   withStorageHandler(
-    withStyles(useStyles)(
-      withBcnDataHandler(
-        withMapsDataHandler(
-          withChartsDataHandler(
-            WidgetsList
-  )))));
+    withBcnDataHandler(
+      withMapsDataHandler(
+        withChartsDataHandler(
+          WidgetsList
+  ))));
 
 // Manage some context providers details:
 // - pathFilter: How to split `location` (Route `path` prop)
