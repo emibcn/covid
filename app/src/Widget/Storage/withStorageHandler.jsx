@@ -1,14 +1,14 @@
 import React from 'react';
 
-import WidgetDataContext from './DataContext';
+import WidgetStorageContext from './StorageContext';
 
 /*
    Proxies data from this context into Component props
 */
-const withPropHandler = (Component, defaults) => {
-  class WithPropHandler extends React.Component {
+const withStorageHandler = (Component, defaults) => {
+  class WithStorageHandler extends React.Component {
     
-    dataHandler = data => {
+    storageHandler = data => {
       const { forwardedRef, ...props } = this.props;
       const { onChangeData = () => {}, ...restData } = data;
       const allData = Object.assign({}, defaults, restData, props);
@@ -25,17 +25,17 @@ const withPropHandler = (Component, defaults) => {
 
     render() {
       return (
-        <WidgetDataContext.Consumer>
-          { this.dataHandler }
-        </WidgetDataContext.Consumer>
+        <WidgetStorageContext.Consumer>
+          { this.storageHandler }
+        </WidgetStorageContext.Consumer>
       )
     }
   }
 
   // Return wrapper respecting ref
-  const forwarded = React.forwardRef( (props, ref) => {
-    return <WithPropHandler { ...props } forwardedRef={ ref } />
-  });
+  const forwarded = React.forwardRef(
+    (props, ref) => <WithStorageHandler { ...props } forwardedRef={ ref } />
+  );
 
   forwarded.propTypes = Component.propTypes;
   forwarded.defaultProps = Component.defaultProps;
@@ -43,4 +43,4 @@ const withPropHandler = (Component, defaults) => {
   return forwarded;
 }
 
-export default withPropHandler;
+export default withStorageHandler;

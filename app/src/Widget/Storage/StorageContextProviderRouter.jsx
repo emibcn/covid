@@ -2,59 +2,8 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 
-import Storage from 'react-simple-storage';
-
-import Loading from '../Loading';
-
-import WidgetDataContext from './DataContext';
-import withPropHandler from './withPropHandler';
-
-/*
-   Context provider using localStorage as data source for Widgets params
-*/
-class LocalStorageProvider extends React.Component {
-
-  state = {
-    initializing: true,
-    data: {}
-  }
-
-  onChangeData = (data) => {
-    this.setState({ data });
-  }
-
-  stopInitializing = () => {
-    this.setState({ initializing: false });
-  }
-
-  render() {
-    const { children, ...props } = this.props;
-    const { initializing, data } = this.state;
-
-    return (
-      <>
-        {/* Persistent state saver into localStorage, only on window close */}
-        <Storage
-          parent={ this }
-          prefix='LocalStorageProvider'
-          blacklist={['initializing']}
-          onParentStateHydrated={ this.stopInitializing  }
-        />
-
-        { initializing ? <Loading /> : (
-            <WidgetDataContext.Provider value={{
-              onChangeData: this.onChangeData,
-              ...props,
-              data,
-            }}>
-              { children }
-            </WidgetDataContext.Provider>
-          )
-        }
-      </>
-    )
-  }
-}
+import WidgetStorageContext from './StorageContext';
+import withStorageHandler from './withStorageHandler';
 
 /*
    Context provider using React Route as data source for Widgets params
@@ -126,14 +75,14 @@ class RouterProvider extends React.Component {
     } = this.props;
 
     return (
-      <WidgetDataContext.Provider value={{
+      <WidgetStorageContext.Provider value={{
         onChangeData: this.onChangeData,
         ...props,
         ...data,
         ...params,
       }}>
         { children }
-      </WidgetDataContext.Provider>
+      </WidgetStorageContext.Provider>
     )
   }
 }
@@ -148,7 +97,7 @@ RouterProvider.propTypes = {
 };
 
 // Proxy Route data into child props provider
-const RouterSwitch = (props) => {
+const RouterProviderWithSwitch = (props) => {
   const { pathFilter, paramsFilter, paramsToString, ...restProps } = props;
   return (
     <Switch>
@@ -170,22 +119,17 @@ const RouterSwitch = (props) => {
   )
 }
 
-// Consume localStorage data provider
-const RouterSwitchWithPropHandler = withPropHandler(
-  RouterSwitch,
-  { data: { widgets: {type: 'map'} } }
+RouterProviderWithSwitch.propTypes = {
+  // How to handle hash storage
+  pathFilter: PropTypes.string.isRequired,
+  paramsFilter: PropTypes.func.isRequired,
+  paramsToString: PropTypes.func.isRequired,
+};
+
+// Consume localStorage storage provider
+const RouterProviderWithSwitchWithStorageHandler = withStorageHandler(
+  RouterProviderWithSwitch,
+  { data: { widgets: {type: 'map'} } } // TODO: default
 );
 
-// Combine both providers
-const ContextProvider = (props) => {
-  const { children, pathFilter, paramsFilter, paramsToString } = props;
-  return (
-    <LocalStorageProvider>
-      <RouterSwitchWithPropHandler { ...{ pathFilter, paramsFilter, paramsToString } } >
-        { children }
-      </RouterSwitchWithPropHandler>
-    </LocalStorageProvider>
-  )
-}
-
-export default ContextProvider;
+export default RouterProviderWithSwitchWithStorageHandler;
