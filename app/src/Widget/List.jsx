@@ -14,8 +14,7 @@ import Throtle from '../Throtle';
 import DateSlider from './DateSlider';
 import Loading from '../Loading';
 
-import WidgetStorageContextProvider from './Storage/StorageContextProvider';
-import withStorageHandler from './Storage/withStorageHandler';
+import {WidgetStorageContextProvider, withStorageHandler} from './Storage';
 
 // GUID generator: used to create unique dtemporal IDs for widgets
 const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);

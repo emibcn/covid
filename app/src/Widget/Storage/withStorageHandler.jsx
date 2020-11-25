@@ -26,16 +26,16 @@ const withStorageHandler = (Component, defaults) => {
     render() {
       return (
         <WidgetStorageContext.Consumer>
-          { this.dataHandler }
+          { this.storageHandler }
         </WidgetStorageContext.Consumer>
       )
     }
   }
 
   // Return wrapper respecting ref
-  const forwarded = React.forwardRef( (props, ref) => {
-    return <WithStorageHandler { ...props } forwardedRef={ ref } />
-  });
+  const forwarded = React.forwardRef(
+    (props, ref) => <WithStorageHandler { ...props } forwardedRef={ ref } />
+  );
 
   forwarded.propTypes = Component.propTypes;
   forwarded.defaultProps = Component.defaultProps;
