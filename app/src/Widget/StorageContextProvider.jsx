@@ -7,7 +7,7 @@ import Storage from 'react-simple-storage';
 import Loading from '../Loading';
 
 import WidgetStorageContext from './StorageContext';
-import withPropHandler from './withPropHandler';
+import withStorageHandler from './withStorageHandler';
 
 /*
    Context provider using localStorage as data source for Widgets params
@@ -42,13 +42,13 @@ class LocalStorageProvider extends React.Component {
         />
 
         { initializing ? <Loading /> : (
-            <WidgetDataContext.Provider value={{
+            <WidgetStorageContext.Provider value={{
               onChangeData: this.onChangeData,
               ...props,
               data,
             }}>
               { children }
-            </WidgetDataContext.Provider>
+            </WidgetStorageContext.Provider>
           )
         }
       </>
@@ -126,14 +126,14 @@ class RouterProvider extends React.Component {
     } = this.props;
 
     return (
-      <WidgetDataContext.Provider value={{
+      <WidgetStorageContext.Provider value={{
         onChangeData: this.onChangeData,
         ...props,
         ...data,
         ...params,
       }}>
         { children }
-      </WidgetDataContext.Provider>
+      </WidgetStorageContext.Provider>
     )
   }
 }
@@ -170,10 +170,10 @@ const RouterSwitch = (props) => {
   )
 }
 
-// Consume localStorage data provider
-const RouterSwitchWithPropHandler = withPropHandler(
+// Consume localStorage storage provider
+const RouterSwitchWithStorageHandler = withStorageHandler(
   RouterSwitch,
-  { data: { widgets: {type: 'map'} } }
+  { data: { widgets: {type: 'map'} } } // TODO: default
 );
 
 // Combine both providers
@@ -181,9 +181,9 @@ const ContextProvider = (props) => {
   const { children, pathFilter, paramsFilter, paramsToString } = props;
   return (
     <LocalStorageProvider>
-      <RouterSwitchWithPropHandler { ...{ pathFilter, paramsFilter, paramsToString } } >
+      <RouterSwitchWithStorageHandler { ...{ pathFilter, paramsFilter, paramsToString } } >
         { children }
-      </RouterSwitchWithPropHandler>
+      </RouterSwitchWithStorageHandler>
     </LocalStorageProvider>
   )
 }
