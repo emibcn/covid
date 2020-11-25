@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 
-import { withStyles, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
 import MenuAddWidget from './MenuAddWidget';
@@ -16,7 +15,7 @@ import { withMapsDataHandler } from '../Backend/Maps/MapsContext';
 import { withChartsDataHandler } from '../Backend/Charts/ChartsContext';
 
 import Throtle from '../Throtle';
-import Slider from '../Slider';
+import DateSlider from './DateSlider';
 import Loading from '../Loading';
 
 import WidgetDataContextProvider from './DataContextProvider';
@@ -69,17 +68,6 @@ const useStyles = (theme) => ({
       },
     }
   },
-  // Add some lateral space for the slider on larger displays
-  sliderRoot: {
-    [theme.breakpoints.up('md')]: {
-      marginLeft: theme.spacing(4),
-      marginRight: theme.spacing(4),
-    },
-    [theme.breakpoints.down('md')]: {
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3),
-    },
-  },
   // Save some space in buttons for small devices
   addButton: {
     padding: 0,
@@ -88,13 +76,6 @@ const useStyles = (theme) => ({
     borderRadius: 3,
     [theme.breakpoints.up('md')]: {
       fontSize: theme.spacing(6),
-    },
-  },
-  // Play/pause button uses special CSS, so it does the font sizing
-  playPause: {
-    fontSize: theme.spacing(4/2),
-    [theme.breakpoints.up('md')]: {
-      fontSize: theme.spacing(6/2),
     },
   },
 });
@@ -145,55 +126,37 @@ class WidgetsList extends React.PureComponent {
   componentDidMount() {
     const { mapData, chartsData, bcnData } = this;
 
-    mapData.days(
-      days => {
-        // Are we on the last time serie element before update?
-        const isLast =
-          !this.state.current ||
-          !this.state.days ||
-          this.state.current === this.state.days.length - 1;
+    mapData.days( days => {
+      // Are we on the last time serie element before update?
+      const {current, days: daysOld} = this.state;
+      const isLast = !current || !daysOld || current === daysOld.length - 1;
 
-        // Marks on the slider
-        const marks = days
-          // Remember index
-          .map( (day, index) => ({day, index}))
-          // Get first day of each month
-          .filter( ({day, index}) => /^0?1\//.test(day) )
-          // Map to Slider marks schema and remove initial `0`
-          .map( ({day, index}) => ({ value: index, label: day.replace(/^0/, '') }) );
+      this.setState({
+        days,
 
-        this.setState({
-          days,
-
-          // Marks on the slider (small devices: no labels)
-          marks,
-          marksSmall: marks.map( ({value}) => ({value})),
-
-          // If we were on last item, go to the new last
-          ...(isLast ? {current: days.length - 1} : {}) 
-        });
-
-        // Once data has been fetched, schedule next data update
-        // Mind the timer on unmount
-        mapData.scheduleNextUpdate();
+        // If we were on last item, go to the new last
+        ...(isLast ? {current: days.length - 1} : {}) 
       });
-      chartsData.index(
-      chartsIndex => {
 
-        this.setState({ chartsIndex });
+      // Once data has been fetched, schedule next data update
+      // Mind the timer on unmount
+      mapData.scheduleNextUpdate();
+    });
+    chartsData.index( chartsIndex => {
 
-        // Once data has been fetched, schedule next data update
-        // Mind the timer on unmount
-        chartsData.scheduleNextUpdate();
-      });
-      bcnData.index(
-      bcnIndex => {
-        this.setState({ bcnIndex });
+      this.setState({ chartsIndex });
 
-        // Once data has been fetched, schedule next data update
-        // Mind the timer on unmount
-        bcnData.scheduleNextUpdate();
-      });
+      // Once data has been fetched, schedule next data update
+      // Mind the timer on unmount
+      chartsData.scheduleNextUpdate();
+    });
+    bcnData.index( bcnIndex => {
+      this.setState({ bcnIndex });
+
+      // Once data has been fetched, schedule next data update
+      // Mind the timer on unmount
+      bcnData.scheduleNextUpdate();
+    });
   }
 
   // Cleanup side effects
@@ -222,7 +185,6 @@ class WidgetsList extends React.PureComponent {
 
   // Slider helpers
   onSetDate = (event, current) => this.throtle.run(false, 10, () => this.setState({ current }) );
-  sliderTipFormatter = value => this.state.days[value];
 
   // Adds a new default widget to the list
   onAdd = (widgetType) => {
@@ -275,8 +237,8 @@ class WidgetsList extends React.PureComponent {
       return <Loading />;
     }
 
-    const { widgets, classes, showMarkLabels } = this.props;
-    const { days, chartsIndex, bcnIndex, current, marks, marksSmall } = this.state;
+    const { widgets, classes } = this.props;
+    const { days, chartsIndex, bcnIndex, current } = this.state;
     const fixedPaper = clsx(classes.paper, classes.fixed);
 
     return (
@@ -300,20 +262,10 @@ class WidgetsList extends React.PureComponent {
             />
 
             {/* Days display & Current manager */}
-            <Slider
-              classes={{
-                root: classes.sliderRoot,
-                playPause: classes.playPause,
-              }}
-              max={ days.length - 1 }
-              value={ current || 0 }
-              onChange={ this.onSetDate }
-              valueLabelFormat={ this.sliderTipFormatter }
-              getAriaValueText={ this.sliderTipFormatter }
-              // Marks without labels for small screens
-              marks={ showMarkLabels ? marks : marksSmall }
-              // Always visible on small screens
-              valueLabelDisplay={ showMarkLabels ? null : "on" }
+            <DateSlider
+              days={ days }
+              current={ current || 0 }
+              onSetDate={ this.onSetDate }
             />
           </div>
         </Paper>
@@ -340,31 +292,19 @@ WidgetsList.propTypes = {
   onChangeData: PropTypes.func.isRequired,
 };
 
-// Get showMarkLabels prop using MediaQuery
-// Used to prevent showing mark labels on small screens
-const withShowMarkLabels = (Component) => {
-  return (props) => {
-    const theme = useTheme();
-    const showMarkLabels = useMediaQuery(theme.breakpoints.up('md'));
-    return <Component { ...props } { ...{ showMarkLabels } } />
-  }
-};
-
 // withPropHandler: Handle params from providers (route + localStorage) into props
 // withStyles: Add `classes` prop for styling components
-// withShowMarkLabels: Add `showMarkLabels` breakpoint to show/hide Slider mark labels depending on sreen size
 // withBcnDataHandler: Add `bcnDataHandler` prop to use bcn backend data
 // withMapsDataHandler: Add `mapsDataHandler` prop to use maps backend data
 // withChartsDataHandler: Add `chartsDataHandler` prop to use charts backend data
 const WidgetsListWithPropHandler =
   withPropHandler(
     withStyles(useStyles)(
-      withShowMarkLabels(
-        withBcnDataHandler(
-          withMapsDataHandler(
-            withChartsDataHandler(
-              WidgetsList
-  ))))));
+      withBcnDataHandler(
+        withMapsDataHandler(
+          withChartsDataHandler(
+            WidgetsList
+  )))));
 
 // Manage some context providers details:
 // - pathFilter: How to split `location` (Route `path` prop)
