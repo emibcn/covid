@@ -1,6 +1,6 @@
 import withWidget from './Widget';
-import withStorageHandler from './withStorageHandler';
-import WidgetStorageContextProvider from './StorageContextProvider';
+import withStorageHandler from './Storage/withStorageHandler';
+import WidgetStorageContextProvider from './Storage/StorageContextProvider';
 import WidgetsList from './List';
 
 export { withWidget, withStorageHandler, WidgetStorageContextProvider, WidgetsList };

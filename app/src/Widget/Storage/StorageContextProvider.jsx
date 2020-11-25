@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Storage from 'react-simple-storage';
 
-import Loading from '../Loading';
+import Loading from '../../Loading';
 
 import WidgetStorageContext from './StorageContext';
 import withStorageHandler from './withStorageHandler';
