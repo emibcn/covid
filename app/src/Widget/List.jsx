@@ -37,7 +37,7 @@ class WidgetsList extends React.PureComponent {
     days: null,
     chartsIndex: null,
     bcnIndex: null,
-    current: null,
+    currentDate: null,
   }
 
   // Widgets list temporal IDs
@@ -66,14 +66,14 @@ class WidgetsList extends React.PureComponent {
 
     mapData.days( days => {
       // Are we on the last time serie element before update?
-      const {current, days: daysOld} = this.state;
-      const isLast = !current || !daysOld || current === daysOld.length - 1;
+      const {currentDate, days: daysOld} = this.state;
+      const isLast = !currentDate || !daysOld || currentDate === daysOld.length - 1;
 
       this.setState({
         days,
 
         // If we were on last item, go to the new last
-        ...(isLast ? {current: days.length - 1} : {}) 
+        ...(isLast ? {currentDate: days.length - 1} : {}) 
       });
 
       // Once data has been fetched, schedule next data update
@@ -122,7 +122,7 @@ class WidgetsList extends React.PureComponent {
   }
 
   // Slider helpers
-  onSetDate = (event, current) => this.throtle.run(false, 10, () => this.setState({ current }) );
+  onSetDate = (event, currentDate) => this.throtle.run(false, 10, () => this.setState({ currentDate }) );
 
   // Adds a new default widget to the list
   onAdd = (widgetType) => {
@@ -176,7 +176,7 @@ class WidgetsList extends React.PureComponent {
     }
 
     const { widgets } = this.props;
-    const { days, chartsIndex, bcnIndex, current } = this.state;
+    const { days, chartsIndex, bcnIndex, currentDate } = this.state;
 
     return (
       <>
@@ -190,7 +190,7 @@ class WidgetsList extends React.PureComponent {
           {/* Days display & Current manager */}
           <DateSlider
             days={ days }
-            current={ current || 0 }
+            current={ currentDate || 0 }
             onSetDate={ this.onSetDate }
           />
         </ListHeader>
@@ -200,7 +200,7 @@ class WidgetsList extends React.PureComponent {
           bcnIndex={bcnIndex}
           chartsIndex={chartsIndex}
           days={days}
-          indexValues={current}
+          indexValues={currentDate}
           onChangeData={this.onChangeData}
           onRemove={this.onRemove}
           onReorder={this.onReorder}
