@@ -6,7 +6,7 @@ import Storage from 'react-simple-storage';
 
 import Loading from '../Loading';
 
-import WidgetDataContext from './DataContext';
+import WidgetStorageContext from './StorageContext';
 import withPropHandler from './withPropHandler';
 
 /*

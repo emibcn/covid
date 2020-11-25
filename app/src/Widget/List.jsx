@@ -18,8 +18,8 @@ import Throtle from '../Throtle';
 import DateSlider from './DateSlider';
 import Loading from '../Loading';
 
-import WidgetDataContextProvider from './DataContextProvider';
-import withPropHandler from './withPropHandler';
+import WidgetStorageContextProvider from './StorageContextProvider';
+import withStorageHandler from './withStorageHandler';
 
 // GUID generator: used to create unique dtemporal IDs for widgets
 const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);
@@ -292,13 +292,13 @@ WidgetsList.propTypes = {
   onChangeData: PropTypes.func.isRequired,
 };
 
-// withPropHandler: Handle params from providers (route + localStorage) into props
+// withStorageHandler: Handle params from storage providers (route + localStorage) into props
 // withStyles: Add `classes` prop for styling components
 // withBcnDataHandler: Add `bcnDataHandler` prop to use bcn backend data
 // withMapsDataHandler: Add `mapsDataHandler` prop to use maps backend data
 // withChartsDataHandler: Add `chartsDataHandler` prop to use charts backend data
-const WidgetsListWithPropHandler =
-  withPropHandler(
+const WidgetsListWithHOCs =
+  withStorageHandler(
     withStyles(useStyles)(
       withBcnDataHandler(
         withMapsDataHandler(
@@ -310,8 +310,8 @@ const WidgetsListWithPropHandler =
 // - pathFilter: How to split `location` (Route `path` prop)
 // - paramsFilter: Parse `location` parts defined ^
 // - paramsToString: Parse back a JS object into a `location` path
-const WidgetsListWithContextProviders = (props) => (
-  <WidgetDataContextProvider
+const WidgetsListWithStorageContextProviders = (props) => (
+  <WidgetStorageContextProvider
     pathFilter={ '/:widgets*' }
     paramsFilter={ (params) => {
       const { widgets } = params;
@@ -334,8 +334,8 @@ const WidgetsListWithContextProviders = (props) => (
       return `/${widgets}`
     }}
   >
-    <WidgetsListWithPropHandler { ...props } />
-  </WidgetDataContextProvider>
+    <WidgetsListWithHOCs { ...props } />
+  </WidgetStorageContextProvider>
 );
 
-export default WidgetsListWithContextProviders;
+export default WidgetsListWithStorageContextProviders;
