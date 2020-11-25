@@ -21,13 +21,14 @@ const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 const guidGenerator = () => "a-"+S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4();
 
 // Renders widgets list
-// - Manages days list (using backend) and current selected day with a Slider
-// - Receives managed plugins params from props (with context providers and consumer)
+// - Manages days list (using backend) and current selected Date with a Slider
+// - Receives managed plugins params from props (with storage context providers and consumer)
 // - Receives Widgets param modification events and calls parents param event
 //   handlers callbacks with processed data:
-//   - Add
+//   - Add (not from widgets but from MenuAddWidget)
 //   - Edit
 //   - Remove
+//   - Reorder (from SortableWidgetContainer)
 // - Blindly (with `payload`) handles different types of widgets depending on passed/saved
 //   params from URL and localStorage
 class WidgetsList extends React.PureComponent {
@@ -50,6 +51,7 @@ class WidgetsList extends React.PureComponent {
 
   constructor(props) {
     super(props);
+
     // Generate initial list of unique IDs
     if ('widgets' in props) {
       this.updateIDs(props.widgets.length);
@@ -218,7 +220,6 @@ WidgetsList.propTypes = {
 };
 
 // withStorageHandler: Handle params from storage providers (route + localStorage) into props
-// withStyles: Add `classes` prop for styling components
 // withBcnDataHandler: Add `bcnDataHandler` prop to use bcn backend data
 // withMapsDataHandler: Add `mapsDataHandler` prop to use maps backend data
 // withChartsDataHandler: Add `chartsDataHandler` prop to use charts backend data
@@ -231,7 +232,7 @@ const WidgetsListWithHOCs =
   ))));
 
 // Manage some context providers details:
-// - pathFilter: How to split `location` (Route `path` prop)
+// - pathFilter: How to split `location` (<Router> `path` prop)
 // - paramsFilter: Parse `location` parts defined ^
 // - paramsToString: Parse back a JS object into a `location` path
 const WidgetsListWithStorageContextProviders = (props) => (
@@ -242,7 +243,9 @@ const WidgetsListWithStorageContextProviders = (props) => (
       let widgetsParsed;
 
       try {
-        widgetsParsed = widgets.split('/').map( w => JSON.parse( decodeURIComponent(w) ) );
+        widgetsParsed = widgets
+          .split('/')
+          .map( w => JSON.parse( decodeURIComponent(w) ) );
       } catch(err) {
         widgetsParsed = [];
       }
@@ -253,7 +256,12 @@ const WidgetsListWithStorageContextProviders = (props) => (
     }}
     paramsToString={ (params) => {
       const widgets = params.widgets.map(
-        w => encodeURIComponent( JSON.stringify({ type: w.type, payload: w.payload }) )
+        w => encodeURIComponent(
+          JSON.stringify({
+            type: w.type,
+            payload: w.payload,
+          })
+        )
       ).join('/');
       return `/${widgets}`
     }}
