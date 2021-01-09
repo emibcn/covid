@@ -2,8 +2,6 @@ import React from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { Grid, makeStyles } from '@material-ui/core';
 
-import WidgetsTypes from './Widgets';
-
 const useStyles = makeStyles({
   // Fixing some spotty behavior with the cursor style changing when dragging an item
   // See this issue for more info: https://github.com/clauderic/react-sortable-hoc/issues/212
@@ -17,56 +15,31 @@ const useStyles = makeStyles({
   },
 })
 
-const DraggableWidgetContainer = SortableElement((props) => {
-  const {
-    bcnIndex,
-    chartsIndex,
-    days,
-    indexValues,
-    onChangeData,
-    onRemove,
-    value,
-    widgetId,
-  } = props;
-  
-  const { Component } = WidgetsTypes.find(w => w.key === value.type );
-  
+const DraggableWidgetContainer = SortableElement(({ Component, payload, ...props}) => {
+  // Merge props from general props and from payload
+  // Add first the payload values, so them cannot overwrite the ones from props
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
-      <Component
-        id={widgetId}
-        bcnIndex={bcnIndex}
-        chartsIndex={chartsIndex}
-        days={days}
-        indexValues={indexValues}
-        onChangeData={onChangeData}
-        onRemove={onRemove}
-        {...value.payload}
-      />
+      <Component {...payload} {...props} />
     </Grid>
   )
 })
 
-const DraggableWidgetsList = SortableContainer((props) => {
-  const {
-    items: widgets,
-    widgetsIds,
-  } = props;
+const DraggableWidgetsList = SortableContainer(({ items: widgets, ...props }) => {
   const classes = useStyles();
 
   return (
     <Grid container spacing={3} className={classes.widgetsContainer}>
-      {widgets.map((value, index) => {
-        // Create a separate id for the individual widgets
+      {widgets.map(({ id, Component, payload }, index) => {
+        // Use `id` for the key to optimize renders on reorder
         // The SortableElements will use the map method's index for sorting
-        const widgetId = widgetsIds[index];
+        // Passthrough `id`, `Component` and `payload`
         return (
           <DraggableWidgetContainer 
-            key={widgetId}
+            key={id}
             index={index}
-            widgetId={widgetId}
-            value={value}
             {...props}
+            {...{id, Component, payload}}
           />
         )
       })}
@@ -74,8 +47,7 @@ const DraggableWidgetsList = SortableContainer((props) => {
   )
 })
 
-const SortableWidgetContainer = (props) => {
-  const { widgets, onReorder } = props;
+const SortableWidgetContainer = ({ widgets, onReorder, ...props }) => {
   const classes = useStyles();
 
   // Handle reordering of widgets after dragging and dropping

@@ -206,8 +206,13 @@ class WidgetsList extends React.PureComponent {
           onChangeData={this.onChangeData}
           onRemove={this.onRemove}
           onReorder={this.onReorder}
-          widgets={widgets}
-          widgetsIds={this.widgetsIds}
+          widgets={
+            widgets.map(({ type, payload }, index) => ({
+              id: this.widgetsIds[index],
+              Component: WidgetsTypes.find(w => w.key === type ).Component,
+              ...{ payload },
+            }))
+          }
         />
       </>
     );
