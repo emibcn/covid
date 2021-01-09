@@ -35,8 +35,9 @@ class DraggableResponsiveDialogUntranslated extends React.PureComponent {
 
   render() {
     const { open } = this.state;
-    // Get `restProps` to child renders
-    const { id, sections, fullScreen, t, ...restProps } = this.props;
+    // Get `restProps` for child renders (including `id`)
+    const { sections, fullScreen, t, ...restProps } = this.props;
+    const { id } = this.props;
     // Get shortcut to content & title render functions
     const Content = open ? sections[open].render : () => {};
     const Title = open ? sections[open].title : () => {};
@@ -44,7 +45,6 @@ class DraggableResponsiveDialogUntranslated extends React.PureComponent {
       <div>
         <WidgetMenu
           options={ sections }
-          id={ id }
           onClick={ this.handleClickOpen }
           { ...restProps }
         />
