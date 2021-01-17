@@ -12,6 +12,7 @@ class ChartDataHandler extends GHPages {
   // Visible backend name
   name = "Charts JSON Files";
   indexUrl = ChartDataStaticURL;
+  unsubscribeIndex = () => {};
 
   /*
      Processed data from index
@@ -28,7 +29,7 @@ class ChartDataHandler extends GHPages {
       this.parseIndex(index);
     }
     else {
-      this.index( this.parseIndex );
+      this.unsubscribeIndex = this.indexInternal( this.parseIndex );
     }
   }
 
@@ -47,8 +48,15 @@ class ChartDataHandler extends GHPages {
      Return dynamic data (with cache)
   */
   indexData = [];
+  indexInternal = (callback) => cache.fetch( ChartDataStaticURL, callback );
+
+  // Return unsubscription callback
   index = (callback) => {
-    return cache.fetch( ChartDataStaticURL, callback );
+    const unsubscribe = this.indexInternal( callback );
+    return () => {
+      unsubscribe();
+      this.unsubscribeIndex();
+    }
   }
 
   parseIndex = (index) => {

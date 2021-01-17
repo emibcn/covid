@@ -10,6 +10,7 @@ class BcnDataHandler extends GHPages {
   // Visible backend name
   name = "Barcelona JSON Files";
   indexUrl = BcnDataStaticURL;
+  unsubscribeIndex = () => {};
 
   // If index data is not passed, subscribe to index
   // URL and parse its content once downloaded
@@ -20,7 +21,7 @@ class BcnDataHandler extends GHPages {
       this.parseIndex(index);
     }
     else {
-      this.index( this.parseIndex );
+      this.unsubscribeIndex = this.indexInternal( this.parseIndex );
     }
   }
 
@@ -39,8 +40,15 @@ class BcnDataHandler extends GHPages {
      Return dynamic data (with cache)
   */
   indexData = [];
+  indexInternal = (callback) => cache.fetch( BcnDataStaticURL, callback );
+
+  // Return unsubscription callback
   index = (callback) => {
-    return cache.fetch( BcnDataStaticURL, callback );
+    const unsubscribe = this.indexInternal( callback );
+    return () => {
+      unsubscribe();
+      this.unsubscribeIndex();
+    }
   }
 
   parseIndex = (index) => {
@@ -107,6 +115,7 @@ class BcnDataHandler extends GHPages {
     }
 
     // Get URL content (download or cached)
+    // Return unsubscription callback
     return cache.fetch( `${BcnStaticHost}/${found.values}`, callback );
   }
 }
