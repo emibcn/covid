@@ -21,9 +21,9 @@ const useChartsData = () => {
 
 const ChartsConsumer = ({children}) => children(useChartsData());
 
-const withChartsDataHandler = (WrappedComponent) => (props) => (
+const withChartsDataHandler = (WrappedComponent, name="chartsDataHandler") => (props) => (
   <ChartsContext.Consumer>
-    {context => <WrappedComponent {...props} chartsDataHandler={context} />}
+    {context => <WrappedComponent {...props} { ...{[name]: context} } />}
   </ChartsContext.Consumer>
 );
 

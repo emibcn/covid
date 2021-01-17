@@ -21,9 +21,9 @@ const useBcnData = () => {
 
 const BcnConsumer = ({children}) => children(useBcnData());
 
-const withBcnDataHandler = (WrappedComponent) => (props) => (
+const withBcnDataHandler = (WrappedComponent, name="bcnDataHandler") => (props) => (
   <BcnConsumer>
-    { context => <WrappedComponent {...props} bcnDataHandler={context} /> }
+    { context => <WrappedComponent {...props} { ...{[name]: context} } /> }
   </BcnConsumer>
 );
 

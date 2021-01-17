@@ -21,9 +21,9 @@ const useMapsData = () => {
 
 const MapsConsumer = ({children}) => children(useMapsData())
 
-const withMapsDataHandler = (WrappedComponent) => (props) => (
+const withMapsDataHandler = (WrappedComponent, name="mapsDataHandler") => (props) => (
   <MapsConsumer>
-    {context =>  <WrappedComponent {...props} mapsDataHandler={context} />}
+    {context => <WrappedComponent {...props} { ...{[name]: context} } />}
   </MapsConsumer>
 );
 
