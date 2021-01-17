@@ -75,11 +75,12 @@ class GHPages extends Common {
   cancelUpdateSchedule = () => {
     if ( this.timerDataUpdate ) {
       clearTimeout( this.timerDataUpdate );
+      this.timerDataUpdate = false;
     }
   }
 
   // Try to update data on next official scheduled data update
-  scheduleNextUpdate = (millis = false, recursive = false) => {
+  scheduleNextUpdate = ({ millis=false, ...options}={}) => {
     // If millis is not defined, call on next calculated default
     const nextMillis = millis === false
       ? this.millisToNextUpdate()
@@ -92,10 +93,21 @@ class GHPages extends Common {
     // This way, we retry an update few minutes later, in case the schedule has lasted more than usual
     this.cancelUpdateSchedule(); // Just in case
     this.timerDataUpdate = setTimeout(
-      () => this.updateIfNeeded(
-        updated => recursive || !updated
-          ? this.scheduleNextUpdate( updated ? false : 300_000)
-          : false),
+      () => {
+        const {recursive=false, onBeforeUpdate=()=>{}, onAfterUpdate=()=>{}} = options;
+
+        onBeforeUpdate();
+        this.updateIfNeeded(
+          updated => {
+            onAfterUpdate(updated);
+            return recursive || !updated
+              ? this.scheduleNextUpdate({
+                  ...options,
+                  ...(updated ? {} : {millis: 300_000})
+                })
+              : false
+          });
+      },
       nextMillis
     )
   }
