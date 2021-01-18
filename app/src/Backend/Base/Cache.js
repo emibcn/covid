@@ -89,7 +89,7 @@ class FetchCacheElement extends Common {
     // If there is an ongoing fetch and there are no more listeners left, abort the fetch
     if (this.fetching &&
         this.listeners.length === 0) {
-      this.controller.abort();
+      this.abort();
       this.cleanFetch();
     }
   }
@@ -118,7 +118,6 @@ class FetchCacheElement extends Common {
   // - If there is an error, processes all error listeners
   fetch = (callback = () => {}) => {
     this.fetching = true;
-    this.invalidated = false;
     return fetch( this.url, { signal: this.controller.signal })
       .then( this.handleFetchErrors )
       .then( response => response.json().then( result => ({
@@ -134,7 +133,7 @@ class FetchCacheElement extends Common {
   // Sends a HEAD request to download URL header's `last-modified` value and
   // returns the comparison against saved value: `true` if new one is higher
   checkIfNeedUpdate = (onSuccess, onError) => {
-    return fetch( this.url, { method: 'HEAD' })
+    return fetch( this.url, { method: 'HEAD', signal: this.controller.signal })
       .then( this.handleFetchErrors )
       .then( this.getLastModifiedFromResponse )
       .then( date => date > this.lastModified /* || true */ ) // TEST TODO BUG DEBUG
@@ -146,18 +145,26 @@ class FetchCacheElement extends Common {
   invalidate = () => {
     return (new Promise(
       (resolve, reject) => {
-        if ( this.result !== null ) {
+        if ( this.invalidated ) {
+          // Resolve without doing nothing
+          // It has already just been invalidated
+          this.log(`${this.url}: It has already been invalidated`);
+          resolve();
+        }
+        else if ( this.result !== null ) {
           this.invalidated = true;
 
           // Are there listeners?
           if ( this.listeners.length > 0 ) {
             this.log(`${this.url}: Fetch it!`);
-            this.fetch(resolve);
+            this.fetch( () => { this.invalidated = false });
+            resolve();
           }
           else {
             // Resolve without doing nothing
             // Someone downloaded it, but unregistered from it: changed data source
             this.log(`${this.url}: Someone downloaded it, but unregistered from it: changed data source`);
+            this.invalidated = false;
             resolve();
           }
         }
@@ -165,6 +172,7 @@ class FetchCacheElement extends Common {
           // Resolve without doing nothing
           // It was never downloaded
           this.log(`${this.url}: It was never downloaded`);
+          this.invalidated = false;
           resolve();
         }
       }

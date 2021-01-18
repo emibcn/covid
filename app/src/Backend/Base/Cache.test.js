@@ -157,6 +157,12 @@ test('cache correctly invalidates a subscribed URL and detects if it needs an up
   // automatically downloads the new version
   const {output: output3} = await catchConsoleLog( async () => {
     await cache.invalidate(url);
+
+    // Test double invalidation protection
+    const {output: outputInternal} = await catchConsoleLog( async () => {
+      await cache.invalidate(url);
+    });
+    expect(outputInternal[0].includes("It has already been invalidated")).toBe(true);
   });
 
   expect(output3[0].includes("Fetch it!")).toBe(true);
