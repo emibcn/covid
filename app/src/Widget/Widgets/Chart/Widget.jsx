@@ -7,11 +7,10 @@ import {
   faChartArea as faChart
 } from '@fortawesome/free-solid-svg-icons'
 
-import { withChartsDataHandler } from '../../../Backend/Charts/ChartsContext'
+import { withHandler, withIndex, withData } from '../../../Backend/Charts/context'
 
 import Chart from './Chart';
 import Edit from './Edit';
-import Loading from '../../../Loading';
 import withWidget from '../../Widget';
 
 const ChartWrapper = withWidget({
@@ -20,36 +19,35 @@ const ChartWrapper = withWidget({
     icon: <FontAwesomeIcon icon={ faChart } />,
     label: ({ t }) => t("View"),
     title: (props) => props.title,
-    render: (props) => (
-      <>
-        { !props.chartData ? (
-            <Loading />
-          ) : (
-            <Chart
-              dies={ props.days }
-              valors={ props.chartData }
-              dataset={ props.chartDataset }
-              indexValues={ props.indexValues }
-              id={ props.id }
-            />
-          )
-        }
-      </>
-    )
+    render: withData(({setChartData, days, chartData, chartDataset, indexValues, id}) => {
+      React.useEffect( () => setChartData(chartData), [chartData, setChartData]);
+      return <Chart
+        dies={ days }
+        valors={ chartData }
+        dataset={ chartDataset }
+        indexValues={ indexValues }
+        id={ id }
+      />
+    })
   },
+
   // Edit data
   edit: {
     icon: <FontAwesomeIcon icon={ faEdit } />,
     label: ({ t }) => t("Edit"),
     title: ({ t }) => t("Edit chart parameters"),
-    render: (props) => <Edit {...props} />,
+    render: Edit,
   },
 });
 
 /*
    Combine ChartData backend with Chart
 */
-class ChartDataHandler extends React.Component {
+class DataHandler extends React.Component {
+
+  state = {
+    chartData: false,
+  }
 
   constructor(props) {
     super(props);
@@ -59,17 +57,30 @@ class ChartDataHandler extends React.Component {
       chartDivision,
       chartPopulation,
       chartRegion,
+      chartDataset,
       chartsIndex,
       chartsDataHandler,
     } = props;
+    const { chartData } = this.state;
 
     // TODO: Handle errors
+    // Used to find metadata from selected options
+    // and for the rest of options while editing
     this.ChartData = new chartsDataHandler(chartsIndex);
-    this.cancelDataUpdate = false;
 
     this.state = {
-      chartData: null,
-      ...this.getMeta(chartDivision, chartPopulation, chartRegion, chartDataset, null)
+      ...this.state,
+      ...this.getMeta(chartDivision, chartPopulation, chartRegion, chartDataset, chartData)
+    }
+  }
+
+  // Get chartData from child
+  // Using this instead of receiving data via props:
+  //  - Allows showing <Loading/> only on internal view
+  //  - Allows continue editing once a value has changed
+  setChartData = (chartData) => {
+    if( chartData !== this.state.chartData ) {
+      this.setState({ chartData });
     }
   }
 
@@ -81,69 +92,41 @@ class ChartDataHandler extends React.Component {
         name: '...',
       };
     }
+    const title = chartData[chartDataset]?.title || chartData[chartDataset]?.name;
     return {
-      title: chartData[chartDataset].title,
-      name: chartData[chartDataset].title,
+      title,
+      name: title,
     }
   }
 
-  // Fetch map data
+  // Set map meta data
   updateData = () => {
-    const { chartDivision, chartPopulation, chartRegion } = this.props;
+    const { chartDivision, chartPopulation, chartRegion, chartDataset } = this.props;
+    const { chartData } = this.state;
 
-    // If there is an ongoing update, cancel the registration to it
-    if (this.cancelDataUpdate) {
-      this.cancelDataUpdate();
-    }
-
-    // Fetch JSON data and subscribe to updates
-    this.cancelDataUpdate = this.ChartData.data(
-      chartDivision,
-      chartPopulation,
-      chartRegion,
-      (chartData) => {
-        // Only update data if we didn't change chart confs in between
-        if ( chartDivision === this.props.chartDivision &&
-             chartPopulation === this.props.chartPopulation   &&
-             chartRegion === this.props.chartRegion ) {
-          this.setState({
-            chartData,
-            ...this.getMeta(chartDivision, chartPopulation, chartRegion, this.props.chartDataset, chartData),
-          });
-        }
-      });
-  }
-
-  // Ensure first data is gathered as soon as we have the component mounted
-  componentDidMount() {
-    this.updateData();
+    this.setState({
+      ...this.getMeta(chartDivision, chartPopulation, chartRegion, chartDataset, chartData),
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {
-      state: { chartData },
-      props: { chartDivision, chartPopulation, chartRegion, chartsIndex, chartsDataHandler }
-    } = this;
+    const { chartDivision, chartPopulation, chartRegion, chartDataset, chartsIndex } = this.props;
+    const { chartData } = this.state;
+
+    // If index changed, update backend with new data
+    if ( chartsIndex !== prevProps.chartsIndex ) {
+      this.ChartsData.parseIndex(chartsIndex);
+    }
 
     // If chartData is unset, gather new data
-    if( prevState.chartData !== chartData && chartData === null ) {
-      this.updateData();
-    }
-    else if (
+    if (
       // If params changed, unset chartData
       chartDivision !== prevProps.chartDivision ||
       chartPopulation !== prevProps.chartPopulation ||
-      chartRegion !== prevProps.chartRegion ) {
-      this.setState({
-        chartData: null
-      });
-    }
-    else if ( chartsIndex !== prevProps.chartsIndex ) {
-      // If chartsIndex changed, re-create backend with new data
-      this.ChartData = new chartsDataHandler(chartsIndex);
-      this.setState({
-        chartData: null
-      });
+      chartRegion !== prevProps.chartRegion ||
+      chartDataset !== prevProps.chartDataset ||
+      chartData !== prevState.chartData ) {
+      this.updateData();
     }
   }
 
@@ -184,11 +167,8 @@ class ChartDataHandler extends React.Component {
 
   // Fix region if needed
   // Also, update map metadata
-  onChangeChart = (chartDivision, chartPopulation, chartRegion, chartDataset, chartData) => {
-    this.setState({
-      ...(chartData === this.state.chartData ? {chartData} : {}),
-      ...this.getMeta(chartDivision, chartPopulation, chartRegion, chartDataset, chartData)
-    });
+  onChangeChart = (chartDivision, chartPopulation, chartRegion, chartDataset) => {
+    this.updateData();
     const region = this.findRegion(chartDivision, chartPopulation, chartRegion);
     this.props.onChangeData(
       this.props.id,
@@ -203,26 +183,25 @@ class ChartDataHandler extends React.Component {
   // Force data update on division change
   onChangeChartDivision = (chartDivision) => {
     const { chartPopulation, chartRegion, chartDataset } = this.props;
-    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset, null);
+    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset);
   }
 
   // Force data update on value change
   onChangeChartPopulation = (chartPopulation) => {
     const { chartDivision, chartRegion, chartDataset } = this.props;
-    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset, null);
+    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset);
   }
 
   // Force data update on value change
   onChangeChartRegion = (chartRegion) => {
     const { chartDivision, chartPopulation, chartDataset } = this.props;
-    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset, null);
+    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset);
   }
 
   // Datasets are on same data object
   onChangeChartDataset = (chartDataset) => {
     const { chartDivision, chartPopulation, chartRegion } = this.props;
-    const { chartData } = this.state;
-    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset, chartData);
+    this.onChangeChart(chartDivision, chartPopulation, chartRegion, chartDataset);
   }
 
   render() {
@@ -234,10 +213,10 @@ class ChartDataHandler extends React.Component {
       chartPopulation,
       chartDataset,
       chartRegion,
-      chartsIndex
+      chartsIndex,
     } = this.props; 
     const {
-      chartData, title, name
+      title, name
     } = this.state;
 
     return (
@@ -249,12 +228,12 @@ class ChartDataHandler extends React.Component {
       }}>
         <ChartWrapper
           id={ id }
+          setChartData={ this.setChartData }
           chartDivision={ chartDivision }
           chartPopulation={ chartPopulation }
           chartDataset={ chartDataset }
           chartRegion={ chartRegion }
           chartsIndex={ chartsIndex }
-          chartData={ chartData }
           divisions={ this.ChartData.divisions }
           populations={ this.ChartData.populations }
           onChangeChartDivision={ this.onChangeChartDivision }
@@ -278,7 +257,7 @@ const chartPopulation = "Població total";
 const chartRegion = 0;
 const chartDataset = 'grafic_extensio';
 
-ChartDataHandler.defaultProps = {
+DataHandler.defaultProps = {
   chartDivision,
   chartPopulation,
   chartRegion,
@@ -287,7 +266,7 @@ ChartDataHandler.defaultProps = {
   onRemove: () => {},
 };
 
-ChartDataHandler.propTypes = {
+DataHandler.propTypes = {
   days: PropTypes.arrayOf(PropTypes.string).isRequired,
   indexValues: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
@@ -302,4 +281,5 @@ ChartDataHandler.propTypes = {
   ]).isRequired,
 };
 
-export default withChartsDataHandler(ChartDataHandler);
+export default withHandler(
+  withIndex( DataHandler, 'chartsIndex'));

@@ -75,11 +75,12 @@ class GHPages extends Common {
   cancelUpdateSchedule = () => {
     if ( this.timerDataUpdate ) {
       clearTimeout( this.timerDataUpdate );
+      this.timerDataUpdate = false;
     }
   }
 
   // Try to update data on next official scheduled data update
-  scheduleNextUpdate = (millis = false, recursive = false) => {
+  scheduleNextUpdate = ({ millis=false, ...options}={}) => {
     // If millis is not defined, call on next calculated default
     const nextMillis = millis === false
       ? this.millisToNextUpdate()
@@ -87,17 +88,40 @@ class GHPages extends Common {
 
     this.log(`${this.name}: Next update on ${new Date( (new Date()).getTime() + nextMillis )}`);
 
+    // Just in case
+    this.cancelUpdateSchedule();
+
     // If data has been updated and `recursive` is true, re-schedule data update for the next day
     // Else (recursive || not recursive but data NOT updated), schedule data update in 5 minutes
     // This way, we retry an update few minutes later, in case the schedule has lasted more than usual
-    this.cancelUpdateSchedule(); // Just in case
     this.timerDataUpdate = setTimeout(
-      () => this.updateIfNeeded(
-        updated => recursive || !updated
-          ? this.scheduleNextUpdate( updated ? false : 300_000)
-          : false),
+      () => {
+        const {
+          recursive=false,
+          onBeforeUpdate=()=>{},
+          onAfterUpdate=()=>{},
+          notUpdatedMillis=300_000,
+        } = options;
+
+        onBeforeUpdate();
+        this.updateIfNeeded(
+          (updated) => {
+            onAfterUpdate(updated);
+            if( recursive || !updated ) {
+              this.scheduleNextUpdate({
+                ...options,
+                ...(updated ? {} : {millis: notUpdatedMillis})
+              });
+            }
+          });
+      },
       nextMillis
-    )
+    );
+  }
+
+  abort = () => {
+    this.cancelUpdateSchedule();
+    super.abort();
   }
 
   // Calculates haw many milliseconds until next schedulled update (today's or tomorrow)

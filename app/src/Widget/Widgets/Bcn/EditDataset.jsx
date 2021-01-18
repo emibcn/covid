@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 
-import { withBcnDataHandler } from '../../../Backend/Bcn/BcnContext';
+import { withHandler } from '../../../Backend/Bcn/context';
 
 // From: https://material-ui.com/components/tree-view/#rich-object
 
@@ -41,7 +41,6 @@ class RecursiveTreeView extends React.Component {
 
   componentWillMount = () => {
     const { value, bcnIndex, bcnDataHandler } = this.props;
-
     const bcnData = new bcnDataHandler(bcnIndex);
 
     this.setState({
@@ -74,4 +73,7 @@ class RecursiveTreeView extends React.Component {
   }
 }
 
-export default withBcnDataHandler(withStyles(styles)(RecursiveTreeView));
+export default withHandler(
+  withStyles(styles)(
+    RecursiveTreeView
+  ));

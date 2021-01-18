@@ -9,12 +9,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import MapData from '../../../Backend/Maps';
-import { withMapsDataHandler } from '../../../Backend/Maps/MapsContext';
+import { withData } from '../../../Backend/Maps/context';
 
 import MapImage from './MapImage';
 import Edit from './Edit';
 import Legend from './Legend';
-import Loading from '../../../Loading';
 import withWidget from '../../Widget';
 
 const MapWrapper = withWidget({
@@ -23,24 +22,17 @@ const MapWrapper = withWidget({
     icon: <FontAwesomeIcon icon={ faMap } />,
     label: ({ t }) => t("View"),
     title: (props) => props.name,
-    render: ({t, mapKind, label, mapData, indexValues, colors, id}) => (
-      <>
-        { !mapData  || !mapData.valors ? (
-            <Loading />
-          ) : (
-            <MapImage
-              title={ `${t('Map')}: Catalunya: ${t(mapKind)}` }
-              label={ label }
-              values={ mapData.valors }
-              mapSrc={ MapData.svg(mapKind) }
-              indexValues={ indexValues }
-              colors={ colors }
-              id={ id }
-            />
-          )
-        }
-      </>
-    )
+    render: withData(({t, mapKind, label, mapData, indexValues, colors, id}) => (
+      <MapImage
+        title={ `${t('Map')}: Catalunya: ${t(mapKind)}` }
+        label={ label }
+        values={ mapData.valors }
+        mapSrc={ MapData.svg(mapKind) }
+        indexValues={ indexValues }
+        colors={ colors }
+        id={ id }
+      />
+    )),
   },
   // Edit data
   edit: {
@@ -56,6 +48,7 @@ const MapWrapper = withWidget({
       />
     ),
   },
+
   // Show map legend
   legend: {
     icon: <FontAwesomeIcon icon={ faLegend } />,
@@ -73,21 +66,16 @@ const MapWrapper = withWidget({
 /*
    Combine MapData backend with MapWrapper/MapImage
 */
-class MapDataHandler extends React.Component {
+class DataHandler extends React.Component {
 
   constructor(props) {
     super(props);
 
     // Default values: first element of each's group
     // TODO: Get data from storage/router/props
-    const { mapKind, mapValue, mapsDataHandler } = props;
-
-    // TODO: Handle errors
-    this.MapData = new mapsDataHandler();
-    this.cancelDataUpdate = false;
+    const { mapKind, mapValue } = props;
 
     this.state = {
-      mapData: null,
       mapKindDefault: mapKind,
       mapValueDefault: mapValue,
       ...this.getMeta(mapValue)
@@ -102,50 +90,9 @@ class MapDataHandler extends React.Component {
     name: MapData.metaLabel(mapValue),
   })
 
-  // Fetch map data
-  updateData = () => {
-    const { mapKind, mapValue } = this.props;
-
-    // If there is an ongoing update, cancel the registration to it
-    if (this.cancelDataUpdate) {
-      this.cancelDataUpdate();
-    }
-
-    this.cancelDataUpdate = this.MapData.data(mapKind, mapValue, mapData => {
-      // Only update data if we didn't change map confs in between
-      if (mapKind === this.props.mapKind && mapValue === this.props.mapValue) {
-        this.setState({ mapData });
-      }
-    });
-  }
-
-  // Ensure first data is gathered as soon as we have the component mounted
-  componentDidMount() {
-    this.updateData();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    // If mapData is unset, gather new data
-    if( prevState.mapData !== this.state.mapData &&
-        this.state.mapData === null ) {
-      this.updateData();
-    }
-    else if (
-      // If params changed, unset mapData
-      this.props.mapKind !== prevProps.mapKind ||
-      this.props.mapValue !== prevProps.mapValue ) {
-      this.setState({
-        mapData: null
-      });
-    }
-  }
-
-  // Force data update on kind change
+  // Update map metadata
   onChangeMapKind = (mapKind) => {
     const { mapValue } = this.props;
-    this.setState({
-      mapData: null
-    });
     this.props.onChangeData(
       this.props.id,
       {
@@ -154,12 +101,10 @@ class MapDataHandler extends React.Component {
       });
   }
 
-  // Force data update on value change
-  // Also, update map metadata
+  // Update map metadata
   onChangeMapValue = (mapValue) => {
     const { mapKind } = this.props;
     this.setState({
-      mapData: null,
       ...this.getMeta(mapValue)
     });
     this.props.onChangeData(
@@ -173,7 +118,7 @@ class MapDataHandler extends React.Component {
   render() {
     const { days, indexValues, id, mapKind, mapValue } = this.props; 
     const {
-      mapData, mapKindDefault, mapValueDefault,
+      mapKindDefault, mapValueDefault,
       colors, title, label, name
     } = this.state;
 
@@ -193,7 +138,6 @@ class MapDataHandler extends React.Component {
           onChangeMapKind={ this.onChangeMapKind }
           onChangeMapValue={ this.onChangeMapValue }
           onRemove={ this.props.onRemove }
-          mapData={ mapData }
           indexValues={ indexValues }
           days={ days }
           colors={ colors }
@@ -210,14 +154,14 @@ class MapDataHandler extends React.Component {
 const mapKind = MapData.kinds()[0];
 const mapValue = MapData.values(mapKind)[0];
 
-MapDataHandler.defaultProps = {
+DataHandler.defaultProps = {
   mapKind,
   mapValue,
   onChangeData: () => {},
   onRemove: () => {},
 };
 
-MapDataHandler.propTypes = {
+DataHandler.propTypes = {
   days: PropTypes.arrayOf(PropTypes.string).isRequired,
   indexValues: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
@@ -227,4 +171,4 @@ MapDataHandler.propTypes = {
   mapValue: PropTypes.string.isRequired,
 };
 
-export default withMapsDataHandler(MapDataHandler);
+export default DataHandler;

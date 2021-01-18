@@ -11,7 +11,7 @@ import ErrorCatcher from './ErrorCatcher';
 import Dashboard from './Dashboard';
 import { WidgetsList } from './Widget';
 
-import { BackendProvider } from './Backend';
+import { BackendProvider, IndexesHandler } from './Backend';
 
 // App Helmet: Controls HTML <head> elements with SideEffect
 // - Set a default title and title template, translated
@@ -143,8 +143,12 @@ class App extends React.Component {
             tutorialSeen={ tutorialSeen }
             onTutorialSeen={ this.handleTutorialSeenChange }
           >
-            <ErrorCatcher origin='WidgetsList'>
-              <WidgetsList />
+            <ErrorCatcher origin='IndexesHandler'>
+              <IndexesHandler>
+                <ErrorCatcher origin='WidgetsList'>
+                  <WidgetsList />
+                </ErrorCatcher>
+              </IndexesHandler>
             </ErrorCatcher>
           </Dashboard>
         </ErrorCatcher>

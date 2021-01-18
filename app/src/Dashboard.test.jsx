@@ -87,7 +87,7 @@ test('renders closed AppBar', () => {
 
 test('alerts user when new service worker is detected', async () => {
   let dashboard;
-  // Badge not visible in big s reens
+  // Badge not visible in big screens
   act( () => {
     dashboard = render( objectCreator({
       newServiceWorkerDetected: true,

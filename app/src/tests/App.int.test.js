@@ -4,6 +4,14 @@ import { render, createEvent, fireEvent, act, screen } from '@testing-library/re
 import '../testSetup';
 import App from '../App';
 
+jest.mock("../Backend", () => {
+  return {
+    __esModule: true,
+    BackendProvider: ({children}) => <>{children}</>,
+    IndexesHandler: ({children}) => <>{children}</>,
+  };
+});
+
 jest.mock("../Widget", () => {
   return {
     __esModule: true,
