@@ -48,6 +48,14 @@ jest.mock("./Widget", () => {
   };
 });
 
+jest.mock("./Backend", () => {
+  return {
+    __esModule: true,
+    BackendProvider: ({children}) => <>{children}</>,
+    IndexesHandler: ({children}) => <>{children}</>,
+  };
+});
+
 // Mock available languages
 jest.mock("./i18n/available", () => {
   return {
