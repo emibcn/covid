@@ -25,17 +25,6 @@ class BcnDataHandler extends GHPages {
     }
   }
 
-  // Invalidate all URLs, except index
-  invalidateAll = async () => {
-    for (const url of this.active) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`${this.name}: Invalidate '?${url}'`);
-      }
-
-      await cache.invalidate( `${BcnStaticHost}/${url}` );
-    }
-  }
-
   /*
      Return dynamic data (with cache)
   */
@@ -43,6 +32,7 @@ class BcnDataHandler extends GHPages {
   indexInternal = (callback) => cache.fetch( BcnDataStaticURL, callback );
 
   // Return unsubscription callback
+  // Return unsubscription from possible automatic download
   index = (callback) => {
     const unsubscribe = this.indexInternal( callback );
     return () => {
@@ -54,10 +44,24 @@ class BcnDataHandler extends GHPages {
   parseIndex = (index) => {
     // Save/cache index data
     this.indexData = index;
+
+    // Update active downloads
+    this.invalidateAll();
   }
 
   // Active URLs: those which will be invalidated on update
   active = [];
+
+  // Invalidate all URLs, except index
+  invalidateAll = async () => {
+    for (const url of this.active) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`${this.name}: Invalidate '?${url}'`);
+      }
+
+      await cache.invalidate( `${BcnStaticHost}/${url}` );
+    }
+  }
 
   // Gets the breadcrumb of ancestors and the found node, or empty array (recursive)
   findBreadcrumb = (node, value, compare = ({code}, value) => code === value) => {

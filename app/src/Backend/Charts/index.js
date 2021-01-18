@@ -33,17 +33,6 @@ class ChartDataHandler extends GHPages {
     }
   }
 
-  // Invalidate all URLs, except index
-  invalidateAll = async () => {
-    for (const url of this.active) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`${this.name}: Invalidate '?${url}'`);
-      }
-
-      await cache.invalidate( `${ChartDataBase}?${url}` );
-    }
-  }
-
   /*
      Return dynamic data (with cache)
   */
@@ -61,15 +50,29 @@ class ChartDataHandler extends GHPages {
 
   parseIndex = (index) => {
     // Get a unique (`[...new Set( )]`) list of options elements
-    this.divisions = [...new Set( index.map( ({territori}) => territori) )];
+    this.divisions =   [...new Set( index.map( ({territori}) => territori) )];
     this.populations = [...new Set( index.map( ({poblacio})  => poblacio ) )];
 
     // Save/cache index data
     this.indexData = index;
+
+    // Update active downloads
+    this.invalidateAll();
   }
 
   // Active URLs: those which will be invalidated on update
   active = [];
+
+  // Invalidate all URLs, except index
+  invalidateAll = async () => {
+    for (const url of this.active) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`${this.name}: Invalidate '?${url}'`);
+      }
+
+      await cache.invalidate( `${ChartDataBase}?${url}` );
+    }
+  }
 
   // Gets the breadcrumb of ancestors and the found node, or empty array (recursive)
   findBreadcrumb = (node, value, compare = (node, url) => node.url === url) => {
