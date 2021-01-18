@@ -118,8 +118,8 @@ const ChartDatasetSelector = translate('Widget/Chart/Edit')((props) => {
     () => [
       {value: 'grafic_extensio', label: t('Extensió')},
       {value: 'grafic_risc_iepg', label: t('Risc iEPG')},
-      {value: 'seguiment', label: t('Seguiment')},
-      {value: 'situacio', label: t('Situació')},
+      {value: 'seguiment', label: t('Tracking')},
+      {value: 'situacio', label: t('Situation')},
     ],
     [t],
   );

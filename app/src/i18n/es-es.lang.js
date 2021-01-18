@@ -128,6 +128,8 @@ export default {
     "Risc iEPG": "Riesgo iEPG",
     "Region": "Región",
     "Select the region": "Seleccionar la región",
+    "Tracking": "Seguimiento",
+    "Situation": "Situación",
   },
 
   'Widget/Bcn/Edit': {
