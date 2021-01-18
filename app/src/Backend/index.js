@@ -1,6 +1,6 @@
-import Maps from './Maps';
-import Charts from './Charts';
-import Bcn from './Bcn';
+import * as Maps from './Maps';
+import * as Charts from './Charts';
+import * as Bcn from './Bcn';
 import BackendProvider from './Provider';
 import IndexesHandler from './IndexesHandler';
 

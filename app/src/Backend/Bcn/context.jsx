@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import Handler from './index';
+import Handler from './handler';
 import {withIndex, withData} from './withHandlers';
 
 const Context = createContext();
