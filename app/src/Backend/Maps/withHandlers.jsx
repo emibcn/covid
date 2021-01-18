@@ -1,13 +1,13 @@
 import withHandlerGenerator from '../Base/withHandlerGenerator';
-import { withMapsDataHandler } from './MapsContext';
+import { withHandler } from './context';
 
 // Index HOC
 const withIndex = (WrappedComponent, name="days") =>
   withHandlerGenerator(
-    withMapsDataHandler,
+    withHandler,
     () => ({}),
-    (props, MapsHandler, setIndex) => {
-      const handler = new MapsHandler();
+    (props, Handler, setIndex) => {
+      const handler = new Handler();
       return handler.index( setIndex );
     },
     name,
@@ -17,10 +17,10 @@ const withIndex = (WrappedComponent, name="days") =>
 // Data HOC
 const withData = (WrappedComponent, name="mapData") => {
   const WrapperComponent = withHandlerGenerator(
-    withMapsDataHandler,
+    withHandler,
     ({mapKind, mapValue}) => ({mapKind, mapValue}),
-    ({mapKind, mapValue}, MapsHandler, setData) => {
-      const handler = new MapsHandler();
+    ({mapKind, mapValue}, Handler, setData) => {
+      const handler = new Handler();
       return handler.data( mapKind, mapValue, setData )
     },
     name,

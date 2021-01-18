@@ -7,8 +7,7 @@ import {
   faChartArea as faChart
 } from '@fortawesome/free-solid-svg-icons'
 
-import { withChartsDataHandler } from '../../../Backend/Charts/ChartsContext'
-import { withIndex, withData } from '../../../Backend/Charts/withHandlers';
+import { withHandler, withIndex, withData } from '../../../Backend/Charts/context'
 
 import Chart from './Chart';
 import Edit from './Edit';
@@ -44,7 +43,7 @@ const ChartWrapper = withWidget({
 /*
    Combine ChartData backend with Chart
 */
-class ChartDataHandler extends React.Component {
+class DataHandler extends React.Component {
 
   state = {
     chartData: false,
@@ -258,7 +257,7 @@ const chartPopulation = "Població total";
 const chartRegion = 0;
 const chartDataset = 'grafic_extensio';
 
-ChartDataHandler.defaultProps = {
+DataHandler.defaultProps = {
   chartDivision,
   chartPopulation,
   chartRegion,
@@ -267,7 +266,7 @@ ChartDataHandler.defaultProps = {
   onRemove: () => {},
 };
 
-ChartDataHandler.propTypes = {
+DataHandler.propTypes = {
   days: PropTypes.arrayOf(PropTypes.string).isRequired,
   indexValues: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
@@ -282,5 +281,5 @@ ChartDataHandler.propTypes = {
   ]).isRequired,
 };
 
-export default withChartsDataHandler(
-  withIndex( ChartDataHandler, 'chartsIndex'));
+export default withHandler(
+  withIndex( DataHandler, 'chartsIndex'));

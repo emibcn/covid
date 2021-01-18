@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import MapData from '../../../Backend/Maps';
-import { withData } from '../../../Backend/Maps/withHandlers';
+import { withData } from '../../../Backend/Maps/context';
 
 import MapImage from './MapImage';
 import Edit from './Edit';
@@ -66,7 +66,7 @@ const MapWrapper = withWidget({
 /*
    Combine MapData backend with MapWrapper/MapImage
 */
-class MapDataHandler extends React.Component {
+class DataHandler extends React.Component {
 
   constructor(props) {
     super(props);
@@ -154,14 +154,14 @@ class MapDataHandler extends React.Component {
 const mapKind = MapData.kinds()[0];
 const mapValue = MapData.values(mapKind)[0];
 
-MapDataHandler.defaultProps = {
+DataHandler.defaultProps = {
   mapKind,
   mapValue,
   onChangeData: () => {},
   onRemove: () => {},
 };
 
-MapDataHandler.propTypes = {
+DataHandler.propTypes = {
   days: PropTypes.arrayOf(PropTypes.string).isRequired,
   indexValues: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
@@ -171,4 +171,4 @@ MapDataHandler.propTypes = {
   mapValue: PropTypes.string.isRequired,
 };
 
-export default MapDataHandler;
+export default DataHandler;

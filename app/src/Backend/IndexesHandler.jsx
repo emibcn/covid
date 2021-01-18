@@ -2,9 +2,9 @@ import React from 'react';
 
 import Loading from '../Loading';
 
-import { withMapsDataHandler } from '../Backend/Maps/MapsContext';
-import { withChartsDataHandler } from '../Backend/Charts/ChartsContext';
-import { withBcnDataHandler } from '../Backend/Bcn/BcnContext';
+import { withHandler as withMapsDataHandler } from '../Backend/Maps/context';
+import { withHandler as withChartsDataHandler } from '../Backend/Charts/context';
+import { withHandler as withBcnDataHandler } from '../Backend/Bcn/context';
 
 const noop = () => {};
 

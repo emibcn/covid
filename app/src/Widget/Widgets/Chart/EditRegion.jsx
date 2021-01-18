@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 
-import { withChartsDataHandler } from '../../../Backend/Charts/ChartsContext'
+import { withHandler } from '../../../Backend/Charts/context'
 
 // From: https://material-ui.com/components/tree-view/#rich-object
 
@@ -56,4 +56,4 @@ const RecursiveTreeView = (props) => {
   );
 }
 
-export default withChartsDataHandler(RecursiveTreeView);
+export default withHandler(RecursiveTreeView);

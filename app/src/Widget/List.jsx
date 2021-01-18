@@ -10,7 +10,7 @@ import Throtle from '../Throtle';
 import DateSlider from './DateSlider';
 import Loading from '../Loading';
 
-import { withIndex as withMapsIndex } from '../Backend/Maps/withHandlers';
+import { withIndex as withMapsIndex } from '../Backend/Maps/context';
 import {WidgetStorageContextProvider, withStorageHandler} from './Storage';
 
 // GUID generator: used to create unique temporal IDs for widgets
@@ -199,6 +199,7 @@ class WidgetsList extends React.PureComponent {
 
 WidgetsList.propTypes = {
   widgets: PropTypes.array.isRequired,
+  days: PropTypes.array.isRequired,
   onChangeData: PropTypes.func.isRequired,
 };
 

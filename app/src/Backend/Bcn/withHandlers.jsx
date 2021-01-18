@@ -1,13 +1,13 @@
 import withHandlerGenerator from '../Base/withHandlerGenerator';
-import { withBcnDataHandler } from './BcnContext';
+import { withHandler } from './context';
 
 // Index HOC
 const withIndex = (WrappedComponent, name="index") =>
   withHandlerGenerator(
-    withBcnDataHandler,
+    withHandler,
     () => ({}),
-    (props, BcnHandler, setIndex) => {
-      const handler = new BcnHandler();
+    (props, Handler, setIndex) => {
+      const handler = new Handler();
       return handler.index( setIndex );
     },
     name,
@@ -17,11 +17,11 @@ const withIndex = (WrappedComponent, name="index") =>
 // Data HOC
 const withData = (WrappedComponent, name="bcnData") => {
   const WrapperComponent = withHandlerGenerator(
-    withBcnDataHandler,
+    withHandler,
     ({dataset, bcnIndex}) =>
       ({dataset, bcnIndex}),
-    ({dataset, bcnIndex}, BcnHandler, setData) => {
-      const handler = new BcnHandler(bcnIndex);
+    ({dataset, bcnIndex}, Handler, setData) => {
+      const handler = new Handler(bcnIndex);
       return handler.data( dataset, setData )
     },
     name,

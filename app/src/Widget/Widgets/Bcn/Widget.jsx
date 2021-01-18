@@ -7,11 +7,9 @@ import {
   faEdit,
 } from '@fortawesome/free-solid-svg-icons'
 
-import { withBcnDataHandler } from '../../../Backend/Bcn/BcnContext';
-import { withIndex, withData } from '../../../Backend/Bcn/withHandlers';
+import { withHandler, withIndex, withData } from '../../../Backend/Bcn/context';
 
 import Chart from '../Common/Chart';
-
 import Edit from './Edit';
 import withWidget from '../../Widget';
 
@@ -54,7 +52,7 @@ const ChartWrapper = withWidget({
 /*
    Combine BcnData backend with Chart
 */
-class ChartDataHandler extends React.Component {
+class DataHandler extends React.Component {
 
   state = {
     bcnData: null,
@@ -187,13 +185,13 @@ class ChartDataHandler extends React.Component {
   }
 }
 
-ChartDataHandler.defaultProps = {
+DataHandler.defaultProps = {
   dataset: 'IND_DEF_OBS_CAT',
   onChangeData: () => {},
   onRemove: () => {},
 };
 
-ChartDataHandler.propTypes = {
+DataHandler.propTypes = {
   days: PropTypes.arrayOf(PropTypes.string).isRequired,
   indexValues: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
@@ -203,5 +201,5 @@ ChartDataHandler.propTypes = {
   dataset: PropTypes.string.isRequired,
 };
 
-export default withBcnDataHandler(
-  withIndex( ChartDataHandler, 'bcnIndex'));
+export default withHandler(
+  withIndex( DataHandler, 'bcnIndex'));
