@@ -10,8 +10,9 @@ import GHPages from './GHPages';
 /*
   TODO:
    - Test `scheduleNextUpdate` with recursive
-   - Test `scheduleNextUpdate` with no need to update (`mockCacheSuccessValue = false`)
+   - Test `scheduleNextUpdate` without `onBeforeUpdate` and `onAfterUpdate`
    - Test `millisToNextUpdate` with an extra day timelapse (`officialUpdateTime` on today, but earlier than now)
+   - Test `abort`
 */
 const mockDelay = delay;
 let mockCacheSuccess = true;
@@ -117,40 +118,79 @@ test('GHPages correctly updates all own URLs, if needed', async () => {
 
 test('GHPages correctly schedules next update loop', async () => {
   const testGHPages = new TestGHPages();
-  const nowPlus2Minutes = new Date();
-  nowPlus2Minutes.setMinutes(nowPlus2Minutes.getMinutes() + 2);
+
+  // Generate a date in the near future
+  const future = new Date();
+  future.setMinutes(future.getMinutes() + 2);
   testGHPages.officialUpdateTime = [
-    nowPlus2Minutes.getHours(),
-    nowPlus2Minutes.getMinutes()
+    future.getHours(),
+    future.getMinutes(),
+    future.getSeconds()
   ];
-  // Prepend '0' to minutes if it's smaller than 10
-  const expectedTimeString = `${testGHPages.officialUpdateTime[0]}:${testGHPages.officialUpdateTime[1] < 10 ? '0' : ''}${testGHPages.officialUpdateTime[1]}`;
+
+  // Generate a string with the generated date, prepending '0' to each value if it's smaller than 10
+  const pad2 = (num) => `${num < 10 ? '0' : ''}${num}`;
+  const expectedTimeString =
+    testGHPages.officialUpdateTime
+      .map( pad2 )
+      .join(':');
 
   // First try: update on mocked schedule
   const {output} = await catchConsoleLog( async () => {
-    await testGHPages.scheduleNextUpdate();
+    testGHPages.scheduleNextUpdate();
   });
   expect(output[0].includes("Next update on")).toBe(true);
   expect(output[0].includes(expectedTimeString)).toBe(true);
   expect(testGHPages.invalidateAll).toHaveBeenCalledTimes(0);
 
-  // Second try: update on `nextMillis` millisecond
+  testGHPages.cancelUpdateSchedule();
+
+  // Second try: update on `nextMillis` milliseconds
   const nextMillis = 20;
+  const options = {
+    millis: nextMillis,
+    notUpdatedMillis: 10,
+    onBeforeUpdate: jest.fn(),
+    onAfterUpdate: jest.fn(),
+  };
   const {output: output2} = await catchConsoleLog( async () => {
-    await testGHPages.scheduleNextUpdate(nextMillis);
+    testGHPages.scheduleNextUpdate(options);
   });
   expect(output2[0].includes("Next update on")).toBe(true);
-  expect(testGHPages.invalidateAll).toHaveBeenCalledTimes(0);
 
-  const checkUpdateOld = testGHPages.checkUpdate;
+  // Should not have been updated yet (before wait)
+  expect(testGHPages.invalidateAll).toHaveBeenCalledTimes(0);
+  expect(options.onBeforeUpdate).toHaveBeenCalledTimes(0);
+  expect(options.onAfterUpdate).toHaveBeenCalledTimes(0);
+
+  // Silence output
+  const checkUpdateOld = testGHPages.checkUpdate.bind(testGHPages);
   testGHPages.checkUpdate = jest.fn( async (...args) => {
-    // Silence output
     await catchConsoleLog( async () => {
-      await checkUpdateOld.bind(testGHPages)(...args);
+      await checkUpdateOld(...args);
     });
   });
 
-  await delay(nextMillis*2);
+  // Force to recurse to next try (no update needed yet)
+  mockCacheSuccessValue = false;
+  await delay(nextMillis);
+  expect(options.onBeforeUpdate).toHaveBeenCalledTimes(1);
+  expect(options.onAfterUpdate).toHaveBeenCalledTimes(0);
 
+  await delay(10);
+  expect(options.onBeforeUpdate).toHaveBeenCalledTimes(1);
+  expect(options.onAfterUpdate).toHaveBeenCalledTimes(1);
+
+  // Set to need an update
+  mockCacheSuccessValue = true;
+  await delay(10);
+  expect(options.onBeforeUpdate).toHaveBeenCalledTimes(2);
+  expect(options.onAfterUpdate).toHaveBeenCalledTimes(1);
+
+  await delay(nextMillis+15);
+  expect(options.onBeforeUpdate).toHaveBeenCalledTimes(2);
+  expect(options.onAfterUpdate).toHaveBeenCalledTimes(2);
+
+  // Should already have been updated (after wait)
   expect(testGHPages.invalidateAll).toHaveBeenCalledTimes(1);
 });

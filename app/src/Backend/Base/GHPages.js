@@ -88,28 +88,40 @@ class GHPages extends Common {
 
     this.log(`${this.name}: Next update on ${new Date( (new Date()).getTime() + nextMillis )}`);
 
+    // Just in case
+    this.cancelUpdateSchedule();
+
     // If data has been updated and `recursive` is true, re-schedule data update for the next day
     // Else (recursive || not recursive but data NOT updated), schedule data update in 5 minutes
     // This way, we retry an update few minutes later, in case the schedule has lasted more than usual
-    this.cancelUpdateSchedule(); // Just in case
     this.timerDataUpdate = setTimeout(
       () => {
-        const {recursive=false, onBeforeUpdate=()=>{}, onAfterUpdate=()=>{}} = options;
+        const {
+          recursive=false,
+          onBeforeUpdate=()=>{},
+          onAfterUpdate=()=>{},
+          notUpdatedMillis=300_000,
+        } = options;
 
         onBeforeUpdate();
         this.updateIfNeeded(
-          updated => {
+          (updated) => {
             onAfterUpdate(updated);
-            return recursive || !updated
-              ? this.scheduleNextUpdate({
-                  ...options,
-                  ...(updated ? {} : {millis: 300_000})
-                })
-              : false
+            if( recursive || !updated ) {
+              this.scheduleNextUpdate({
+                ...options,
+                ...(updated ? {} : {millis: notUpdatedMillis})
+              });
+            }
           });
       },
       nextMillis
-    )
+    );
+  }
+
+  abort = () => {
+    this.cancelUpdateSchedule();
+    super.abort();
   }
 
   // Calculates haw many milliseconds until next schedulled update (today's or tomorrow)
