@@ -9,37 +9,24 @@ import { withBcnDataHandler } from '../Backend/Bcn/BcnContext';
 const noop = () => {};
 
 class IndexesHandler extends React.Component {
-  state = {
-    days: null,
-    chartsIndex: null,
-    bcnIndex: null,
-  }
 
   constructor(props) {
     super(props);
 
-    this.bcnData = new props.bcnDataHandler();
-    this.chartsData = new props.chartsDataHandler();
-    this.mapData = new props.mapsDataHandler();
+    this.backends = ['mapsDataHandler', 'chartsDataHandler', 'bcnDataHandler']
+      .map( backendProp => ({
+        initializer: props[backendProp],
+        state: backendProp,
+        unsubscribe: noop,
+      }));
 
-    const { mapData, chartsData, bcnData } = this;
-    this.backends = [
-      {
-        handler: mapData,
-        state: 'days',
-        unsubscribe: noop,
-      },
-      {
-        handler: chartsData,
-        state: 'chartsIndex',
-        unsubscribe: noop,
-      },
-      {
-        handler: bcnData,
-        state: 'bcnIndex',
-        unsubscribe: noop,
-      },
-    ];
+    // Initialize to null an index state for each backend
+    this.state = this.backends
+      .map( ({state}) => state)
+      .reduce( (acc, state) => {
+        acc[state] = null;
+        return acc;
+      }, {})
   }
 
   onBeforeIndexUpdate = (backend, updated) => {
@@ -53,6 +40,9 @@ class IndexesHandler extends React.Component {
   // Fetch data once mounted
   componentDidMount() {
     this.backends.forEach( (backend) => {
+      // Instantiate the handler
+      backend.handler = new backend.initializer();
+
       // Subscribe to index updates
       // Save unsubscriber
       backend.unsubscribe = backend.handler.index( index => {
@@ -70,17 +60,22 @@ class IndexesHandler extends React.Component {
     // Cancel next update timers and update subscriptions
     this.backends.forEach(
       (backend) => {
-        backend.handler.cancelUpdateSchedule();
-        backend.unsubscribe();
+        if (backend.handler) {
+          backend.handler.cancelUpdateSchedule();
+          backend.unsubscribe();
+        }
       }
     );
   }
 
   render() {
-    // KISS Loading
-    const { days, chartsIndex, bcnIndex } = this.state;
+    // Get an array with all handled indexes values
+    const indexes = this.backends
+      .map( ({state}) => state)
+      .map( state => this.state[state]);
 
-    return ( !days || !chartsIndex || !bcnIndex )
+    // KISS Loading
+    return indexes.some( index => !index )
       ? <Loading />
       : this.props.children;
   }
