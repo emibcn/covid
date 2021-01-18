@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Grid from '@material-ui/core/Grid';
 import { ReferenceLine } from 'recharts';
 
 import ChartBcn from '../Common/Chart';
@@ -81,9 +82,64 @@ const ChartExtensio = (props) => {
   )
 }
 
+const TableSeguiment = ({graph}) => {
+  return (
+    <table>
+      <thead>
+        <tr>
+          { graph.headers
+              .map( ({content, title}, index) =>
+                <th key={index} title={title}>{content}</th>
+              )
+          }
+        </tr>
+      </thead>
+      <tbody>
+          { graph.body
+              .map( (row, index) =>
+                <tr key={index}>
+                  { row.map( ({content}, cellIndex) =>
+                      <td key={cellIndex}>{content}</td>
+                    )
+                  }
+                </tr>
+              )
+          }
+      </tbody>
+    </table>
+  )
+}
+
+const TableSituacio = ({graph}) => {
+  return (
+    <Grid
+      container
+      direction="row"
+      alignItems="center"
+    >
+    { graph.elements
+        .map( ({name, value}, index) => (
+          <Grid
+            key={index}
+            item
+            container
+            direction="column"
+            alignItems="center"
+          >
+            <Grid item><strong>{name}</strong></Grid>
+            <Grid item>{value}</Grid>
+          </Grid>
+        ))
+    }
+    </Grid>
+  )
+}
+
 const GraphFromDataset = {
   grafic_risc_iepg: ChartIEPG,
   grafic_extensio: ChartExtensio,
+  situacio: TableSituacio,
+  seguiment: TableSeguiment,
 };
 
 const Chart = (props) => {
