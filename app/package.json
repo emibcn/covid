@@ -34,6 +34,7 @@
     "build-original": "react-scripts build",
     "build": "react-scripts build && yarn sw-epilog && yarn pubgh",
     "test": "react-scripts test",
+    "test-coverage-html": "react-scripts test --coverage --coverageReporters=html",
     "eject": "react-scripts eject",
     "lint": "node_modules/.bin/eslint --ext js src",
     "sw-epilog": "cat src/sw-epilog.js >> build/service-worker.js",
