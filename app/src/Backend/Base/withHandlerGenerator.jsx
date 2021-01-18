@@ -12,7 +12,7 @@ const withHandlerGenerator = (
 ) => {
 
   // Functional wrapper component
-  const WithValue = ({ BackendHandler, ...props}={}) => {
+  const WithValue = ({ BackendHandler, ...props}) => {
     const [value, setValue] = React.useState(false);
     const [params, setParams] = React.useState(relevantParams(props));
 
@@ -28,7 +28,7 @@ const withHandlerGenerator = (
     React.useEffect(
       () => {
         setValue(false);
-        return getValue(params, BackendHandler, setValue );
+        return getValue(params, BackendHandler, setValue);
       },
       // Only execute on mount and on relevant props (param) change
       [BackendHandler, params]);
