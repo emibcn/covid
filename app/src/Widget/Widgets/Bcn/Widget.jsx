@@ -8,11 +8,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import { withBcnDataHandler } from '../../../Backend/Bcn/BcnContext';
+import { withIndex, withData } from '../../../Backend/Bcn/withHandlers';
 
 import Chart from '../Common/Chart';
 
 import Edit from './Edit';
-import Loading from '../../../Loading';
 import withWidget from '../../Widget';
 
 const ChartWrapper = withWidget({
@@ -21,38 +21,33 @@ const ChartWrapper = withWidget({
     icon: BcnLogo,
     label: ({ t }) => t("View"),
     title: (props) => props.title,
-    render: (props) => {
+    render: withData((props) => {
       const {
-        // translated
+        // Translated
         days: dies,
         bcnData: data,
         // Discarded
-        onChangeDataset,
+        setBcnData,
         onRemove, t,
+        dataset, onChangeDataset,
+        bcnIndex, bcnDataHandler,
         // Passed through
         ...restProps
       } = props;
-      return (
-        <>
-          { !props.bcnData ? (
-              <Loading />
-            ) : (
-              <Chart
-                { ...{ dies, data } }
-                { ...restProps }
-              />
-            )
-          }
-        </>
-      );
-    }
+      React.useEffect( () => setBcnData(data), [data, setBcnData]);
+      return <Chart
+        { ...{ dies, data } }
+        { ...restProps }
+      />
+    }),
   },
+
   // Edit data
   edit: {
     icon: <FontAwesomeIcon icon={ faEdit } />,
     label: ({ t }) => t("Edit"),
     title: ({ t }) => t("Edit BCN parameters"),
-    render: (props) => <Edit {...props} />,
+    render: Edit,
   },
 });
 
@@ -61,20 +56,23 @@ const ChartWrapper = withWidget({
 */
 class ChartDataHandler extends React.Component {
 
+  state = {
+    bcnData: null,
+  }
+
   constructor(props) {
     super(props);
 
     // Default values: first element of each's group
-    const { bcnDataHandler, bcnIndex, dataset/*, section*/ } = props;
+    const { bcnDataHandler, bcnIndex } = props;
 
     // TODO: Handle errors
     this.BcnData = new bcnDataHandler(bcnIndex);
-    this.cancelDataUpdate = false;
 
     this.state = {
-      bcnData: null,
-      ...this.getMeta(dataset, null)
-    }
+      ...this.state,
+      ...this.getMeta(this.props.dataset, this.state.bcnData),
+    };
   }
 
   defaultMeta = {
@@ -85,9 +83,11 @@ class ChartDataHandler extends React.Component {
     source: null,
   }
 
+  setBcnData = (bcnData) => this.setState({ bcnData });
+
   // Get metadata from given params
-  getMeta = (dataset, bcnIndex) => {
-    if ( !bcnIndex ) {
+  getMeta = (dataset, bcnData) => {
+    if ( !bcnData ) {
       return this.defaultMeta;
     }
     const found = this.BcnData.findChild(null, dataset);
@@ -105,67 +105,36 @@ class ChartDataHandler extends React.Component {
     }
   }
 
-  // Fetch map data
+  // Update metadata
   updateData = () => {
-    const { dataset } = this.props;
-
-    // If there is an ongoing update, cancel the registration to it
-    if (this.cancelDataUpdate) {
-      this.cancelDataUpdate();
-    }
-
-    // Fetch JSON data and subscribe to updates
-    this.cancelDataUpdate = this.BcnData.data(
-      dataset,
-      (bcnData) => {
-        // Only update data if we didn't change confs in between
-        if ( dataset === this.props.dataset ) {
-          this.setState({
-            bcnData,
-            ...this.getMeta(dataset, bcnData),
-          });
-        }
-      });
-  }
-
-  // Ensure first data is gathered as soon as we have the component mounted
-  componentDidMount() {
-    this.updateData();
+    const {
+      state: { bcnData },
+      props: { dataset }
+    } = this;
+    this.setState({
+      ...this.getMeta(dataset, bcnData),
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     const {
-      state: { bcnData },
-      props: { bcnDataHandler, dataset, bcnIndex }
-    } = this;
+      bcnIndex, dataset
+    } = this.props;
+    const { bcnData } = this.state;
 
-    // If bcnData is unset, gather new data
-    if( prevState.bcnData !== bcnData &&
-        bcnData === null ) {
+    // If index changed, update backend with new data
+    if ( bcnIndex !== prevProps.bcnIndex ) {
+      this.BcnData.parseIndex(bcnIndex);
+    }
+
+    if( dataset !== prevProps.dataset ||
+        bcnData !== prevState.bcnData ) {
       this.updateData();
-    }
-    else if (
-      // If params changed, unset bcnData
-      dataset !== prevProps.dataset ) {
-      this.setState({
-        bcnData: null
-      });
-    }
-    else if ( bcnIndex !== prevProps.bcnIndex ) {
-      // If bcnIndex changed, re-create backend with new data
-      this.BcnData = new bcnDataHandler(bcnIndex);
-      this.setState({
-        bcnData: null
-      });
     }
   }
 
-  // Also, update metadata
-  onChange = (dataset, bcnData) => {
-    this.setState({
-      ...(bcnData === this.state.bcnData ? {bcnData} : {}),
-      ...this.getMeta(dataset, bcnData)
-    });
+  // Update params in parents
+  onChange = (dataset) => {
     this.props.onChangeData(
       this.props.id,
       {
@@ -175,8 +144,7 @@ class ChartDataHandler extends React.Component {
 
   // Datasets are on same data object
   onChangeDataset = (dataset) => {
-    const { bcnData } = this.state;
-    this.onChange(dataset, bcnData);
+    this.onChange(dataset);
   }
 
   render() {
@@ -188,8 +156,6 @@ class ChartDataHandler extends React.Component {
       bcnIndex
     } = this.props; 
     const {
-      // Data
-      bcnData,
       // Meta
       title, name, description,
       theme, yAxis, source
@@ -204,12 +170,17 @@ class ChartDataHandler extends React.Component {
       }}>
         <ChartWrapper
           { ...{
-            id, dataset, bcnIndex, bcnData,
+            // Used in Edit
+            id, dataset, bcnIndex,
+            // Used in View
             indexValues, days, title, name,
             description, theme, yAxis, source
           } }
+          // Used in Edit
           onChangeDataset={ this.onChangeDataset }
           onRemove={ this.props.onRemove }
+          // Used in View
+          setBcnData={ this.setBcnData }
         />
       </div>
     );
@@ -217,7 +188,7 @@ class ChartDataHandler extends React.Component {
 }
 
 ChartDataHandler.defaultProps = {
-  dataset: 'IND_MOB_TRA_PUB',
+  dataset: 'IND_DEF_OBS_CAT',
   onChangeData: () => {},
   onRemove: () => {},
 };
@@ -232,4 +203,5 @@ ChartDataHandler.propTypes = {
   dataset: PropTypes.string.isRequired,
 };
 
-export default withBcnDataHandler(ChartDataHandler);
+export default withBcnDataHandler(
+  withIndex( ChartDataHandler, 'bcnIndex'));

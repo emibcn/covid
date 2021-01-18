@@ -6,17 +6,14 @@ import MenuAddWidget from './MenuAddWidget';
 import WidgetsTypes from './Widgets';
 import SortableWidgetContainer from './SortableWidgetContainer';
 
-import { withBcnDataHandler } from '../Backend/Bcn/BcnContext';
-import { withMapsDataHandler } from '../Backend/Maps/MapsContext';
-import { withChartsDataHandler } from '../Backend/Charts/ChartsContext';
-
 import Throtle from '../Throtle';
 import DateSlider from './DateSlider';
 import Loading from '../Loading';
 
+import { withIndex as withMapsIndex } from '../Backend/Maps/withHandlers';
 import {WidgetStorageContextProvider, withStorageHandler} from './Storage';
 
-// GUID generator: used to create unique dtemporal IDs for widgets
+// GUID generator: used to create unique temporal IDs for widgets
 const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 const guidGenerator = () => "a-"+S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4();
 
@@ -35,10 +32,8 @@ class WidgetsList extends React.PureComponent {
 
   // Managed data: days & currently selected day
   state = {
-    days: null,
-    chartsIndex: null,
-    bcnIndex: null,
     currentDate: null,
+    widgetsIds: [],
   }
 
   // Widgets list temporal IDs
@@ -54,77 +49,56 @@ class WidgetsList extends React.PureComponent {
 
     // Generate initial list of unique IDs
     if ('widgets' in props) {
-      this.updateIDs(props.widgets.length);
+      this.updateIDs(props.widgets.length, false);
     }
-
-    this.bcnData = new props.bcnDataHandler();
-    this.chartsData = new props.chartsDataHandler();
-    this.mapData = new props.mapsDataHandler();
   }
 
-  // Fetch data once mounted
   componentDidMount() {
-    const { mapData, chartsData, bcnData } = this;
-
-    mapData.days( days => {
-      // Are we on the last time serie element before update?
-      const {currentDate, days: daysOld} = this.state;
-      const isLast = !currentDate || !daysOld || currentDate === daysOld.length - 1;
-
-      this.setState({
-        days,
-
-        // If we were on last item, go to the new last
-        ...(isLast ? {currentDate: days.length - 1} : {}) 
-      });
-
-      // Once data has been fetched, schedule next data update
-      // Mind the timer on unmount
-      mapData.scheduleNextUpdate();
-    });
-    chartsData.index( chartsIndex => {
-
-      this.setState({ chartsIndex });
-
-      // Once data has been fetched, schedule next data update
-      // Mind the timer on unmount
-      chartsData.scheduleNextUpdate();
-    });
-    bcnData.index( bcnIndex => {
-      this.setState({ bcnIndex });
-
-      // Once data has been fetched, schedule next data update
-      // Mind the timer on unmount
-      bcnData.scheduleNextUpdate();
-    });
+    const {days, widgets} = this.props;
+    this.updateIDs(widgets.length);
+    this.setState({ currentDate: days.length - 1 });
   }
 
   // Cleanup side effects
   componentWillUnmount() {
-    const { mapData, chartsData, bcnData } = this;
-
-    // Cancel next update timers
-    bcnData.cancelUpdateSchedule();
-    chartsData.cancelUpdateSchedule();
-    mapData.cancelUpdateSchedule();
-
     // Cancel possible throtle timer
     this.throtle.clear();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     this.updateIDs(this.props.widgets.length);
+
+    const {days: daysOld} = prevProps;
+    const {days} = this.props;
+
+    if(daysOld !== days) {
+      const {currentDate} = this.state;
+      const isLast = !currentDate || !daysOld || currentDate === daysOld.length - 1;
+
+      // If we were on last `days` item, go to the new last
+      if(isLast) {
+        this.setState({
+          currentDate: days.length - 1
+        });
+      }
+    }
   }
 
   // Ensure all widgets have ID
-  updateIDs = (length) => {
+  updateIDs = (length, updateState=true) => {
+    const oldLength = this.widgetsIds.length;
     while ( this.widgetsIds.length < length ) {
       this.widgetsIds.push( guidGenerator() );
+    }
+
+    if(updateState && oldLength !== this.widgetsIds.length) {
+      this.setState({widgetsIds: [...this.widgetsIds]});
     }
   }
 
   // Slider helpers
-  onSetDate = (event, currentDate) => this.throtle.run(false, 10, () => this.setState({ currentDate }) );
+  onSetDate = (event, currentDate) =>
+    this.throtle.run(false, 10, () => this.setState({ currentDate }) );
 
   // Adds a new default widget to the list
   onAdd = (widgetType) => {
@@ -147,7 +121,13 @@ class WidgetsList extends React.PureComponent {
   // Calls parent' onChangeData to save the data
   onChangeData = (id, data) => {
     const { widgets } = this.props;
-    const widgetsNew = widgets.map( (w,i) => ({ ...w, ...(id === this.widgetsIds[i] ? {payload: data} : {} ) }) )
+    const widgetsNew = widgets
+      .map( (w,i) => ({
+        ...w,
+        ...(id === this.widgetsIds[i]
+          ? {payload: data}
+          : {} )
+      }) )
     return this.props.onChangeData({ widgets: widgetsNew });
   }
 
@@ -172,13 +152,13 @@ class WidgetsList extends React.PureComponent {
 
   render() {
 
-    // KISS Loading
-    if ( !this.state.days || !this.state.chartsIndex ) {
-      return <Loading />;
-    }
+    const { widgets, days } = this.props;
+    const { currentDate } = this.state;
 
-    const { widgets } = this.props;
-    const { days, chartsIndex, bcnIndex, currentDate } = this.state;
+    if (this.widgetsIds.length < widgets.length ||
+        currentDate === null ) {
+      return <Loading/>;
+    }
 
     return (
       <>
@@ -199,8 +179,6 @@ class WidgetsList extends React.PureComponent {
 
         {/* Container that displays the widgets */}
         <SortableWidgetContainer 
-          bcnIndex={bcnIndex}
-          chartsIndex={chartsIndex}
           days={days}
           indexValues={currentDate}
           onChangeData={this.onChangeData}
@@ -225,16 +203,12 @@ WidgetsList.propTypes = {
 };
 
 // withStorageHandler: Handle params from storage providers (route + localStorage) into props
-// withBcnDataHandler: Add `bcnDataHandler` prop to use bcn backend data
-// withMapsDataHandler: Add `mapsDataHandler` prop to use maps backend data
-// withChartsDataHandler: Add `chartsDataHandler` prop to use charts backend data
+// withMapsIndex: Add `days` prop to use maps backend index (days)
 const WidgetsListWithHOCs =
   withStorageHandler(
-    withBcnDataHandler(
-      withMapsDataHandler(
-        withChartsDataHandler(
-          WidgetsList
-  ))));
+    withMapsIndex(
+      WidgetsList
+  ));
 
 // Manage some context providers details:
 // - pathFilter: How to split `location` (<Router> `path` prop)
