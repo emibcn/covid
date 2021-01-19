@@ -38,7 +38,7 @@ test('ContextCreator generated context consumer renders internal child and passe
   const child = rendered.getByRole("child");
 
   expect(child).toBeInTheDocument();
-  expect(child.textContent).toEqual(expect.stringContaining("class BackendHandler"))
+  expect(child).toHaveTextContent(/class BackendHandler/)
 });
 
 test('ContextCreator generated withHandler properly wraps a component passing the handler as a prop', () => {
@@ -47,5 +47,5 @@ test('ContextCreator generated withHandler properly wraps a component passing th
   const child = rendered.getByRole("child");
 
   expect(child).toBeInTheDocument();
-  expect(child.textContent).toEqual(expect.stringContaining("class BackendHandler"))
+  expect(child).toHaveTextContent(/class BackendHandler/)
 });
