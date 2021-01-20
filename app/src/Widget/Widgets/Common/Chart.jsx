@@ -2,20 +2,10 @@ import React from 'react';
 
 import { useTheme } from '@material-ui/core/styles';
 
-import {
-  ResponsiveContainer,
-  ComposedChart,
-  Line,
-  Area,
-  ReferenceLine,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Brush,
-} from 'recharts';
-
 import ChartTooltip, {ChartLegend} from './ChartTooltip';
+
+// Import charting systems dynamically
+import {asyncModuleComponent} from '../../../asyncComponent';
 
 const DefaultColors = [
   "#3366CC", "#DC3912", "#FF9900", "#109618",
@@ -75,7 +65,7 @@ const parseData = (graph, dies) => {
       next.setDate(next.getDate() + 1);
       return next
     }
-  
+
     // Get combined range
     const [dateStart, dateEnd] = fixRange( range, range2 );
 
@@ -84,7 +74,7 @@ const parseData = (graph, dies) => {
     for (let i = dateStart; i <= dateEnd; i = nextDate(i)) {
       result.push( i );
     }
-  
+
     return result;
   }
 
@@ -140,6 +130,17 @@ const translateIndexDays = (diesBase, daysHash, indexValues) => {
 const ChartCached = React.memo((props) => {
   const { data, graph, colors, yAxisLabel, scale, children, syncId } = props;
   const themeUI = useTheme();
+  const {
+    ResponsiveContainer,
+    ComposedChart,
+    Line,
+    Area,
+    CartesianGrid,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Brush,
+  } = props.components;
   return (
     <ResponsiveContainer width='100%' height={250}>
       <ComposedChart data={data} margin={{ right: 10, left: 0 }} syncId={ syncId }>
@@ -168,7 +169,7 @@ const ChartCached = React.memo((props) => {
               )
             })
         }
-        
+
         <CartesianGrid stroke={ themeUI.palette.text.hint } />
         <YAxis
           scale={scale}
@@ -215,6 +216,14 @@ const Chart = (props) => {
     ? (yAxis.scale === 'squarified' ? 'pow' : yAxis.scale)
     : 'linear';
 
+  const {
+    ResponsiveContainer,
+    ComposedChart,
+    ReferenceLine,
+    XAxis,
+    YAxis,
+  } = props.components;
+
   return (
     <div style={{position: "relative"}}>
 
@@ -254,6 +263,7 @@ const Chart = (props) => {
       {/* Memoized component, independent of the selected day */}
       <ChartCached
         { ...{ data, graph: graphSorted, children, colors, yAxisLabel, scale, syncId } }
+        components={ props.components }
       />
 
       {/* Use outer legend to lower chart updates */}
@@ -267,4 +277,19 @@ const Chart = (props) => {
   )
 };
 
-export default Chart;
+export default asyncModuleComponent(
+  () => import('recharts'),
+  [
+    'ResponsiveContainer',
+    'ComposedChart',
+    'Line',
+    'Area',
+    'ReferenceLine',
+    'CartesianGrid',
+    'XAxis',
+    'YAxis',
+    'Tooltip',
+    'Brush',
+  ],
+  Chart,
+);
