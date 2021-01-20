@@ -86,7 +86,8 @@ class GHPages extends Common {
       ? this.millisToNextUpdate()
       : millis;
 
-    this.log(`${this.name}: Next update on ${new Date( (new Date()).getTime() + nextMillis )}`);
+    const nextUpdateDate = new Date( (new Date()).getTime() + nextMillis );
+    this.log(`${this.name}: Next update on ${nextUpdateDate}`);
 
     // Just in case
     this.cancelUpdateSchedule();
@@ -117,6 +118,8 @@ class GHPages extends Common {
       },
       nextMillis
     );
+
+    return nextUpdateDate;
   }
 
   abort = () => {

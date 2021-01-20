@@ -29,12 +29,21 @@ class IndexesHandler extends React.Component {
       }, {})
   }
 
-  onBeforeIndexUpdate = (backend, updated) => {
-    console.log(`Looking for an update of backend ${backend}`);
+  onBeforeUpdate = (backend) => {
+    console.log(`Looking for an update of backend ${backend.handler.name}`);
   }
 
-  onAfterIndexUpdate = (backend, updated) => {
-    console.log(`The update of the backend ${backend} was${updated ? '' : ' not'} done`);
+  onAfterUpdate = (backend, updated) => {
+    console.log(`The backend ${backend.handler.name} was${updated ? '' : ' not'} updated`);
+  }
+
+  updateAllIfNeeded = () => {
+    this.backends.forEach( (backend) => {
+      this.onBeforeUpdate(backend);
+      backend.handler.updateIfNeeded(
+        this.onAfterUpdate.bind(backend)
+      );
+    });
   }
 
   // Fetch data once mounted
@@ -46,11 +55,23 @@ class IndexesHandler extends React.Component {
       // Subscribe to index updates
       // Save unsubscriber
       backend.unsubscribe = backend.handler.index( index => {
+
+        // Only on first download
+        if( !this.state[backend.state] ) {
+          this.onAfterUpdate(backend, true);
+        }
+
+        // Save data into state
         this.setState({ [backend.state]: index });
 
         // Once data has been fetched, schedule next data update
         // Mind the timer on unmount
-        backend.handler.scheduleNextUpdate();
+        // Use the date where needed
+        backend.nextUpdateDate =
+          backend.handler.scheduleNextUpdate({
+            onBeforeUpdate: this.onBeforeUpdate.bind(this,backend),
+            onAfterUpdate: this.onAfterUpdate.bind(this,backend),
+          });
       });
     });
   }
