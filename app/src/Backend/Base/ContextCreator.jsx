@@ -13,7 +13,7 @@ const ContextCreator = (Handler, defaultName) => {
     const context = useContext(Context);
   
     if (context === undefined) {
-      throw new Error('Handler must be used within a BcnProvider');
+      throw new Error(`Handler must be used within a ${defaultName} Provider`);
     }
   
     return context;
@@ -26,6 +26,7 @@ const ContextCreator = (Handler, defaultName) => {
       {context => <WrappedComponent {...props} { ...{[name]: context} } />}
     </Consumer>
   );
+
   return {
     Provider,
     withHandler,
