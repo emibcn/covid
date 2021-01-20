@@ -39,28 +39,38 @@ const asyncComponent = (importComponent, module="default") => {
   return AsyncComponent;
 }
 
-const asyncModuleComponent = (importModule, modules, Wrapped) => {
-  const AsyncMultiComponent = (props) => {
+const asyncModuleComponent = (importModule, modules, Wrapped) =>
+  (props) => {
+
+    // Will save components into a state
     const [components, setComponents] = React.useState(false);
+
+    // Call module import (async), wait for
+    // results and set components state
+    //
+    // useEffect' Callback must not be async, so create an internal
+    // anonymous and async function and call it immediatelly
     React.useEffect( () => {
-      const getModule = async () => {
+      (async () => {
+        // Import all components
         const comps = await importModule();
+        // Create a new object only with the modules
+        // defined in HOC argument `modules`
         const filtered = Object.fromEntries(
           Object.entries(comps)
             .filter( ([module]) => modules.includes(module))
         );
         setComponents(filtered);
-      };
+        // No return, no unsubscribe
+      })();
+    // Only call it once
+    }, []);
 
-      getModule();
-    }, [modules]);
+    // Once loaded, pass components to wrapped as a prop
     return !components
       ? <Loading />
       : <Wrapped {...props} {...{components}} />
-  }
-
-  return AsyncMultiComponent;
-}
+  };
 
 export default asyncComponent;
 export { asyncModuleComponent };
