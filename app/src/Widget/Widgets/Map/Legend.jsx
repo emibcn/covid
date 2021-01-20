@@ -58,11 +58,11 @@ const Legend = ({colors}) => (
     alignContent="center"
   >
     { colors.map( (color, index) => (
-        <ConditionalTooltip key={ index } title={ color.nom }>
+        <ConditionalTooltip key={ index } title={ color.name }>
           <Grid item>
             <Element
-              valueStart={ color.valor }
-              valueEnd={ index === 0 ? null : colors[index - 1].valor }
+              valueStart={ color.value }
+              valueEnd={ index === 0 ? null : colors[index - 1].value }
               color={ color.color }
             />
           </Grid>
@@ -74,9 +74,9 @@ const Legend = ({colors}) => (
 
 Legend.propTypes = {
   colors: PropTypes.arrayOf(PropTypes.shape({
-    valor: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
     color: PropTypes.string.isRequired,
-    nom: PropTypes.string,
+    name: PropTypes.string,
     unit: PropTypes.string,
   }))
 };

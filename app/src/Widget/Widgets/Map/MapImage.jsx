@@ -32,6 +32,19 @@ const ReactTooltipStyled = styled(ReactTooltip)( ({theme}) => ({
 const fallback=() => <span>Error!</span>; /* Should never happen */
 const loading=() => <Loading />;
 
+const TipContent = React.memo(({id, valuesDay, label, element, colorGetter}) => {
+  const valueRaw = valuesDay.get(id);
+  const color = colorGetter(valueRaw);
+  const value = `${ label }: ${ valueRaw ?? ''}`;
+  const title = element.getAttribute('label');
+  return (
+    <>
+      <h4>{ title }</h4>
+      <LegendElement { ...{value, color} } justify="center" />
+    </>
+  );
+});
+
 /*
    Renders an SVG map, allowing to change each region background color and tooltip
    Optimized:
@@ -67,22 +80,31 @@ class MapImage extends React.Component {
   }
 
   // Gets the color for a given value (in func params) in a colors table (in props)
-  get_color_fons = (valor) => {
+  getColor = (value) => {
     const color = this.props.colors
-      .find( c => valor >= c.valor);
+      .find( c => value >= c.value);
     return color ? color.color : 'fff'
   }
 
   // Sets the background color in a SVG region for a given value
-  setColorBackground = (value, id) => {
-    this.mapElements[id].style.fill = this.get_color_fons(value);
+  setColorBackground = (element, value) => {
+    element.style.fill = this.getColor(value);
   }
 
   // Sets the background color for all regions in values prop
-  omplir_colors = (props) => {
-    const values = props.values[ props.indexValues ] || {};
-    const setColorBackground = id => this.setColorBackground(values[id], id);
-    Object.keys(values).forEach( setColorBackground );
+  fillColors = (props) => {
+    if(this.timer) {
+      return
+    }
+
+    this.timer = requestAnimationFrame(() => {
+      const values = props.values[ props.indexValues ] || {};
+      const elements = this.mapElements;
+      for( const [id, value] of values.entries() ) {
+        this.setColorBackground(elements.get(id), value);
+      }
+      this.timer = false;
+    }, 0);
   }
   
   // Sets data into a map region to be used by the tooltip renderer)
@@ -92,25 +114,23 @@ class MapImage extends React.Component {
     element.setAttribute('data-for', dataFor);
   }
 
-  // Save an array of the map elements, indexed by their `id`
+  // Save an Map of the map elements, indexed by their `id`
   saveElementsIndex = (svg) => {
-    this.mapElements =
-      Array.prototype.reduce.call(
+    this.mapElements = new Map(
+      Array.prototype.map.call(
         this.svg.querySelectorAll(`.map_elem`),
-        (result, current) => {
-          result[current.id] = current;
+        (current) => {
           this.setTooltipData(current);
-          return result;
-        },
-        {}
-      );
+          return [current.id, current];
+        }
+      ));
   }
 
   // Process data into the SVG DOM node before first injecting it into the DOM tree
   beforeInjection = (svg) => {
     this.svg = svg;
     this.saveElementsIndex();
-    this.omplir_colors(this.props);
+    this.fillColors(this.props);
     this.setState({svgStatus: 'beforeInjection'});
   }
 
@@ -123,14 +143,13 @@ class MapImage extends React.Component {
     // Call ReactTooltip to rebuild its database with new objects
     ReactTooltip.rebuild();
     this.svg = svg;
-    this.omplir_colors(this.props);
     this.setState({svgStatus: 'afterInjection'});
   }
 
   // Update background colors if SVG is mounted
   updateColorsIfPossible = (props) => {
     if ( this.isSVGMounted() && this.svg ) {
-      this.omplir_colors(props);
+      this.fillColors(props);
     }
   }
 
@@ -138,7 +157,6 @@ class MapImage extends React.Component {
     if (this.props.mapSrc !== prevProps.mapSrc ) {
       this.setState({svgStatus: 'srcChanged'});
     }
-    this.updateColorsIfPossible(this.props);
   }
 
   componentDidMount() {
@@ -148,8 +166,9 @@ class MapImage extends React.Component {
 
   // Help GC about side effects
   componentWillUnmount() {
-    delete this.mapElements;
-    delete this.svg;
+    if(this.timer) {
+      cancelAnimationFrame(this.timer);
+    }
   }
 
   // Optimize renders:
@@ -162,7 +181,7 @@ class MapImage extends React.Component {
       if (this.state.tooltipShow) {
         // It's slow, but it's the faster solution found to update tooltip content
         // without re-drawing full tooltip component (very slow)
-        ReactTooltip.show(this.mapElements[ this.state.tooltipShow ]);
+        ReactTooltip.show(this.mapElements.get( this.state.tooltipShow ));
       }
     }
     if (this.props.mapSrc    !== nextProps.mapSrc ||
@@ -175,26 +194,25 @@ class MapImage extends React.Component {
   // Renders the tip contents for a region
   afterTipShow = event => this.setState({ tooltipShow: event.target.id });
   afterTipHide = event => this.setState({ tooltipShow: false });
-  getTipContent = id => {
-    if ( id ) {
-      const {values, indexValues, label} = this.props;
-      const valuesDay = values[ indexValues ];
-      const element = this.mapElements[id];
-      const color = this.get_color_fons(valuesDay[id]);
-      const value = `${ label }: ${ valuesDay ? valuesDay[id] : '' }`;
-      if (!element) {
-        return '';
-      }
-      const elementLabel = element.getAttribute('label');
-      return (
-        <>
-          <h4>{ elementLabel }</h4>
-          <LegendElement { ...{value, color} } justify="center" />
-        </>
-      );
+  getTipContent = (id) => {
+    if ( !id ) {
+      return '';
     }
 
-    return '';
+    const element = this.mapElements?.get(id) ?? false;
+    if (!element) {
+      return '';
+    }
+
+    const {values, indexValues, label} = this.props;
+    const valuesDay = values[ indexValues ];
+    return <TipContent { ...{
+      id,
+      valuesDay,
+      label,
+      element,
+      colorGetter: this.getColor,
+    }} />;
   }
 
   render() {
@@ -239,7 +257,7 @@ MapImage.propTypes = {
   // {["day"]: {["regionId"]: "color"} }
   values: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   colors: PropTypes.arrayOf(PropTypes.shape({
-    valor: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
     color: PropTypes.string.isRequired,
   })).isRequired,
   indexValues: PropTypes.number.isRequired,

@@ -44,7 +44,11 @@ class MapDataHandler extends GHPages {
   */
   days = (callback) => cache.fetch( MapDataStatic.days, callback);
   index = (callback) => this.days(callback);
-  data = (kind, values, callback) => cache.fetch( MapDataStatic.kind[kind].values[values], callback);
+  data = (kind, values, callback) =>
+    cache.fetch(
+      MapDataStatic.kind[kind].values[values],
+      callback
+    );
 }
 
 export default MapDataHandler;

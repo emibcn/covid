@@ -21,7 +21,17 @@ const withData = (WrappedComponent, name="mapData") => {
     ({mapKind, mapValue}) => ({mapKind, mapValue}),
     ({mapKind, mapValue}, Handler, setData) => {
       const handler = new Handler();
-      return handler.data( mapKind, mapValue, setData )
+      return handler.data( mapKind, mapValue, (data) => {
+        // Optimization: Transform received data to use Map()
+        // instead of Object() in days values
+        const newData = {
+          ...data,
+          valors: data.valors
+            .map( dayValues => new Map(Object.entries(dayValues))
+          )
+        };
+        return setData(newData);
+      })
     },
     name,
     WrappedComponent,
