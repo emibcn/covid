@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Loading from './Loading';
 
+// From https://gist.github.com/aadii104/0ed32d46b70ed2f4037dbbbbc1477edc
 const asyncComponent = (importComponent, module="default") => {
   class AsyncComponent extends Component {
     /**
