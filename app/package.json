@@ -37,6 +37,7 @@
     "test-coverage-html": "react-scripts test --coverage --coverageReporters=html",
     "eject": "react-scripts eject",
     "lint": "node_modules/.bin/eslint --ext js src",
+    "analyze": "node analyze.js",
     "sw-epilog": "cat src/sw-epilog.js >> build/service-worker.js",
     "pubgh": "mkdir -p ../docs && rm -Rf ../docs/* build/.*.swp && mv -v build/* ../docs/ && rmdir -v build",
     "clean": "rm -R ../docs/*"
@@ -58,6 +59,7 @@
   },
   "devDependencies": {
     "jest-matchmedia-mock": "^1.1.0",
-    "mq-polyfill": "^1.1.8"
+    "mq-polyfill": "^1.1.8",
+    "webpack-bundle-analyzer": "^4.3.0"
   }
 }

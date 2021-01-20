@@ -1,9 +1,12 @@
 import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
-import { ReferenceLine } from 'recharts';
 
 import ChartBcn from '../Common/Chart';
+
+// Import charting systems dynamically
+import asyncComponent from '../../../asyncComponent';
+const ReferenceLine = asyncComponent(() => import('recharts'), 'ReferenceLine');
 
 const dataTransform = (dies, graph, chartsStyles=[]) => {
   const reformatDate = (date) => date
