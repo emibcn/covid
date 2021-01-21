@@ -115,7 +115,7 @@ class DataHandler extends React.Component {
 
     // If index changed, update backend with new data
     if ( chartsIndex !== prevProps.chartsIndex ) {
-      this.ChartsData.parseIndex(chartsIndex);
+      this.ChartData.parseIndex(chartsIndex);
     }
 
     // If chartData is unset, gather new data
