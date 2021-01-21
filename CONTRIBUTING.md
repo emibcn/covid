@@ -8,7 +8,7 @@
 - Security issues are impossible by design AFAIK, but if you find one, follow the [security guidelines](https://github.com/emibcn/covid/blob/master/SECURITY.md).
 - If you submit an issue of a bug, add a screenshot (or more) to the issue: it's almost sure it will be helpful.
 - Apply for an open issue if you think you can solve it by commenting on it, even if only partially.
-- Submit pull requests with your code ([see guidelines above](#coding-guidelines)) or other updates (tags, descriptions, explanations, typos, examples, documentation, etc).
+- Submit pull requests with your code ([see guidelines below](#coding-guidelines)) or other updates (tags, descriptions, explanations, typos, examples, documentation, etc).
 
 ## Ground rules
 Breaking any of the rules will result in your issue or pull request being closed.
