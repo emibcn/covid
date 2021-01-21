@@ -45,7 +45,7 @@ yarn start
 - When creating new components (especially, interactive ones), look into [MaterialUI Components](https://material-ui.com/components/box/). If you find one that can do what you need, it will already be integrated with the rest of the app (like light/dark theme), easier to develop and easier to maintain.
 - Add or adapt the tests to reflex what you have done, or open a new issue asking for help on that. Currently, tests are a Work In Progress, but highly desired. Looks boring, but tests rules :+1: !
 - Run the tests before commiting changes.
-- When adding a new dependency, consider [importing it dynamically](i#dynamic-imports) to keep bundle sizes controlled.
+- When adding a new dependency, consider [importing it dynamically](#dynamic-imports) to keep bundle sizes controlled.
 
 ## Applications details
 This is a PWA application using [React](https://reactjs.org/) and created with [Create React App](https://create-react-app.dev/) (CRA).
