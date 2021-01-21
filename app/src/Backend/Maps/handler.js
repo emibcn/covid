@@ -12,9 +12,6 @@ class MapDataHandler extends GHPages {
   // Overload "abstract" member
   indexUrl = MapDataStatic.days;
 
-  // Used to update the data at official schedule
-  officialUpdateTime = "10:35".split(':');
-
   // Invalidate all URLs, except index
   invalidateAll = async () => {
     // Invalidate each map JSON first
