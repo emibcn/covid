@@ -18,15 +18,25 @@ const ChartWrapper = withWidget({
   view: {
     icon: <FontAwesomeIcon icon={ faChart } />,
     label: ({ t }) => t("View"),
-    title: (props) => props.title,
-    render: withData(({setChartData, days, chartData, chartDataset, indexValues, id}) => {
+    title: ({title}) => title,
+    // withData: Uses {chartPopulation, chartDivision, chartRegion} props to handle `chartDataset` download
+    //   and pass it as a prop, showing <Loading/> until it's downloaded
+    render: withData(({
+      setChartData, chartData, days, indexValues, id,
+      chartPopulation, chartRegionName, chartDataset,
+    }) => {
+
+      //   Once downloaded, set parent's data, so it can properly set title and other widget components
       React.useEffect( () => setChartData(chartData), [chartData, setChartData]);
+
       return <Chart
-        dies={ days }
-        valors={ chartData }
-        dataset={ chartDataset }
-        indexValues={ indexValues }
         id={ id }
+        dies={ days }
+        indexValues={ indexValues }
+        valors={ chartData }
+        population={ chartPopulation }
+        region={ chartRegionName }
+        dataset={ chartDataset }
       />
     })
   },
@@ -86,16 +96,21 @@ class DataHandler extends React.Component {
 
   // Get metadata from given params
   getMeta = (chartDivision, chartPopulation, chartRegion, chartDataset, chartData) => {
+
+    // Get selected node metadata and save to cache
+    const {children, ...node} = this.ChartData.find(chartDivision, chartPopulation, chartRegion);
     if ( !chartData ) {
       return {
         title: '...',
         name: '...',
+        node,
       };
     }
     const title = chartData[chartDataset]?.title || chartData[chartDataset]?.name;
     return {
       title,
       name: title,
+      node,
     }
   }
 
@@ -206,9 +221,9 @@ class DataHandler extends React.Component {
 
   render() {
     const {
+      id,
       days,
       indexValues,
-      id,
       chartDivision,
       chartPopulation,
       chartDataset,
@@ -216,7 +231,7 @@ class DataHandler extends React.Component {
       chartsIndex,
     } = this.props; 
     const {
-      title, name
+      title, name, node
     } = this.state;
 
     return (
@@ -229,11 +244,18 @@ class DataHandler extends React.Component {
         <ChartWrapper
           id={ id }
           setChartData={ this.setChartData }
-          chartDivision={ chartDivision }
-          chartPopulation={ chartPopulation }
-          chartDataset={ chartDataset }
-          chartRegion={ chartRegion }
-          chartsIndex={ chartsIndex }
+          { ...{
+            chartDivision,
+            chartPopulation,
+            chartDataset,
+            chartRegion,
+            chartRegionName: node.name,
+            chartsIndex,
+            indexValues,
+            days,
+            title,
+            name,
+          }}
           divisions={ this.ChartData.divisions }
           populations={ this.ChartData.populations }
           onChangeChartDivision={ this.onChangeChartDivision }
@@ -241,10 +263,6 @@ class DataHandler extends React.Component {
           onChangeChartDataset={ this.onChangeChartDataset }
           onChangeChartRegion={ this.onChangeChartRegion }
           onRemove={ this.props.onRemove }
-          indexValues={ indexValues }
-          days={ days }
-          title={ title }
-          name={ name }
         />
       </div>
     );
