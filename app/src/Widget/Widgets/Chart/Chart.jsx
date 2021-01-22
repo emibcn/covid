@@ -1,13 +1,15 @@
 import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
+import Chip from '@material-ui/core/Chip';
 
-import ChartBcn from '../Common/Chart';
+import Chart from '../Common/Chart';
 
 // Import charting systems dynamically
 import asyncComponent from '../../../asyncComponent';
 const ReferenceLine = asyncComponent(() => import('recharts'), 'ReferenceLine');
 
+// Adapt data shape to the expected by `Common/Chart`
 const dataTransform = (dies, graph, chartsStyles=[]) => {
   const reformatDate = (date) => date
     .split('/')
@@ -55,12 +57,12 @@ const ChartIEPG = (props) => {
   );
 
   return (
-    <ChartBcn
+    <Chart
       syncId="charts"
       { ...{dies, indexValues, data}}
     >
       { references }
-    </ChartBcn>
+    </Chart>
   )
 }
 
@@ -78,63 +80,138 @@ const ChartExtensio = (props) => {
   );
 
   return (
-    <ChartBcn
+    <Chart
       syncId="charts"
       { ...{dies, indexValues, data}}
     />
   )
 }
 
-const TableSeguiment = ({graph}) => {
-  return (
-    <table>
-      <thead>
-        <tr>
-          { graph.headers
-              .map( ({content, title}, index) =>
-                <th key={index} title={title}>{content}</th>
-              )
-          }
-        </tr>
-      </thead>
-      <tbody>
-          { graph.body
-              .map( (row, index) =>
-                <tr key={index}>
-                  { row.map( ({content}, cellIndex) =>
-                      <td key={cellIndex}>{content}</td>
-                    )
-                  }
-                </tr>
-              )
-          }
-      </tbody>
-    </table>
-  )
-}
-
-const TableSituacio = ({graph}) => {
+const Pills = React.memo(({dies, ...props}) => {
+  const dateStr = dies[dies.length - 1];
   return (
     <Grid
       container
       direction="row"
       alignItems="center"
+      justify="center"
+      spacing={1}
+      style={{ position: "relative", top: '-2em', }}
     >
-    { graph.elements
-        .map( ({name, value}, index) => (
-          <Grid
-            key={index}
-            item
-            container
-            direction="column"
-            alignItems="center"
-          >
-            <Grid item><strong>{name}</strong></Grid>
-            <Grid item>{value}</Grid>
+    { [dateStr, ...Object.values(props)]
+        .map( (name, index) => (
+          <Grid key={index} item>
+            <Chip color="primary" size="small" label={name} />
           </Grid>
         ))
     }
     </Grid>
+  )
+})
+
+// TODO: Abstract it?
+// Copied from Widgets/Common/Chart
+const parseDateStr = (dateStr, sep='/') => dateStr.split(sep).map( d => Number(d));
+const parseDate = ([day, month, year]) => new Date(year, month - 1, day);
+
+const TableSeguimentInternal = React.memo(({graph, selectedRows}) => {
+  return (
+    <div style={{ overflowY: 'auto' }}>
+      <table>
+        <thead>
+          <tr>
+            { graph.headers
+                .map( ({content, title}, index) =>
+                  <th key={index} title={title}>{content}</th>
+                )
+            }
+          </tr>
+        </thead>
+        <tbody>
+            { graph.body
+                .map( (row, index) =>
+                  <tr key={index} style={(selectedRows[index] ? {backgroundColor: '#eee'} : {})}>
+                    { row.map( ({content}, cellIndex) =>
+                        <td key={cellIndex} style={{ textAlign: "right" }}>{content}</td>
+                      )
+                    }
+                  </tr>
+                )
+            }
+        </tbody>
+      </table>
+    </div>
+  )
+})
+
+const TableSeguiment = ({graph, ...props}) => {
+  // Generate an array containing rows date ranges (as Date)
+  const rowDates = React.useMemo(() => graph.body
+    .map( row =>
+      row[0].content
+        .split(" - ")
+        .map( dateStr => parseDate(parseDateStr(dateStr)) )
+    ),
+    [graph]
+  );
+
+  // Find which rows are selected by currently selected day
+  const {dies, indexValues} = props;
+  const dateStr = dies[indexValues];
+  const currentDate = parseDate(parseDateStr(dateStr));
+  const selectedRows = rowDates.map( (row, index) =>
+    currentDate >= rowDates[index][0] &&
+    currentDate <= rowDates[index][1]
+  );
+
+  // Performance: use useState to cache the selected rows array reference
+  const [selectedRowsCached, setSelectedRowsCached] = React.useState(rowDates.map( date => false));
+  if( selectedRows.length !== selectedRowsCached.length ||
+      selectedRows.some( (row, index) => row !== selectedRowsCached[index])) {
+    setSelectedRowsCached(selectedRows);
+  }
+
+  // For Pills
+  const {population, region} = props;
+  return (
+    <>
+      <Pills {...{population, region, dies}} />
+      <TableSeguimentInternal graph={graph} selectedRows={selectedRowsCached} />
+    </>
+  )
+}
+
+const TableSituacioInternal = React.memo(({elements}) => (
+  <Grid
+    container
+    direction="row"
+    alignItems="center"
+  >
+  { elements
+      .map( ({name, value}, index) => (
+        <Grid
+          key={index}
+          item
+          container
+          direction="column"
+          alignItems="center"
+        >
+          <Grid item><strong>{name}</strong></Grid>
+          <Grid item>{value}</Grid>
+        </Grid>
+      ))
+  }
+  </Grid>
+));
+
+const TableSituacio = ({graph, ...props}) => {
+  // For Pills
+  const {population, region, dies} = props;
+  return (
+    <>
+      <Pills {...{population, region, dies}} />
+      <TableSituacioInternal elements={graph.elements} />
+    </>
   )
 }
 
@@ -145,10 +222,10 @@ const GraphFromDataset = {
   seguiment: TableSeguiment,
 };
 
-const Chart = (props) => {
+const MultiChart = (props) => {
   const { dataset, valors, ...restProps } = props;
   const ChartDataset = GraphFromDataset[dataset];
   return <ChartDataset graph={ valors[dataset] } {...restProps} />
 }
 
-export default Chart;
+export default MultiChart;
