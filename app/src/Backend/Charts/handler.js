@@ -40,6 +40,8 @@ class ChartDataHandler extends GHPages {
   indexInternal = (callback) => cache.fetch( ChartDataStaticURL, callback );
 
   // Return unsubscription callback
+  // If automatic index download was done (in constructor),
+  // unsubscribe also from it
   index = (callback) => {
     const unsubscribe = this.indexInternal( callback );
     return () => {
@@ -105,6 +107,11 @@ class ChartDataHandler extends GHPages {
         link.territori === division &&
         link.poblacio === population
     );
+  }
+
+  find = (division, population, url) => {
+    const initialLink = this.findInitialNode(division, population);
+    return this.findChild(initialLink, url);
   }
 
   // Fetch JSON data and subscribe to updates

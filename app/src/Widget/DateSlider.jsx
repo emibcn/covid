@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import Slider from '../Slider';
+import Slider from './Slider';
 
 // UI Material styles/classes
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DateSlider = ({ days, current, onSetDate }) => {
-  const sliderTipFormatter = value => days[value];
+  const sliderTipFormatter = React.useMemo(() => value => days[value], [days]);
   const {marks, marksSmall} = React.useMemo(
     () => {
       // Marks on the slider
@@ -58,7 +58,12 @@ const DateSlider = ({ days, current, onSetDate }) => {
     [days],
   );
 
+  // Material-UI classes, cached
   const classes = useStyles();
+  const sliderClasses = React.useMemo(() => ({
+    root: classes.sliderRoot,
+    playPause: classes.playPause,
+  }), [classes]);
 
   // Get showMarkLabels prop using MediaQuery
   // Used to prevent showing mark labels on small screens
@@ -67,10 +72,7 @@ const DateSlider = ({ days, current, onSetDate }) => {
 
   return (
     <Slider
-      classes={{
-        root: classes.sliderRoot,
-        playPause: classes.playPause,
-      }}
+      classes={sliderClasses}
       max={ days.length - 1 }
       value={ current }
       onChange={ onSetDate }

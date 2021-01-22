@@ -33,7 +33,7 @@ class WidgetsList extends React.PureComponent {
   // Managed data: days & currently selected day
   state = {
     currentDate: null,
-    widgetsIds: [],
+    widgets: [],
   }
 
   // Widgets list temporal IDs
@@ -44,18 +44,31 @@ class WidgetsList extends React.PureComponent {
   // with excessive calls on mouse move
   throtle = new Throtle();
 
-  constructor(props) {
-    super(props);
-
-    // Generate initial list of unique IDs
-    if ('widgets' in props) {
-      this.updateIDs(props.widgets.length, false);
+  updateWidgets = () => {
+    // Ensure a unique and constant ID for each widget
+    const length = this.widgetsIds.length;
+    if( length < this.props.widgets.length ) {
+      this.widgetsIds = this.props.widgets
+        .map( (w, index) =>
+          index < length
+            ? this.widgetsIds[index]
+            : guidGenerator()
+        );
     }
+
+    // Generate a cached (in state) madurated list of widgets
+    const widgets = this.props.widgets.map(({ type, payload }, index) => ({
+      id: this.widgetsIds[index],
+      Component: WidgetsTypes.find(w => w.key === type ).Component,
+      ...{ payload },
+    }));
+
+    this.setState({ widgets });
   }
 
   componentDidMount() {
-    const {days, widgets} = this.props;
-    this.updateIDs(widgets.length);
+    const {days} = this.props;
+    this.updateWidgets();
     this.setState({ currentDate: days.length - 1 });
   }
 
@@ -66,8 +79,6 @@ class WidgetsList extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.updateIDs(this.props.widgets.length);
-
     const {days: daysOld} = prevProps;
     const {days} = this.props;
 
@@ -82,29 +93,22 @@ class WidgetsList extends React.PureComponent {
         });
       }
     }
-  }
 
-  // Ensure all widgets have ID
-  updateIDs = (length, updateState=true) => {
-    const oldLength = this.widgetsIds.length;
-    while ( this.widgetsIds.length < length ) {
-      this.widgetsIds.push( guidGenerator() );
-    }
-
-    if(updateState && oldLength !== this.widgetsIds.length) {
-      this.setState({widgetsIds: [...this.widgetsIds]});
+    if(prevProps.widgets !== this.props.widgets) {
+      this.updateWidgets();
     }
   }
 
   // Slider helpers
   onSetDate = (event, currentDate) =>
-    this.throtle.run(false, 10, () => this.setState({ currentDate }) );
+    this.throtle.run(false, 10,
+      () => this.setState({ currentDate })
+    );
 
   // Adds a new default widget to the list
   onAdd = (widgetType) => {
     const widgets = [...this.props.widgets];
     widgets.push({ type: widgetType??'map' });
-    this.updateIDs(widgets.length);
     return this.props.onChangeData({ widgets });
   }
 
@@ -152,11 +156,10 @@ class WidgetsList extends React.PureComponent {
 
   render() {
 
-    const { widgets, days } = this.props;
-    const { currentDate } = this.state;
+    const { days } = this.props;
+    const { widgets, currentDate } = this.state;
 
-    if (this.widgetsIds.length < widgets.length ||
-        currentDate === null ) {
+    if (currentDate === null ) {
       return <Loading/>;
     }
 
@@ -184,13 +187,7 @@ class WidgetsList extends React.PureComponent {
           onChangeData={this.onChangeData}
           onRemove={this.onRemove}
           onReorder={this.onReorder}
-          widgets={
-            widgets.map(({ type, payload }, index) => ({
-              id: this.widgetsIds[index],
-              Component: WidgetsTypes.find(w => w.key === type ).Component,
-              ...{ payload },
-            }))
-          }
+          widgets={ widgets }
         />
       </>
     );
