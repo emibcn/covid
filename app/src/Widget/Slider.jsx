@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { translate } from 'react-translate'
-
 import { makeStyles } from '@material-ui/core/styles';
 import SliderLib from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 
-// Magic for Play/Pause button
-import './Slider.scss';
+import PlayPause from './PlayPause';
 
 // Use special non-intrusive zIndex for the Slider tooltip
 const useStyles = makeStyles((theme) => ({
@@ -48,116 +45,45 @@ ValueLabelComponent.propTypes = {
   value: PropTypes.node.isRequired,
 };
 
-// Render the Play/Pause button next to the Slider
-class PlayPauseButtonUntranslated extends React.PureComponent {
-  onChange = () => {
-    if ( this.props.isPlaying ) {
-      this.props.onPause();
-    }
-    else {
-      this.props.onPlay();
-    }
-  }
-
-  // All the magic is done into the SCSS file Slider.sccs ;)
-  render() {
-    const { className, t } = this.props;
-    return (
-      <Tooltip title={ t("Toggle play status") } aria-label={ !this.props.isPlaying ? t("play") : t("pause") }>
-        <div className={ `playpause ${className || ''}` }>
-          <input
-            type="checkbox"
-            id="playpause"
-            name="check"
-            checked={ !this.props.isPlaying }
-            onChange={ this.onChange }
-            aria-label={ t("Toggle play status") }
-          />
-          <label
-            htmlFor="playpause"
-            style={{ borderLeftColor: '' }}
-          />
-        </div>
-      </Tooltip>
-    )
-  }
-}
-
-// Translate Play/Pause component
-const PlayPauseButton = translate('PlayPause')(PlayPauseButtonUntranslated);
-
 /*
    Renders a Slider with a play/pause button next to it, inside a
    sticky container at the top of the page
 */
-class Slider extends React.PureComponent {
-
-  state = {
-    isPlaying: false
-  }
-
-  timer = false;
-
-  onPause = () => {
-    this.clearTimer();
-    this.setState({ isPlaying: false });
-  }
-
-  onPlay = () => {
-    this.setTimer();
-    this.setState({ isPlaying: true });
-  }
+const Slider = (props) => {
 
   // TODO: Allow changing the timeout/speed
-  setTimer = () => {
-    this.clearTimer();
-    this.timer = setTimeout(this.updatePlay, 40);
-  }
 
-  clearTimer = () => {
-    if ( this.timer ) {
-      clearTimeout(this.timer);
-      this.timer = false;
-    }
-  }
+  // Manage props and classes
+  const { classes={} } = props;
+  const restProps = React.useMemo(() => {
+    const { classes, ...rest } = props;
+    return rest
+  }, [props]);
+  const { playPause } = classes;
+  const restClasses = React.useMemo(() => {
+    const { playPause, ...rest } = classes;
+    return rest
+  }, [classes]);
 
-  updatePlay = () => {
-    this.props.onChange(
-      {}, // event
-      this.props.value < this.props.max - 1
-        ? this.props.value + 1
-        : 0
-    );
-    this.setTimer();
-  }
-
-  componentWillUnmount() {
-    // Cancel timer if is active
-    this.clearTimer();
-  }
-
-  render() {
-    const { isPlaying } = this.state;
-    const { classes = {}, ...restProps } = this.props;
-    const { playPause, ...restClasses } = classes;
-    return (
-      <>
-        <SliderLib
-          ValueLabelComponent={ ValueLabelComponent }
-          step={ 1 }
-          min={ 0 }
-          classes={{ ...restClasses }}
-          { ...restProps }
-        />
-        <PlayPauseButton
-          className={ playPause }
-          onPlay={ this.onPlay }
-          onPause={ this.onPause }
-          isPlaying={ isPlaying }
-        />
-      </>
-    )
-  }
+  // Compose components
+  const {value, max, onChange} = props;
+  return (
+    <>
+      <SliderLib
+        ValueLabelComponent={ ValueLabelComponent }
+        step={ 1 }
+        min={ 0 }
+        classes={ restClasses }
+        { ...restProps }
+      />
+      <PlayPause
+        className={ playPause }
+        value={ value }
+        max={ max }
+        onChange={ onChange }
+      />
+    </>
+  )
 }
 
 export default Slider;
