@@ -19,6 +19,7 @@ const ChartWrapper = withWidget({
     icon: <FontAwesomeIcon icon={ faChart } />,
     label: ({ t }) => t("View"),
     title: ({title}) => title,
+
     // withData: Uses {chartPopulation, chartDivision, chartRegion} props to handle `chartDataset` download
     //   and pass it as a prop, showing <Loading/> until it's downloaded
     render: withData(({
