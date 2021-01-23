@@ -1,44 +1,34 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Loading from './Loading';
 
 // From https://gist.github.com/aadii104/0ed32d46b70ed2f4037dbbbbc1477edc
-const asyncComponent = (importComponent, module="default") => {
-  class AsyncComponent extends Component {
-    /**
-    * @constructor
-    * @desc Represents AsyncComponent component
-    * @param props Properties passed from parent component
-    */
-    constructor(props) {
-      super(props);
+const asyncComponent = (importComponent, module="default") =>
+  (props) => {
 
-      this.state = {
-        component: null
-      };
-    }
+    // Will save the component into a state
+    const [C, setComponent] = React.useState(false);
+
+    // Call module import (async), wait for
+    // results and set component state
+    //
+    // useEffect' Callback must not be async, so create an internal
+    // anonymous and async function and call it immediatelly
+    React.useEffect(() => {
+      (async () => {
+        const imported = await importComponent();
+        const component = imported[module];
+
+        setComponent({ component });
+        // No return, no unsubscribe
+      })();
+    // Only call it once
+    }, []);
 
     // Returns the needed component markup
     // Can be a single child component or null or false
-    render() {
-      const C = this.state.component;
-
-      return C ? <C {...this.props} /> : <Loading/>;
-    }
-
-    // Called after render method
-    // Enables DOM manipulations or data fetching operations
-    // DOM interactions should always happen here
-    async componentDidMount() {
-      const imported = await importComponent();
-      const component = imported[module];
-
-      this.setState({ component });
-    }
+    return C ? <C {...this.props} /> : <Loading/>;
   }
-
-  return AsyncComponent;
-}
 
 const asyncModuleComponent = (importModule, modules, Wrapped) =>
   (props) => {
