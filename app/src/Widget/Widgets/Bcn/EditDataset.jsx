@@ -17,19 +17,25 @@ const styles = {
   },
 };
 
-const Tree = (props) => {
-  const {node} = props;
-  return (
-    <TreeItem key={node.code} nodeId={`${!('values' in node) ? 'DISABLED-' : ''}${node.code}`} label={node.title} >
-      {Array.isArray(node.sections) ? node.sections.map( node => <Tree node={node} />) : null}
-    </TreeItem>
-  )
-};
+const Tree = ({node}) => (
+  <TreeItem
+    key={node.code}
+    nodeId={`${!('values' in node) ? 'DISABLED-' : ''}${node.code}`}
+    label={node.title}
+  >
+    {
+      Array.isArray(node.sections)
+        ? node.sections.map( (node, key) => <Tree {...{node, key}} />)
+        : null
+    }
+  </TreeItem>
+)
 
 class RecursiveTreeView extends React.Component {
 
   state = {
     breadcrumb: [],
+    value: '',
   }
 
   onNodeSelect = (event, value, ...rest) => {
@@ -39,20 +45,21 @@ class RecursiveTreeView extends React.Component {
     }
   }
 
-  componentWillMount = () => {
-    const { value, bcnIndex, bcnDataHandler } = this.props;
-    const bcnData = new bcnDataHandler(bcnIndex);
+  constructor(props) {
+    super(props);
 
-    this.setState({
+    const { value, bcnDataHandler } = props;
+
+    this.state = {
       value,
-      breadcrumb: bcnData
+      breadcrumb: bcnDataHandler
         .findBreadcrumb(null, value)
         .map(node => `${!('values' in node) ? 'DISABLED-' : ''}${node.code}`),
-    });
+    };
   }
 
-  render = (props) => {
-    const { classes, bcnIndex, ...restProps } = this.props;
+  render = () => {
+    const { classes, bcnDataHandler, ...restProps } = this.props;
     const { breadcrumb, value } = this.state;
 
     return (
@@ -65,7 +72,7 @@ class RecursiveTreeView extends React.Component {
         onNodeSelect={ this.onNodeSelect }
         { ...restProps }
       >
-        { bcnIndex
+        { bcnDataHandler
             .filter( section => ['graph','chart'].includes(section.type) )
             .map( section => <Tree key={section.code} node={section} />) }
       </TreeView>
