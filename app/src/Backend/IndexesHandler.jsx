@@ -8,6 +8,8 @@ import { withHandler as withMapsDataHandler } from '../Backend/Maps/context';
 import { withHandler as withChartsDataHandler } from '../Backend/Charts/context';
 import { withHandler as withBcnDataHandler } from '../Backend/Bcn/context';
 
+import Provider from './Provider';
+
 // Initially downloads all backends indexes
 // - Shows <Loading/> while data is downloading
 // - Handles data updates:
@@ -32,10 +34,11 @@ class IndexesHandler extends React.Component {
     super(props);
 
     // Create initial handled backends array
-    this.backends = ['mapsDataHandler', 'chartsDataHandler', 'bcnDataHandler']
-      .map( backendProp => ({
-        initializer: props[backendProp],
-        state: backendProp,
+    this.backends = ['maps', 'charts', 'bcn']
+      .map( name => ({
+        name,
+        initializer: props[`${name}DataHandler`],
+        state: `${name}DataHandler`,
         unsubscribe: () => {},
       }));
 
@@ -176,11 +179,22 @@ class IndexesHandler extends React.Component {
     const indexes = this.backends
       .map( ({state}) => state)
       .map( state => this.state[state]);
+    const provided = this.backends
+      .reduce(
+        (acc, {name, handler}) => ({
+          ...acc,
+          [name]: handler,
+        }),
+        {});
 
     // Show <Loading/> while some index has not yet been loaded
     return indexes.some( index => !index )
       ? <Loading />
-      : this.props.children;
+      : (
+        <Provider { ...provided }>
+          { this.props.children }
+        </Provider>
+      );
   }
 }
 

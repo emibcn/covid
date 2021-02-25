@@ -6,10 +6,7 @@ const withIndex = (WrappedComponent, name="index") =>
   withHandlerGenerator(
     withHandler,
     () => ({}),
-    (props, Handler, setIndex) => {
-      const handler = new Handler();
-      return handler.index( setIndex );
-    },
+    (props, Handler, setIndex) => Handler.index( setIndex ),
     name,
     WrappedComponent,
   );
@@ -18,12 +15,8 @@ const withIndex = (WrappedComponent, name="index") =>
 const withData = (WrappedComponent, name="bcnData") => {
   const WrapperComponent = withHandlerGenerator(
     withHandler,
-    ({dataset, bcnIndex}) =>
-      ({dataset, bcnIndex}),
-    ({dataset, bcnIndex}, Handler, setData) => {
-      const handler = new Handler(bcnIndex);
-      return handler.data( dataset, setData )
-    },
+    ({dataset}) => ({dataset}),
+    ({dataset}, Handler, setData) => Handler.data( dataset, setData ),
     name,
     WrappedComponent,
   );

@@ -20,25 +20,43 @@ const useStyles = makeStyles({
 
 const RecursiveTreeView = (props) => {
   const classes = useStyles();
-  const { chartsIndex, division, population, value, onChange, chartsDataHandler,...restProps } = props;
+  const {
+    chartsIndex,
+    division,
+    population,
+    value,
+    onChange,
+    chartsDataHandler,
+    ...restProps
+  } = props;
 
   const onNodeSelect = (event, value) => onChange(Number(value));
 
-  const renderTree = (nodes) => (
-    <TreeItem key={nodes.url} nodeId={`${nodes.url}`} label={nodes.name}>
-      {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
+  const renderTree = ({url, name, children}) => (
+    <TreeItem
+      key={url}
+      nodeId={`${url}`}
+      label={name}
+    >
+      {
+        Array.isArray(children)
+          ? children.map( renderTree )
+          : null
+      }
     </TreeItem>
   );
 
   const {initialNode, found} = React.useMemo(
     () => {
-      const chartData = new chartsDataHandler(chartsIndex);
-      const initialNode = chartData.findInitialNode(division, population);
-      const found = chartData.findBreadcrumb(initialNode, value).map(link => `${link.url}`);
+      const initialNode = chartsDataHandler
+        .findInitialNode(division, population);
+      const found = chartsDataHandler
+        .findBreadcrumb(initialNode, value)
+        .map(({url}) => `${url}`);
 
       return {initialNode, found}
     },
-    [division, population, value, chartsIndex, chartsDataHandler]
+    [division, population, value, chartsDataHandler]
   );
 
   return (

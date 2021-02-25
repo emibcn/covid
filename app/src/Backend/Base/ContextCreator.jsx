@@ -3,8 +3,8 @@ import React, { createContext, useContext } from 'react';
 const ContextCreator = (Handler, defaultName) => {
   const Context = createContext();
   
-  const Provider = ({children}) => (
-    <Context.Provider value={Handler}>
+  const Provider = ({children, value=Handler}) => (
+    <Context.Provider value={value}>
       {children}
     </Context.Provider>
   );

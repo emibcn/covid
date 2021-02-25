@@ -6,10 +6,7 @@ const withIndex = (WrappedComponent, name="days") =>
   withHandlerGenerator(
     withHandler,
     () => ({}),
-    (props, Handler, setIndex) => {
-      const handler = new Handler();
-      return handler.index( setIndex );
-    },
+    (props, Handler, setIndex) => Handler.index( setIndex ),
     name,
     WrappedComponent,
   );
@@ -20,8 +17,7 @@ const withData = (WrappedComponent, name="mapData") => {
     withHandler,
     ({mapKind, mapValue}) => ({mapKind, mapValue}),
     ({mapKind, mapValue}, Handler, setData) => {
-      const handler = new Handler();
-      return handler.data( mapKind, mapValue, (data) => {
+      return Handler.data( mapKind, mapValue, (data) => {
         // Optimization: Transform received data to use Map()
         // instead of Object() in days values
         const newData = {

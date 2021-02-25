@@ -43,8 +43,8 @@ const Selector = (props) => {
             id: id,
           }}
         >
-          { options.map( option => (
-            <option key={ `v_${option.value}` } value={ option.value }>{ option.label }</option>
+          { options.map( ({value, label}) => (
+            <option key={ `v_${value}` } value={ value }>{ label }</option>
           )) }
         </Select>
         { help ? (
