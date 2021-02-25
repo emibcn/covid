@@ -95,6 +95,9 @@ class BcnDataHandler extends GHPages {
     return this.indexData.find( ({code}) => code === dataset );
   }
 
+  // Return filtered index data values
+  filter = (fn) => this.indexData.filter( fn );
+
   // Active URLs: those which will be invalidated on update
   active = [];
 

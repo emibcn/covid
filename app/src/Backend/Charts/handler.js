@@ -114,6 +114,40 @@ class ChartDataHandler extends GHPages {
     return this.findChild(initialLink, url);
   }
 
+  // Used to fix region when changing main options.
+  // TODO: Find a better way. ID by breadcrumb?
+  findRegion = (division, population, region) => {
+    const initialNode = this.findInitialNode(division, population);
+    const found = this.findChild(initialNode, region);
+
+    if ( !found ) {
+      // Try to find in the other valid initialNodes (same division)
+      const nodes = this.indexData.filter( (node) =>
+        division === node.territori &&
+        population !== node.poblacio
+      );
+      for (const node of nodes ) {
+        // Look for region in the other initialNode
+        const f1 = this.findChild(node, region);
+        // If found, find in our initialNode for a region with the same name
+        const f2 = f1 && this.findChild(
+          initialNode,
+          f1.name,
+          (node, name) => node.name === name);
+        // If found, use it
+        if (f2) {
+          return f2;
+        }
+      }
+
+      // Not found in valid initialNodes: default to actual initialNode's root
+      return initialNode;
+    }
+
+    // Found!
+    return found;
+  }
+
   // Fetch JSON data and subscribe to updates
   data = (division, population, url, callback) => {
 

@@ -4,11 +4,11 @@ import BcnProvider from './Bcn/context';
 import MapsProvider from './Maps/context';
 import ChartsProvider from './Charts/context';
 
-const BackendProvider = ({children}) => {
+const BackendProvider = ({children, bcn, maps, charts}) => {
   return (
-    <BcnProvider>
-      <MapsProvider>
-        <ChartsProvider>
+    <BcnProvider value={bcn}>
+      <MapsProvider value={maps}>
+        <ChartsProvider value={charts}>
           {children}
         </ChartsProvider>
       </MapsProvider>
