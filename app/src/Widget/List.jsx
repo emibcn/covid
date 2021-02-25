@@ -18,13 +18,13 @@ const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 const guidGenerator = () => "a-"+S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4();
 
 // Renders widgets list
-// - Manages days list (using backend) and current selected Date with a Slider
+// - Manages days list (using backend) and currently selected Date with a Slider
 // - Receives managed plugins params from props (with storage context providers and consumer)
 // - Receives Widgets param modification events and calls parents param event
 //   handlers callbacks with processed data:
-//   - Add (not from widgets but from MenuAddWidget)
-//   - Edit
-//   - Remove
+//   - Add (from MenuAddWidget)
+//   - Edit (from widgets)
+//   - Remove (from widgets)
 //   - Reorder (from SortableWidgetContainer)
 // - Blindly (with `payload`) handles different types of widgets depending on passed/saved
 //   params from URL and localStorage
