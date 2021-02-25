@@ -41,7 +41,6 @@ jobs:
       with:
         path: |
           app/node_modules
-          app/.yarn/cache
         key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
         restore-keys: |
           ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
@@ -52,13 +51,14 @@ jobs:
         REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
         REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       run: |
-        cd app
-        yarn install
-        # Disabled exit until we reach at least 50% coverage
-        yarn test --color --coverage || true
-        # Ensure we can build
-        yarn build
-        yarn clean
+        pushd app
+            yarn install
+            # Disabled exit until we reach at least 50% coverage
+            yarn test --color --coverage || true
+            # Ensure we can build
+            yarn build
+            yarn clean
+        popd
 
     # Coverage badges will be updated on any branch
     # and saved into a dedicated one
@@ -90,6 +90,7 @@ jobs:
       if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/master' }}
       with:
         ref: badges
+        path: badges
 
     # Use the output from the `coverage` step
     - name: Generate the badge SVG image
@@ -109,7 +110,7 @@ jobs:
           steps.coverage.outputs.coverage > 30 && 'red,red,orange'     ||
           steps.coverage.outputs.coverage > 20 && 'red,red,red,orange' ||
           'red' }}
-        path: test-coverage.svg
+        path: badges/test-coverage.svg
 
     - name: Commit badge
       if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/master' }}
@@ -117,21 +118,24 @@ jobs:
         BRANCH: ${{ steps.extract_branch.outputs.branch }}
         FILE: 'test-coverage.svg'
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        mkdir -p "${BRANCH}"
-        mv "${FILE}" "${BRANCH}"
-        git add "${BRANCH}/${FILE}"
+        pushd badges
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            mkdir -p "${BRANCH}"
+            mv "${FILE}" "${BRANCH}"
+            git add "${BRANCH}/${FILE}"
 
-        # Will give error if badge did not changed
-        git commit -m "Add/Update badge" || true
+            # Will give error if badge did not changed
+            git commit -m "Add/Update badge" || true
+        popd
+
     - name: Push badge commit
       if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/master' }}
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: badges
-
+        directory: badges
 
   publish:
 
