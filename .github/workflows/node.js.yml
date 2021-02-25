@@ -164,8 +164,12 @@ jobs:
     - name: Manage cache
       uses: actions/cache@v2.0.0
       with:
-        path: app/node_modules
-        key: covid-v2
+        path: |
+          app/node_modules
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          ${{ runner.OS }}-build
 
     - name: yarn install and build
       env:
