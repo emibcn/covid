@@ -7,7 +7,7 @@ import {
   faChartArea as faChart
 } from '@fortawesome/free-solid-svg-icons'
 
-import { withHandler, withIndex, withData } from '../../../Backend/Charts/context'
+import { withHandler, withData } from '../../../Backend/Charts/context'
 
 import Chart from './Chart';
 import Edit from './Edit';
@@ -22,22 +22,29 @@ const ChartWrapper = withWidget({
 
     // withData: Uses {chartPopulation, chartDivision, chartRegion} props to handle `chartDataset` download
     //   and pass it as a prop, showing <Loading/> until it's downloaded
-    render: withData(({
-      setChartData, chartData, days, indexValues, id,
-      chartPopulation, chartRegionName, chartDataset,
-    }) => {
+    render: withData((props) => {
+      const {
+        // Translated
+        days: dies,
+        chartData: valors,
+        chartPopulation: population,
+        chartRegionName: region,
+        chartDataset: dataset,
+        // Used
+        setChartData,
+        indexValues,
+        id,
+      } = props;
 
-      //   Once downloaded, set parent's data, so it can properly set title and other widget components
-      React.useEffect( () => setChartData(chartData), [chartData, setChartData]);
+      // Once downloaded, set parent's data, so it can properly
+      // set title and other widget components
+      React.useEffect( () => setChartData(valors), [valors, setChartData]);
 
       return <Chart
-        id={ id }
-        dies={ days }
-        indexValues={ indexValues }
-        valors={ chartData }
-        population={ chartPopulation }
-        region={ chartRegionName }
-        dataset={ chartDataset }
+        { ...{
+          id, dies, indexValues, valors,
+          population, region, dataset
+        }}
       />
     })
   },
@@ -69,16 +76,11 @@ class DataHandler extends React.Component {
       chartPopulation,
       chartRegion,
       chartDataset,
-      chartsIndex,
-      chartsDataHandler,
     } = props;
     const { chartData } = this.state;
 
-    // TODO: Handle errors
     // Used to find metadata from selected options
     // and for the rest of options while editing
-    this.ChartData = new chartsDataHandler(chartsIndex);
-
     this.state = {
       ...this.state,
       ...this.getMeta(chartDivision, chartPopulation, chartRegion, chartDataset, chartData)
@@ -99,7 +101,9 @@ class DataHandler extends React.Component {
   getMeta = (chartDivision, chartPopulation, chartRegion, chartDataset, chartData) => {
 
     // Get selected node metadata and save to cache
-    const {children, ...node} = this.ChartData.find(chartDivision, chartPopulation, chartRegion);
+    const {children, ...node} = this.props.chartsDataHandler
+      .find(chartDivision, chartPopulation, chartRegion);
+
     if ( !chartData ) {
       return {
         title: '...',
@@ -107,6 +111,7 @@ class DataHandler extends React.Component {
         node,
       };
     }
+
     const title = chartData[chartDataset]?.title || chartData[chartDataset]?.name;
     return {
       title,
@@ -126,13 +131,8 @@ class DataHandler extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { chartDivision, chartPopulation, chartRegion, chartDataset, chartsIndex } = this.props;
+    const { chartDivision, chartPopulation, chartRegion, chartDataset } = this.props;
     const { chartData } = this.state;
-
-    // If index changed, update backend with new data
-    if ( chartsIndex !== prevProps.chartsIndex ) {
-      this.ChartData.parseIndex(chartsIndex);
-    }
 
     // If chartData is unset, gather new data
     if (
@@ -146,48 +146,15 @@ class DataHandler extends React.Component {
     }
   }
 
-  // Used to fix region when changing main options.
-  // TODO: Find a better way. ID by breadcrumb?
-  findRegion = (division, population, region) => {
-    const {chartsIndex} = this.props;
-    const initialNode = this.ChartData.findInitialNode(division, population);
-    const found = this.ChartData.findChild(initialNode, region);
-
-    if ( !found ) {
-      // Try to find in the other valid initialNodes (same division)
-      const nodes = chartsIndex.filter( (node) =>
-        division === node.territori &&
-        population !== node.poblacio
-      );
-      for (const node of nodes ) {
-        // Look for region in the other initialNode
-        const f1 = this.ChartData.findChild(node, region);
-        // If found, find in our initialNode for a region with the same name
-        const f2 = f1 && this.ChartData.findChild(
-          initialNode,
-          f1.name,
-          (node, name) => node.name === name);
-        // If found, use it
-        if (f2) {
-          return f2;
-        }
-      }
-
-      // Not found in valid initialNodes: default to actual initialNode's root
-      return initialNode;
-    }
-
-    // Found!
-    return found;
-  }
-
   // Fix region if needed
   // Also, update map metadata
   onChangeChart = (chartDivision, chartPopulation, chartRegion, chartDataset) => {
     this.updateData();
-    const region = this.findRegion(chartDivision, chartPopulation, chartRegion);
-    this.props.onChangeData(
-      this.props.id,
+    const {chartsDataHandler, onChangeData, id} = this.props;
+    const region = chartsDataHandler
+      .findRegion(chartDivision, chartPopulation, chartRegion);
+    onChangeData(
+      id,
       {
         chartDivision,
         chartPopulation,
@@ -229,7 +196,11 @@ class DataHandler extends React.Component {
       chartPopulation,
       chartDataset,
       chartRegion,
-      chartsIndex,
+      chartsDataHandler: {
+        divisions,
+        populations,
+      },
+      onRemove,
     } = this.props; 
     const {
       title, name, node
@@ -251,19 +222,19 @@ class DataHandler extends React.Component {
             chartDataset,
             chartRegion,
             chartRegionName: node.name,
-            chartsIndex,
             indexValues,
             days,
             title,
             name,
           }}
-          divisions={ this.ChartData.divisions }
-          populations={ this.ChartData.populations }
+          /* Used in Edit */
+          divisions={ divisions }
+          populations={ populations }
           onChangeChartDivision={ this.onChangeChartDivision }
           onChangeChartPopulation={ this.onChangeChartPopulation }
           onChangeChartDataset={ this.onChangeChartDataset }
           onChangeChartRegion={ this.onChangeChartRegion }
-          onRemove={ this.props.onRemove }
+          onRemove={ onRemove }
         />
       </div>
     );
@@ -300,5 +271,4 @@ DataHandler.propTypes = {
   ]).isRequired,
 };
 
-export default withHandler(
-  withIndex( DataHandler, 'chartsIndex'));
+export default withHandler(DataHandler);
