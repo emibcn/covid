@@ -50,6 +50,14 @@ jest.mock("./About", () => {
   };
 });
 
+// Mock ServiceWorker Updater HOC
+jest.mock("./withServiceWorkerUpdater", () => {
+  return {
+    __esModule: true,
+    default: (Wrapped) => Wrapped,
+  };
+});
+
 const objectCreator = ({initial, ...props}) => (
   <Router initialEntries={ initial }>
     <Dashboard { ...props } />

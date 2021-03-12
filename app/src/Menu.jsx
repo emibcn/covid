@@ -161,10 +161,10 @@ const Menu = translate('Menu')((props) => {
 });
 
 Menu.propTypes = {
-  onLoadNewServiceWorkerAccept: PropTypes.func.isRequired,
   handleDrawerOpen: PropTypes.func.isRequired,
   handleDrawerClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  onLoadNewServiceWorkerAccept: PropTypes.func.isRequired,
   newServiceWorkerDetected: PropTypes.bool.isRequired,
 };
 

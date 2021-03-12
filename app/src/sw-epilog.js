@@ -1,7 +1,7 @@
 // Add a listener to receive messages from clients
 self.addEventListener('message', function(event) {
   // Force SW upgrade (activation of new installed SW version)
-  if ( event.data === 'skipWaiting' ) {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });

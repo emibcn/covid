@@ -11,9 +11,6 @@ jest.mock("./Dashboard", () => {
     __esModule: true,
     default: (props) => (
       <div data-testid="dashboard-mock">
-        <button data-testid="dashboard-mock-fn-accept-sw" onClick={ () => props.onLoadNewServiceWorkerAccept({ detail: { registration: "tested" } }) }>
-          Accept Service Worker
-        </button>
         <button data-testid="dashboard-mock-fn-language-change" onClick={ () => props.onLanguageChange("tested") }>
           Change Language
         </button>
@@ -24,9 +21,6 @@ jest.mock("./Dashboard", () => {
           Tutorial Seen
         </button>
 
-        <div data-testid="dashboard-mock-sw-detected">
-          { JSON.stringify(props.newServiceWorkerDetected) }
-        </div>
         <div data-testid="dashboard-mock-language">
           { JSON.stringify(props.language) }
         </div>
@@ -84,58 +78,16 @@ test('detects navigator language', () => {
   expect(getDefaultLanguage([{key: 'es-es'}])).toBe('es-es');
 });
 
-test('detects new service worker', async () => {
-  let app;
-  act( () => {
-    app = render(<App onLoadNewServiceWorkerAccept={()=>{}} />);
-  });
-  await act( async () => {
-    const event = new CustomEvent('onNewServiceWorker', { detail: { registration: true } });
-    fireEvent(document, event);
-
-    // Execute events block in current event loop
-    await delay(0);
-
-    const detectedNewSW = app.getByTestId("dashboard-mock-sw-detected");
-    expect(detectedNewSW).toHaveTextContent("true");
-  });
-});
-
 test('renders mocked dashboard', () => {
-  const app = render(<App onLoadNewServiceWorkerAccept={() => {}} />);
+  const app = render(<App />);
   const element = app.getByTestId("dashboard-mock");
   expect(element).toBeInTheDocument();
-});
-
-test('detects new service worker acceptance', async () => {
-  const onLoadNewServiceWorkerAccept = jest.fn();
-  let app;
-  act(() => {
-    app = render(<App onLoadNewServiceWorkerAccept={ onLoadNewServiceWorkerAccept } />);
-  });
-
-  await act( async () => {
-    // Fire event for new service worker detection
-    const event = new CustomEvent('onNewServiceWorker', { detail: { registration: "tested" } });
-    fireEvent(document, event);
-
-    // User accepts it
-    const button = app.getByTestId("dashboard-mock-fn-accept-sw");
-    expect(button).toBeInTheDocument();
-    fireEvent.click(button);
-
-    // Execute events block in current event loop
-    await delay(0);
-
-    expect(onLoadNewServiceWorkerAccept).toHaveBeenCalledTimes(1);
-    expect(onLoadNewServiceWorkerAccept).toHaveBeenCalledWith("tested");
-  });
 });
 
 test('detects user changed language', async () => {
   let app;
   act(() => {
-    app = render(<App onLoadNewServiceWorkerAccept={() => {}} />);
+    app = render(<App />);
   });
 
   await act( async () => {
@@ -155,7 +107,7 @@ test('detects user changed language', async () => {
 test('detects user changed theme', async () => {
   let app;
   act(() => {
-    app = render(<App onLoadNewServiceWorkerAccept={() => {}} />);
+    app = render(<App />);
   });
 
   await act( async () => {
@@ -175,7 +127,7 @@ test('detects user changed theme', async () => {
 test('detects user visited tutorial', async () => {
   let app;
   act(() => {
-    app = render(<App onLoadNewServiceWorkerAccept={() => {}} />);
+    app = render(<App />);
   });
 
   await act( async () => {

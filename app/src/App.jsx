@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { HashRouter as Router } from 'react-router-dom';
 
 import Storage from 'react-simple-storage';
@@ -68,38 +67,14 @@ class App extends React.Component {
     // Fix bad browser encoding HASH
     fixLocationHash();
 
-    this.registration = false; // For App updates
     const language = getDefaultLanguage(available);
     this.state = {
       initializing: true,              // For Storage
-      newServiceWorkerDetected: false, // For App updates
       language,
       theme: false,                    // Use defined by user in browser
       tutorialSeen: false,
     };
   }
-
-  componentDidMount() {
-    // Receive message from index.js when a new service worker has been detected
-    document.addEventListener('onNewServiceWorker', this.handleNewServiceWorker);
-  }
-
-  componentWillUnmount() {
-    // Remove event listener
-    document.removeEventListener('onNewServiceWorker', this.handleNewServiceWorker);
-  }
-
-  // When new serviceWorker is accepted, save the registration object
-  // and change own state, which will be passed to Dashboard to let the user upgrade
-  handleNewServiceWorker = (event) => {
-    this.registration = event.detail.registration;
-    this.setState({
-      newServiceWorkerDetected: true,
-    });
-  }
-
-  // Once the user accepts to update, call index.js callback
-  handleLoadNewServiceWorkerAccept = () => this.props.onLoadNewServiceWorkerAccept(this.registration);
 
   // Handle global configuration options
   handleLanguageChange = (language) => this.setState({ language });
@@ -107,7 +82,7 @@ class App extends React.Component {
   handleTutorialSeenChange = (tutorialSeen) => this.setState({ tutorialSeen });
 
   render() {
-    const { newServiceWorkerDetected, language, theme, tutorialSeen } = this.state;
+    const { language, theme, tutorialSeen } = this.state;
     const translations = available.find(_language => _language.key === language).value;
 
     return (
@@ -122,7 +97,7 @@ class App extends React.Component {
           <Storage
             parent={ this }
             prefix='App'
-            blacklist={ ['newServiceWorkerDetected','initializing'] }
+            blacklist={ ['initializing'] }
             onParentStateHydrated={ () => this.setState({ initializing: false }) }
           />
         </ErrorCatcher>
@@ -130,9 +105,6 @@ class App extends React.Component {
         {/* Shows the app, with ErrorBoundaries */}
         <ErrorCatcher origin='Dashboard'>
           <Dashboard
-            // Handle App update acceptance by user
-            newServiceWorkerDetected={ newServiceWorkerDetected }
-            onLoadNewServiceWorkerAccept={ this.handleLoadNewServiceWorkerAccept }
             // Use language and handle its change
             language={ language }
             onLanguageChange={ this.handleLanguageChange }
@@ -156,10 +128,6 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = {
-  onLoadNewServiceWorkerAccept: PropTypes.func.isRequired,
-};
 
 export default App;
 export {fixLocationHash, getDefaultLanguage}; // For tests
