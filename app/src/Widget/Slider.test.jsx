@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, createEvent, fireEvent, act, wait, screen } from '@testing-library/react';
+import { render, createEvent, fireEvent, act, waitFor, screen } from '@testing-library/react';
 
 import { delay, catchConsoleError } from '../testHelpers';
 import Slider from './Slider';
@@ -97,7 +97,7 @@ test('renders slider', async () => {
     fireEvent.click(playPause);
 
     // Should have changed again
-    await wait(() => expect(onChange).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(onChange).toHaveBeenCalledTimes(4));
 
     slider.unmount();
 

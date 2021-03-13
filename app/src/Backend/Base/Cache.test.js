@@ -14,11 +14,15 @@ import {
    - Count some more calls to fetch
 */
 
-let mockedFetch = new MockFetch();
+let mockedFetch;
 beforeAll(() => {
+  mockedFetch = new MockFetch();
   mockedFetch.mock();
 });
-
+beforeEach(() => {
+  mockedFetch.unmock();
+  mockedFetch.mock();
+});
 afterAll(() => {
   mockedFetch.unmock();
 });
@@ -35,12 +39,12 @@ test('cache fetches only once for the same URL', async () => {
     const onSuccess = (data) => {
       expect(data).toBeDefined();
       expect(data.tested).toBe(true);
-      expect(window.fetch).toBeCalledTimes(1);
+      expect(global.fetch).toBeCalledTimes(1);
 
       // Create a controller to use its signal to shallow
       // compare against fetch' calling arguments
       const controller = new AbortController();
-      expect(window.fetch).toBeCalledWith(url, {signal: controller.signal});
+      expect(global.fetch).toBeCalledWith(url, {signal: controller.signal});
     };
     const onSuccess2 = (data) => {
       // Same data
@@ -48,7 +52,7 @@ test('cache fetches only once for the same URL', async () => {
       expect(data.tested).toBe(true);
 
       // No new fetch calls
-      expect(window.fetch).toBeCalledTimes(1);
+      expect(global.fetch).toBeCalledTimes(1);
 
       // Resolve promise
       resolve();

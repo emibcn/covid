@@ -17,11 +17,15 @@ class TestCommon extends Common {
   });
 }
 
-let mockedFetch = new MockFetch();
+let mockedFetch;
 beforeAll(() => {
+  mockedFetch = new MockFetch();
   mockedFetch.mock();
 });
-
+beforeEach(() => {
+  mockedFetch.unmock();
+  mockedFetch.mock();
+});
 afterAll(() => {
   mockedFetch.unmock();
 });
