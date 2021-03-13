@@ -16,7 +16,7 @@ const chartEdit = {
   "Select the dataset": "Select the dataset",
 };
 
-export default {
+const translations = {
   locale: "en",
   name: "English",
 
@@ -135,4 +135,7 @@ export default {
   'Widget/Bcn/Edit': {
     ...chartEdit,
   },
-}
+
+};
+
+export default translations;

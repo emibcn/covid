@@ -16,7 +16,7 @@ const chartEdit = {
   "Select the dataset": "Wybierz zbiór danych",
 };
 
-export default {
+const translations = {
   locale: "pl",
   name: "Polish",
 
@@ -136,4 +136,6 @@ export default {
     ...chartEdit,
   },
 
-}
+};
+
+export default translations;
