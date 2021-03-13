@@ -159,8 +159,8 @@ test('renders closed menu, with update (small screen), swipe to open', async () 
   });
 
   await act( async () => {
-    await delay(50);
-    expect(OpenCallback).toHaveBeenCalled();
+    await delay(100);
+    expect(OpenCallback).not.toHaveBeenCalled();
   });
 
   // Menu only will finally be shown when we pass props.open = true

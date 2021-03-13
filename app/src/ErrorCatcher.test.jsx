@@ -54,7 +54,11 @@ test('renders error when some `render` throws an error and reloads page when the
     expect(button).toBeInTheDocument();
 
     // Mock page reloader
-    window.location.reload = jest.fn();
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: { reload: jest.fn() }
+    });
+
     fireEvent.click(button);
     expect(window.location.reload).toHaveBeenCalled();
   });

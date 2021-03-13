@@ -1,6 +1,5 @@
 import React from 'react';
-// wait deprecated in favor of waitFor... In which version?
-import { render, createEvent, fireEvent, act, screen, within, wait as waitFor } from '@testing-library/react';
+import { render, createEvent, fireEvent, act, screen, within, waitFor } from '@testing-library/react';
 
 import {
   catchConsoleError,

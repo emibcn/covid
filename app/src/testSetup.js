@@ -23,7 +23,7 @@ beforeAll(() => {
 
   // Allow testing MediaQuery:
   // https://github.com/testing-library/react-testing-library/issues/353#issuecomment-510074776
-  matchMediaPolyfill(window)
+  matchMediaPolyfill(window);
   window.resizeTo = function resizeTo(width, height) {
     Object.assign(this, {
       innerWidth: width,

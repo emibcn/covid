@@ -16,7 +16,7 @@ const chartEdit = {
   "Select the dataset": "Velg datasett",
 };
 
-export default {
+const translations = {
   locale: "no",
   name: "Norsk",
 
@@ -136,4 +136,6 @@ export default {
     ...chartEdit,
   },
 
-}
+};
+
+export default translations;

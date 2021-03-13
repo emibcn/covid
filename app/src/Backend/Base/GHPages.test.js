@@ -15,9 +15,22 @@ import GHPages from './GHPages';
    - Test `abort`
 */
 const mockDelay = delay;
-let mockCacheSuccess = true;
-let mockCacheSuccessValue = true;
-let mockCacheErrorValue = new Error("Test cache checkIfNeedUpdate error");
+class MockCache {
+  success = true;
+  successValue = true;
+  errorValue = new Error("Test cache checkIfNeedUpdate error");
+
+  run = async (url, onSuccess, onError) => {
+    await mockDelay(10);
+    if (this.success) {
+      await onSuccess(this.successValue);
+    }
+    else {
+      await onError(this.errorValue);
+    }
+  }
+}
+const mockCache = new MockCache();
 jest.mock("./Cache", () => {
   return {
     __esModule: true,
@@ -25,15 +38,7 @@ jest.mock("./Cache", () => {
       invalidate: jest.fn( async (url) => {
         await mockDelay(10);
       }),
-      checkIfNeedUpdate: jest.fn( async (url, onSuccess, onError) => {
-        await mockDelay(10);
-        if (mockCacheSuccess) {
-          await onSuccess(mockCacheSuccessValue);
-        }
-        else {
-          onError(mockCacheErrorValue);
-        }
-      }),
+      checkIfNeedUpdate: (...args) => mockCache.run(...args),
     },
   }
 });
@@ -49,43 +54,43 @@ class TestGHPages extends GHPages {
 
 test('GHPages correctly checks for updates', async () => {
   const testGHPages = new TestGHPages();
-  const onSuccess = jest.fn();
-  const onError = jest.fn();
+  const onSuccess = jest.fn( () => console.log("SUCCESS"));
+  const onError = jest.fn( (err) => console.error("ERROR:", err));
 
   // Test success with update needed
-  const {output: outputSuccess} = await catchConsoleLog( async () => {
-    await testGHPages.checkUpdate(onSuccess, onError);
-  });
+  const {output: outputSuccess} = await catchConsoleLog(
+    async () => await testGHPages.checkUpdate(onSuccess, onError)
+  );
   expect(onSuccess).toHaveBeenCalledTimes(1);
   expect(onError).toHaveBeenCalledTimes(0);
-  expect(onSuccess).toHaveBeenCalledWith(mockCacheSuccessValue);
+  expect(onSuccess).toHaveBeenCalledWith(mockCache.successValue);
   expect(outputSuccess[0].includes("update needed")).toBe(true);
 
   // Test error
-  mockCacheSuccess = false;
-  const {output: outputError} = await catchConsoleError( async () => {
-    await testGHPages.checkUpdate(onSuccess, onError);
-  });
+  mockCache.success = false;
+  const {output: outputError} = await catchConsoleError(
+    async () => await testGHPages.checkUpdate(onSuccess, onError)
+  );
   expect(onSuccess).toHaveBeenCalledTimes(1);
   expect(onError).toHaveBeenCalledTimes(1);
   expect(outputError[1].includes("Test cache checkIfNeedUpdate error")).toBe(true);
-  mockCacheSuccess = true;
+  mockCache.success = true;
 });
 
 test('GHPages correctly warns about the need to overload `invalidateAll`', async () => {
   const testGHPages = new GHPages();
-  const {output} = await catchConsoleWarn( async () => {
-    await testGHPages.invalidateAll();
-  });
+  const {output} = await catchConsoleWarn(
+    async () => await testGHPages.invalidateAll()
+  );
   expect(output[0].includes("abstract function")).toBe(true);
 });
 
 test('GHPages correctly updates all own URLs', async () => {
   const testGHPages = new TestGHPages();
   const callback = jest.fn();
-  const {output} = await catchConsoleLog( async () => {
-    await testGHPages.updateAll(callback);
-  });
+  const {output} = await catchConsoleLog(
+    async () => await testGHPages.updateAll(callback)
+  );
   expect(output[0].includes("Invalidate index")).toBe(true);
   expect(testGHPages.invalidateAll).toHaveBeenCalledTimes(1);
   expect(callback).toHaveBeenCalledTimes(1);
@@ -96,15 +101,15 @@ test('GHPages correctly updates all own URLs, if needed', async () => {
   const callback = jest.fn();
 
   // Test no need to update
-  mockCacheSuccessValue = false;
-  const {output} = await catchConsoleLog( async () => {
-    await testGHPages.updateIfNeeded(callback);
-  });
+  mockCache.successValue = false;
+  const {output} = await catchConsoleLog(
+    async () => await testGHPages.updateIfNeeded(callback)
+  );
   expect(output[0].includes("update needed: false")).toBe(true);
   expect(testGHPages.invalidateAll).toHaveBeenCalledTimes(0);
   expect(callback).toHaveBeenCalledTimes(1);
   expect(callback).toHaveBeenCalledWith(false);
-  mockCacheSuccessValue = true;
+  mockCache.successValue = true;
 
   // Test need to update
   const {output: output2} = await catchConsoleLog( async () => {
@@ -172,7 +177,7 @@ test('GHPages correctly schedules next update loop', async () => {
   });
 
   // Force to recurse to next try (no update needed yet)
-  mockCacheSuccessValue = false;
+  mockCache.successValue = false;
   await delay(nextMillis);
   expect(options.onBeforeUpdate).toHaveBeenCalledTimes(1);
   expect(options.onAfterUpdate).toHaveBeenCalledTimes(0);
@@ -182,7 +187,7 @@ test('GHPages correctly schedules next update loop', async () => {
   expect(options.onAfterUpdate).toHaveBeenCalledTimes(1);
 
   // Set to need an update
-  mockCacheSuccessValue = true;
+  mockCache.successValue = true;
   await delay(10);
   expect(options.onBeforeUpdate).toHaveBeenCalledTimes(2);
   expect(options.onAfterUpdate).toHaveBeenCalledTimes(1);

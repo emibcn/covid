@@ -67,16 +67,8 @@ class MapImage extends React.Component {
   wrapperNodeSVG = React.createRef();
 
   // Get the SVG node itself
-  getSVG = () => this.wrapperNodeSVG.current.svgWrapper.querySelector(`svg`);
-
   isSVGMounted = () => {
-    return this.wrapperNodeSVG &&
-      'current' in this.wrapperNodeSVG &&
-      this.wrapperNodeSVG.current &&
-      'svgWrapper' in this.wrapperNodeSVG.current &&
-      this.wrapperNodeSVG.current.svgWrapper &&
-      'querySelector' in this.wrapperNodeSVG.current.svgWrapper &&
-      this.getSVG();
+    return this?.wrapperNodeSVG?.current?.container?.querySelector(`svg`);
   }
 
   // Gets the color for a given value (in func params) in a colors table (in props)

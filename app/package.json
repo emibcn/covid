@@ -1,49 +1,63 @@
 {
   "name": "covid",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "homepage": "http://emibcn.github.io/covid/",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.30",
-    "@fortawesome/free-solid-svg-icons": "^5.14.0",
-    "@fortawesome/react-fontawesome": "^0.1.11",
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "node-sass": "^4.14.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "node-sass": "^5.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-draggable": "^4.4.3",
-    "react-helmet-async": "^1.0.6",
-    "react-modal": "^3.11.2",
+    "react-helmet-async": "^1.0.9",
+    "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.0",
+    "react-scripts": "4.0.3",
     "react-simple-storage": "^1.4.2",
     "react-sortable-hoc": "^1.11.0",
-    "react-svg": "^11.0.39",
-    "react-tooltip": "^4.2.9",
+    "react-svg": "^12.1.0",
+    "react-tooltip": "^4.2.15",
     "react-translate": "^7.0.1",
-    "recharts": "^1.8.5",
-    "soda-js": "^0.2.3"
+    "recharts": "^2.0.8",
+    "web-vitals": "^0.2.4",
+    "workbox-background-sync": "^5.1.3",
+    "workbox-broadcast-update": "^5.1.3",
+    "workbox-cacheable-response": "^5.1.3",
+    "workbox-core": "^5.1.3",
+    "workbox-expiration": "^5.1.3",
+    "workbox-google-analytics": "^5.1.3",
+    "workbox-navigation-preload": "^5.1.3",
+    "workbox-precaching": "^5.1.3",
+    "workbox-range-requests": "^5.1.3",
+    "workbox-routing": "^5.1.3",
+    "workbox-strategies": "^5.1.3",
+    "workbox-streams": "^5.1.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build-original": "react-scripts build",
-    "build": "react-scripts build && yarn sw-epilog && yarn pubgh",
+    "build": "react-scripts build && yarn pubgh",
     "test": "react-scripts test",
     "test-coverage-html": "react-scripts test --coverage --coverageReporters=html",
     "eject": "react-scripts eject",
     "lint": "node_modules/.bin/eslint --ext js src",
     "analyze": "node analyze.js",
-    "sw-epilog": "cat src/sw-epilog.js >> build/service-worker.js",
     "pubgh": "mkdir -p ../docs && rm -Rf ../docs/* build/.*.swp && mv -v build/* ../docs/ && rmdir -v build",
     "clean": "rm -R ../docs/*"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -58,8 +72,14 @@
     ]
   },
   "devDependencies": {
+    "@formatjs/intl-getcanonicallocales": "^1.5.6",
+    "@formatjs/intl-locale": "^2.4.19",
+    "@formatjs/intl-pluralrules": "^4.0.11",
+    "intl": "^1.2.5",
     "jest-matchmedia-mock": "^1.1.0",
+    "jsdom": "^16.5.1",
     "mq-polyfill": "^1.1.8",
-    "webpack-bundle-analyzer": "^4.3.0"
+    "node-fetch": "^2.6.1",
+    "webpack-bundle-analyzer": "^4.4.0"
   }
 }

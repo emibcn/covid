@@ -247,7 +247,7 @@ test('clears timer on unmount, do not creates more than 1 simultaneous timer, ',
     await delay(50);
 
     // 4 = 1 for the tested component + 3 for the `delay` called here
-    expect(window.setTimeout).toHaveBeenCalledTimes(4);
+    expect(window.setTimeout).toHaveBeenCalledTimes(5);
 
     // 1 for the `delay` called here
     expect(callbackTimeout).toHaveBeenCalledTimes(1);
