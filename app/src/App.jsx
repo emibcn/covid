@@ -52,7 +52,7 @@ const fixLocationHash = () => {
 }
 
 const getDefaultLanguage = (available) => {
-  const languageNav = navigator.language.toLowerCase();
+  const languageNav = (global.navigator.language ?? '').toLowerCase();
   return available
     .find(language => language.key === languageNav)
       ? languageNav

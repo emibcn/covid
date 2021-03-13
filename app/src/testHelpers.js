@@ -70,24 +70,29 @@ class MockFetch {
 
   mock = () => {
     // Mock fetch
-    if (this.original == null) {
-      this.original = window.fetch;
-      window.fetch = jest.fn( async (url, options) => {
+    if (this.original === null) {
+      this.original = global.fetch;
+      global.fetch = jest.fn( async (url, options) => {
         await delay(500);
         if (this.options.throwError !== false) {
           throw this.options.throwError;
         }
-        return new Response(
-          JSON.stringify({tested: true, url}),
-          this.options.responseOptions.bind(this)()
-        );
+        try {
+          return new Response(
+            JSON.stringify({tested: true, url}),
+            this.options.responseOptions.bind(this)()
+          );
+        } catch(err) {
+          console.error("MOCKED FETCH ERROR:", err);
+          throw err;
+        }
       });
     }
   }
 
   unmock = () => {
     // Unmock fetch
-    window.fetch = this.original;
+    global.fetch = this.original;
     this.original = null;
   }
 }

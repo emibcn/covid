@@ -56,7 +56,7 @@ jest.mock("./i18n/available", () => {
     __esModule: true,
     default: [
       { key: "tested", label: "Tested", value: {locale: "en-en"} },
-      { key: "ca-es", label: "Tested ca-es", value: {locale: "ca-es"} },
+      { key: "ca-es", label: "Tested ca-es", value: {locale: "fr-FR"} },
       { key: "es-es", label: "Tested es-es", value: {locale: "es-es"} },
     ],
   };
