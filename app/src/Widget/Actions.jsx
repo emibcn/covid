@@ -14,6 +14,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Draggable from 'react-draggable';
 
 import WidgetMenu from './Menu';
+import ErrorCatcher from '../ErrorCatcher';
 
 class DraggableResponsiveDialogUntranslated extends React.PureComponent {
 
@@ -42,7 +43,7 @@ class DraggableResponsiveDialogUntranslated extends React.PureComponent {
     const Content = open ? sections[open].render : () => {};
     const Title = open ? sections[open].title : () => {};
     return (
-      <div>
+      <>
         <WidgetMenu
           options={ sections }
           onClick={ this.handleClickOpen }
@@ -64,7 +65,9 @@ class DraggableResponsiveDialogUntranslated extends React.PureComponent {
                 <Title { ...restProps } t={ t } />
               </DialogTitle>
               <DialogContent>
-                <Content { ...restProps } t={ t } />
+                <ErrorCatcher origin={`${t('Widget')} ${open} ${Title({...restProps, t})}`}>
+                  <Content { ...restProps } t={ t } />
+                </ErrorCatcher>
               </DialogContent>
               <DialogActions>
                 <Button autoFocus onClick={ this.handleClose } color="primary">
@@ -74,7 +77,7 @@ class DraggableResponsiveDialogUntranslated extends React.PureComponent {
             </Dialog>
           ) : null
         }
-      </div>
+      </>
     )
   }
 }

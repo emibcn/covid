@@ -69,9 +69,9 @@ class App extends React.Component {
 
     const language = getDefaultLanguage(available);
     this.state = {
-      initializing: true,              // For Storage
+      initializing: true,  // For Storage
       language,
-      theme: false,                    // Use defined by user in browser
+      theme: false,        // Use defined by user in browser
       tutorialSeen: false,
     };
   }

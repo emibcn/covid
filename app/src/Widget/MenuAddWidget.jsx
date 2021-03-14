@@ -48,7 +48,7 @@ const MenuAddWidget = React.memo((props) => {
   };
 
   return (
-    <div>
+    <>
       <Tooltip title={ t("Add a graph") } aria-label={ t("add") }>
         <Fab
           color="primary"
@@ -89,7 +89,7 @@ const MenuAddWidget = React.memo((props) => {
           </Menu>
         ) : null
       }
-    </div>
+    </>
   )
 });
 

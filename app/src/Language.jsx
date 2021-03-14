@@ -27,7 +27,7 @@ class Language extends React.Component {
           <FontAwesomeIcon icon={faLanguage} style={{ marginRight: ".5em" }} />
           {t("Language")}
         </h1>
-        <div>
+        <>
           <FormControl component="fieldset">
             <RadioGroup
               aria-label="language"
@@ -45,7 +45,7 @@ class Language extends React.Component {
               ))}
             </RadioGroup>
           </FormControl>
-        </div>
+        </>
       </>
     );
   }

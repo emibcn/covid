@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import WidgetActions from './Actions';
+import ErrorCatcher from '../ErrorCatcher';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,8 +54,14 @@ const withWidget = (sectionsOrig) => {
     },
   };
 
-  // Get a shortcut to view's render function
-  const View = sections.view.render;
+  // Get a shortcut to view's render function and
+  // wrap that with an error catcher
+  const ViewUnhandled = sections.view.render;
+  const View = (props) => (
+    <ErrorCatcher origin={`${props.t('View Widget')} ${sections.view.title(props)||props.name}`}>
+      <ViewUnhandled { ...props } />
+    </ErrorCatcher>
+  );
 
   const WidgetDragHandle = SortableHandle((props) => {
     const { children } = props;

@@ -66,9 +66,7 @@ const ListHeader = ({children}) => {
       */}
 
       <div className={ classes.sliderContainer } >
-
-      { children }
-
+        { children }
       </div>
     </Paper>
   );

@@ -52,10 +52,10 @@ const WidgetMenu = (props) => {
   // Render the open icon button and, if in open
   // state, the menu with all elements but `view`
   return (
-    <div>
+    <>
       <IconButton
-        aria-label="widget actions"
-        aria-controls={ `widget-menu-${ id }` }
+        aria-label="actions"
+        aria-controls={ anchorEl ? `widget-menu-${ id }` : undefined }
         aria-haspopup="true"
         onClick={ handleClickOpen }
       >
@@ -89,7 +89,7 @@ const WidgetMenu = (props) => {
           </Menu>
         ) : null
       }
-    </div>
+    </>
   );
 }
 
