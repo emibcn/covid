@@ -33,6 +33,9 @@ const translations = {
     ...common,
     "Something went wrong :(": "Noe gikk galt :(",
     "Try reloading the app to recover from it": "Prøv å starte appen på nytt for å gjenopprette fra det",
+    // TODO:
+    "Try recreating this component to recover from the error": "Try recreating this component to recover from the error",
+    "Counter": "Counter",
   },
 
   Menu: {

@@ -33,6 +33,8 @@ const translations = {
     ...common,
     "Something went wrong :(": "Something went wrong :(",
     "Try reloading the app to recover from it": "Try reloading the app to recover from it",
+    "Try recreating this component to recover from the error": "Try recreating this component to recover from the error",
+    "Counter": "Counter",
   },
 
   Menu: {
