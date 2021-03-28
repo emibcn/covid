@@ -121,7 +121,7 @@ class DataHandler extends React.Component {
   }
 
   // Set map meta data
-  updateData = () => {
+  updateMetadata = () => {
     const { chartDivision, chartPopulation, chartRegion, chartDataset } = this.props;
     const { chartData } = this.state;
 
@@ -142,14 +142,14 @@ class DataHandler extends React.Component {
       chartRegion !== prevProps.chartRegion ||
       chartDataset !== prevProps.chartDataset ||
       chartData !== prevState.chartData ) {
-      this.updateData();
+      this.updateMetadata();
     }
   }
 
   // Fix region if needed
-  // Also, update map metadata
+  // Also, update metadata
   onChangeChart = (chartDivision, chartPopulation, chartRegion, chartDataset) => {
-    this.updateData();
+    this.updateMetadata();
     const {chartsDataHandler, onChangeData, id} = this.props;
     const region = chartsDataHandler
       .findRegion(chartDivision, chartPopulation, chartRegion);

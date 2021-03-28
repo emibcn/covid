@@ -65,14 +65,13 @@ class ChartDataHandler extends GHPages {
   // Active URLs: those which will be invalidated on update
   active = [];
 
+  getURL = (url) => `${ChartDataBase}${encodeURIComponent(`?${url}`)}`;
+
   // Invalidate all URLs, except index
   invalidateAll = async () => {
     for (const url of this.active) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`${this.name}: Invalidate '?${url}'`);
-      }
-
-      await cache.invalidate( `${ChartDataBase}?${url}` );
+      this.log(`${this.name}: Invalidate '?${url}'`);
+      await cache.invalidate( this.getURL(url) );
     }
   }
 
@@ -172,7 +171,7 @@ class ChartDataHandler extends GHPages {
       }
 
       // Get URL content (download or cached)
-      return cache.fetch(`${ChartDataBase}%3F${found.url}`, callback);
+      return cache.fetch(this.getURL(found.url), callback);
     }
 
     console.warn(`Could not find initial node in index: ${division}/${population}/${url}`, {initialLink, index: this.indexData});

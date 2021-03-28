@@ -171,7 +171,11 @@ class FetchCacheElement extends Common {
         else {
           // Resolve without doing nothing
           // It was never downloaded
-          this.log(`${this.url}: It was never downloaded`);
+          this.log(`${this.url}: It was never downloaded`, {
+            result: this.result,
+            invalidated: this.invalidated,
+            t: this,
+          });
           this.invalidated = false;
           resolve();
         }
@@ -229,7 +233,7 @@ class FetchCache {
         (resolve, reject) => {
           // Resolve without doing nothing
           // It was never downloaded
-          this.log(`${url}: It was never downloaded`);
+          this.log(`${url}: It was never downloaded`, {id, url, data: this.data});
           resolve(true);
         }
       ))

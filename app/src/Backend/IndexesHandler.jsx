@@ -44,8 +44,7 @@ class IndexesHandler extends React.Component {
 
     // Initialize to null an index state for each backend
     this.state = this.backends
-      .map( ({state}) => state)
-      .reduce( (acc, state) => {
+      .reduce( (acc, {state}) => {
         acc[state] = null;
         return acc;
       }, {})
@@ -156,7 +155,9 @@ class IndexesHandler extends React.Component {
       }
       else {
         console.log("Cancel schedule of next indexes updates");
-        this.backends.forEach( backend => backend.handler.cancelUpdateSchedule() );
+        this.backends.forEach(
+          ({handler}) => handler.cancelUpdateSchedule()
+        );
       }
     }
   }
