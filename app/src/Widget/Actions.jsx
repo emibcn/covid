@@ -65,7 +65,10 @@ class DraggableResponsiveDialogUntranslated extends React.PureComponent {
                 <Title { ...restProps } t={ t } />
               </DialogTitle>
               <DialogContent>
-                <ErrorCatcher origin={`${t('Widget')} ${open} ${Title({...restProps, t})}`}>
+                <ErrorCatcher
+                  reloadOnRetry={ false }
+                  origin={`${t('Widget')} ${open} ${Title({...restProps, t})}`}
+                >
                   <Content { ...restProps } t={ t } />
                 </ErrorCatcher>
               </DialogContent>

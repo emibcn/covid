@@ -58,7 +58,10 @@ const withWidget = (sectionsOrig) => {
   // wrap that with an error catcher
   const ViewUnhandled = sections.view.render;
   const View = (props) => (
-    <ErrorCatcher origin={`${props.t('View Widget')} ${sections.view.title(props)||props.name}`}>
+    <ErrorCatcher
+      reloadOnRetry={ false }
+      origin={`${props.t('View Widget')} ${sections.view.title(props)||props.name}`}
+    >
       <ViewUnhandled { ...props } />
     </ErrorCatcher>
   );
