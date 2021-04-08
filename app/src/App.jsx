@@ -14,7 +14,7 @@ import { BackendProvider, IndexesHandler } from './Backend';
 
 // App Helmet: Controls HTML <head> elements with SideEffect
 // - Set a default title and title template, translated
-const AppHelmet = (props) => {
+const AppHelmet = ({ language }) => {
   const t = useTranslate("App");
   const title = t("Covid Data - Refactored");
   return (
@@ -22,20 +22,20 @@ const AppHelmet = (props) => {
       titleTemplate={ `%s | ${ title }` }
       defaultTitle={ title }
     >
-      <html lang={ props.language } />
+      <html lang={ language } />
     </Helmet>
   );
 }
 
 // Concentrate all providers (4) used in the app into a single component
-const AppProviders = (props) => (
-  <TranslatorProvider translations={ props.translations }>
+const AppProviders = ({ translations, language, children }) => (
+  <TranslatorProvider translations={ translations }>
     <HelmetProvider>
       <BackendProvider>
-        <AppHelmet language={ props.language } />
+        <AppHelmet language={ language } />
         <Router>
           <div className='App' id='router-container'>
-            { props.children }
+            { children }
           </div>
         </Router>
       </BackendProvider>
@@ -76,6 +76,9 @@ class App extends React.Component {
     };
   }
 
+  // Called after Storage hydrated the component
+  stopInitializing = () => this.setState({ initializing: false });
+
   // Handle global configuration options
   handleLanguageChange = (language) => this.setState({ language });
   handleThemeChange = (theme) => this.setState({ theme });
@@ -98,7 +101,7 @@ class App extends React.Component {
             parent={ this }
             prefix='App'
             blacklist={ ['initializing'] }
-            onParentStateHydrated={ () => this.setState({ initializing: false }) }
+            onParentStateHydrated={ this.stopInitializing }
           />
         </ErrorCatcher>
 
