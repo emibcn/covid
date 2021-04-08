@@ -51,10 +51,10 @@ jest.mock("./About", () => {
 });
 
 // Mock ServiceWorker Updater HOC
-jest.mock("./withServiceWorkerUpdater", () => {
+jest.mock("@3m1/service-worker-updater", () => {
   return {
     __esModule: true,
-    default: (Wrapped) => Wrapped,
+    withServiceWorkerUpdater: (Wrapped) => Wrapped,
   };
 });
 

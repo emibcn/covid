@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { onServiceWorkerUpdate } from '@3m1/service-worker-updater';
 
 // Render the App
 ReactDOM.render(
@@ -18,12 +19,7 @@ ReactDOM.render(
 // Learn more about service workers: https://cra.link/PWA
 serviceWorkerRegistration.register({
 
-  // When new ServiceWorker is available, trigger an event on `document`,
-  // passing `registration` as extra data
-  onUpdate: registration => {
-    const event = new CustomEvent('onNewServiceWorker', { detail: { registration } });
-    document.dispatchEvent(event);
-  }
+  onUpdate: onServiceWorkerUpdate
 
 });
 

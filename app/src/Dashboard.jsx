@@ -22,7 +22,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import Menu from './Menu';
 import ModalRouterWithRoutes from './ModalRouterWithRoutes';
 import AppThemeProvider from './AppThemeProvider';
-import withServiceWorkerUpdater from './withServiceWorkerUpdater';
+import { withServiceWorkerUpdater } from '@3m1/service-worker-updater';
 
 const Copyright = translate('Copyright')((props) => {
   const { t } = props;
