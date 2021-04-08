@@ -1091,7 +1091,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.18", "@babel/runtime@^7.12.5", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.13.10"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
   integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
@@ -1741,12 +1741,12 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
-"@tanem/svg-injector@^9.0.1":
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-9.0.2.tgz#eb18703609b21b68928a3ac2d7eaffbca4fcad5d"
-  integrity sha512-P8eeDlGN1EZEwktctGAtza52KrabTI4m+cANObmEIqCtvw8wKGQ3V3BejMpg0OoYzsALNpsUtQDsopPZH/0ycg==
+"@tanem/svg-injector@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-10.0.0.tgz#7ac4f0f8c635ff69a11abccf47eec3e5e8054d62"
+  integrity sha512-/lUiZASkQ+keC1asiRPC4+/IFsxsQsXixqKo87vSKm1McvBYsHbU0zB2b00ot4qRxTMERnl73HxM9FOT4qKuJg==
   dependencies:
-    "@babel/runtime" "^7.12.18"
+    "@babel/runtime" "^7.13.10"
     content-type "^1.0.4"
     tslib "^2.1.0"
 
@@ -10017,13 +10017,13 @@ react-sortable-hoc@^1.11.0:
     invariant "^2.2.4"
     prop-types "^15.5.7"
 
-react-svg@^12.1.0:
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-12.1.0.tgz#73c2e1a09e5d1bf71311810496f700072447ed1d"
-  integrity sha512-k93yg7ehkIb882o193VnMsWsTGFd2LkAESU7YnRJfu1DivFczjMBuQj3lcdBzsxNKDSk4PHT/6v5KASkX+H1SA==
+react-svg@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-13.0.0.tgz#3cdf70612672d386287f50d002e95156be0737b8"
+  integrity sha512-B/PURbOl1vLMuc1DSatBuqzJ1tnmHgCiAuiRU2H+TfSNmkxXTTpjDxjgAgwZ3fmi7fAga0ZCopkhsAa0YyL4qQ==
   dependencies:
-    "@babel/runtime" "^7.12.18"
-    "@tanem/svg-injector" "^9.0.1"
+    "@babel/runtime" "^7.13.10"
+    "@tanem/svg-injector" "^10.0.0"
     prop-types "^15.7.2"
 
 react-tooltip@^4.2.15:

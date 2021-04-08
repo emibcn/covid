@@ -54,7 +54,6 @@ const TipContent = React.memo(({id, valuesDay, label, element, colorGetter}) => 
 
    Some of the code here has been inspired in the original from https://dadescovid.org
 */
-const wasSuccessful = {};
 class MapImage extends React.Component {
 
   svg = null;
@@ -132,10 +131,6 @@ class MapImage extends React.Component {
     if (error) {
       throw Error(error)
     }
-
-    // Hack: Workaround for https://github.com/tanem/svg-injector/issues/692
-    const {mapSrc} = this.props;
-    wasSuccessful[mapSrc] = true;
 
     // Call ReactTooltip to rebuild its database with new objects
     ReactTooltip.rebuild();
@@ -218,13 +213,6 @@ class MapImage extends React.Component {
       <>
         <ReactSVG
           src={ mapSrc }
-          useRequestCache={
-            /*
-               Don't use cache until getting a global
-               successful result for this image
-            */
-            wasSuccessful[mapSrc] ?? false
-          }
           ref={ this.wrapperNodeSVG }
           role="img"
           aria-label={ title }
