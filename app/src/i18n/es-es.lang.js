@@ -1,14 +1,15 @@
 const common = {
-    "Covid Data - Refactored": "Datos Covid - Refactorizada",
-    "Covid Data": "Datos Covid",
-    "Refactored": "Refactorizada",
-    "Close": "Cerrar",
-    "About...": "Sobre...",
-    "Language": "Idioma",
-    "Help": "Ayuda",
-    "Yes": "Sí",
-    "No": "No",
-    "or": "o",
+  "Covid Data - Refactored": "Datos Covid - Refactorizada",
+  "Covid Data": "Datos Covid",
+  "Refactored": "Refactorizada",
+  "Close": "Cerrar",
+  "About...": "Sobre...",
+  "Language": "Idioma",
+  "Theme": "Apariencia",
+  "Help": "Ayuda",
+  "Yes": "Sí",
+  "No": "No",
+  "or": "o",
 };
 
 const chartEdit = {
@@ -73,6 +74,12 @@ const translations = {
   
   Language: {
     ...common,
+  },
+
+  Theme :{
+    ...common,
+    "Light": "Clara",
+    "Dark": "Oscura",
   },
 
   Help: {
