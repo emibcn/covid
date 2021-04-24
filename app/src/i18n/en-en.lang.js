@@ -5,6 +5,7 @@ const common = {
   "Close": "Close",
   "About...": "About...",
   "Language": "Language",
+  "Theme": "Theme",
   "Help": "Help",
   "Yes": "Yes",
   "No": "No",
@@ -73,6 +74,12 @@ const translations = {
 
   Language :{
     ...common,
+  },
+
+  Theme :{
+    ...common,
+    "Light": "Light",
+    "Dark": "Dark",
   },
 
   Help: {
