@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 
 import Button from '@material-ui/core/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -21,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
   },
   draggableWidgetTitle: {
+    color: 'rgba(0, 0, 0, 0.54)',
+    verticalAlign: 'middle',
+    paddingRight: '.1em',
     '&:hover': {
       cursor: 'move',
     },
@@ -66,16 +70,34 @@ const withWidget = (sectionsOrig) => {
     </ErrorCatcher>
   );
 
-  const WidgetDragHandle = SortableHandle((props) => {
+  // Used to sort the widget
+  const DragHandle = SortableHandle((props) => {
     const { children } = props;
     const classes = useStyles();
   
     return (
-      <div className={classes.draggableWidgetTitle}>
+      <span className={classes.draggableWidgetTitle}>
         {children}
-      </div>
+      </span>
     );
   })
+
+  // Use an Icon to handle dragging
+  const DragHandleWithIndicatorIcon = () => (
+    <DragHandle><DragIndicatorIcon /></DragHandle>
+  )
+
+  // Get a shortcut to title's render function and
+  // wrap that with an error catcher
+  const TitleUnhandled = sections.view.title;
+  const Title = (props) => (
+    <ErrorCatcher
+      reloadOnRetry={ false }
+      origin={`${props.t('Title Widget')} ${props.name}`}
+    >
+      <TitleUnhandled { ...props } />
+    </ErrorCatcher>
+  );
 
   // Renders the view with a header containing the title and the menu with the rest of sections
   const Widget = (props) => {
@@ -83,7 +105,7 @@ const withWidget = (sectionsOrig) => {
     // Prevent trigger actions components update when changing the day
     const { indexValues, ...restProps } = props;
     const action = <WidgetActions { ...restProps } sections={ sections } />;
-    const title = <WidgetDragHandle>{sections.view.title(props)||props.name}</WidgetDragHandle>
+    const title = <><DragHandleWithIndicatorIcon /><Title {...props} /></>;
     return (
       <Card className={classes.root}>
         <CardHeader
