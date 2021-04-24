@@ -38,7 +38,7 @@ test('renders MenuItems', () => {
     menu = render( menuCreator('') );
 
     buttons = menu.getAllByRole('button');
-    expect(buttons.length).toBe(2);
+    expect(buttons.length).toBe(3);
   });
 
   act(() => {

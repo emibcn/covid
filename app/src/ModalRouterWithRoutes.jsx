@@ -5,9 +5,10 @@ import ModalRouter from './ModalRouter';
 import { withErrorCatcher } from './ErrorCatcher';
 import About from './About';
 import Language from './Language';
+import Theme from './Theme';
 
 const ModalRouterWithRoutes = (props) => {
-  const { language, onLanguageChange } = props.routeProps;
+  const { language, onLanguageChange, theme, onThemeChange } = props.routeProps;
   return (
     <ModalRouter force={ false } >
       <Route
@@ -22,6 +23,16 @@ const ModalRouterWithRoutes = (props) => {
           withErrorCatcher(
             "Language",
             <Language language={language} onLanguageChange={onLanguageChange} />
+          )
+        }
+      />
+      <Route
+        exact
+        path="theme"
+        render={(props) =>
+          withErrorCatcher(
+            "Theme",
+            <Theme theme={theme} onThemeChange={onThemeChange} />
           )
         }
       />
