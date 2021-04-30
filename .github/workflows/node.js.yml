@@ -50,15 +50,14 @@ jobs:
       env:
         REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
         REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
+      working-directory: ./app
       run: |
-        pushd app
-            yarn install
-            # Disabled exit until we reach at least 50% coverage
-            yarn test --color --coverage || true
-            # Ensure we can build
-            yarn build
-            yarn clean
-        popd
+        yarn install
+        # Disabled exit until we reach at least 50% coverage
+        yarn test --color --coverage || true
+        # Ensure we can build
+        yarn build
+        yarn clean
 
     # Coverage badges will be updated on any branch
     # and saved into a dedicated one
@@ -117,17 +116,16 @@ jobs:
       env:
         BRANCH: ${{ steps.extract_branch.outputs.branch }}
         FILE: 'test-coverage.svg'
+      working-directory: ./badges
       run: |
-        pushd badges
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
-            mkdir -p "${BRANCH}"
-            mv "${FILE}" "${BRANCH}"
-            git add "${BRANCH}/${FILE}"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        mkdir -p "${BRANCH}"
+        mv "${FILE}" "${BRANCH}"
+        git add "${BRANCH}/${FILE}"
 
-            # Will give error if badge did not changed
-            git commit -m "Add/Update badge" || true
-        popd
+        # Will give error if badge did not changed
+        git commit -m "Add/Update badge" || true
 
     - name: Push badge commit
       if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/master' }}
@@ -175,8 +173,8 @@ jobs:
       env:
         REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
         REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
+      working-directory: ./app
       run: |
-        cd app
         yarn install
         yarn build
 
