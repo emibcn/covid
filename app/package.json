@@ -74,7 +74,7 @@
   },
   "devDependencies": {
     "@formatjs/intl-getcanonicallocales": "^1.5.6",
-    "@formatjs/intl-locale": "^2.4.19",
+    "@formatjs/intl-locale": "^2.4.24",
     "@formatjs/intl-pluralrules": "^4.0.11",
     "intl": "^1.2.5",
     "jest-matchmedia-mock": "^1.1.0",
