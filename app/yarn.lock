@@ -1180,13 +1180,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@formatjs/ecma402-abstract@1.6.2":
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.6.2.tgz#9d064a2cf790769aa6721e074fb5d5c357084bb9"
-  integrity sha512-aLBODrSRhHaL/0WdQ0T2UsGqRbdtRRHqqrs4zwNQoRsGBEtEAvlj/rgr6Uea4PSymVJrbZBoAyECM2Z3Pq4i0g==
-  dependencies:
-    tslib "^2.1.0"
-
 "@formatjs/ecma402-abstract@1.7.1":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.7.1.tgz#1459a9dad654d5d5ec34765965b8e4f22ad6ff81"
@@ -1212,12 +1205,12 @@
     cldr-core "38"
     tslib "^2.1.0"
 
-"@formatjs/intl-pluralrules@^4.0.11":
-  version "4.0.11"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-4.0.11.tgz#c7f09879a30550a6599f1b128021fcb7115a7c87"
-  integrity sha512-NkQl6eBJKMSMmNCan2gzpErqbw7j1SiHzqAQF3+coAKwB74E89hAGTigvnCKEGpMf+hHysL4+wThx5IJutoT5Q==
+"@formatjs/intl-pluralrules@^4.0.18":
+  version "4.0.18"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-4.0.18.tgz#da4bda058cce5217691836c4f46ba3e9f25b0eeb"
+  integrity sha512-qRFITPsNoeXfsiGc97pp8mVgqcC7aQNuXsiJjY9LpXVTkYNfjUP4ZpbYXflM4xoWCXMJNz3ilsrQhZWXy9td5g==
   dependencies:
-    "@formatjs/ecma402-abstract" "1.6.2"
+    "@formatjs/ecma402-abstract" "1.7.1"
     tslib "^2.1.0"
 
 "@fortawesome/fontawesome-common-types@^0.2.34", "@fortawesome/fontawesome-common-types@^0.2.35":
