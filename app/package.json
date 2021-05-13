@@ -27,7 +27,7 @@
     "react-svg": "^13.0.4",
     "react-tooltip": "^4.2.19",
     "react-translate": "^7.0.1",
-    "recharts": "^2.0.8",
+    "recharts": "^2.0.9",
     "web-vitals": "^1.1.2",
     "workbox-background-sync": "^5.1.3",
     "workbox-broadcast-update": "^5.1.3",
