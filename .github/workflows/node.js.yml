@@ -78,12 +78,16 @@ jobs:
   badge:
 
     # Only generate and publish if these conditions are met:
-    # - The previous step ended successfully
+    # - The test step ended successfully
     # - One of these is met:
     #   - This is a pull request event and the pull actor is the same as the repo owner
     #   - This is a push event and the push event is on branch 'master'
     needs: test
-    if: ${{ ( github.event_name == 'pull_request' && github.actor == github.repository_owner ) || github.ref == 'refs/heads/master' }}
+    if: ${{
+      ( github.event_name == 'pull_request'
+        && github.actor == github.repository_owner )
+      || github.ref == 'refs/heads/master'
+    }}
 
     runs-on: ubuntu-latest
 
@@ -153,12 +157,16 @@ jobs:
   publish:
 
     # Only generate and publish if these conditions are met:
-    # - The previous step ended successfully
+    # - The test step ended successfully
     # - One of these is met:
-    #   - This is a pull request event and the pull actor is the same as the repo owner
+    #   - This is a pull request event and the pull has been merged
     #   - This is a push event and the push event is on branch 'master'
     needs: test
-    if: ${{ ( github.event_name == 'pull_request' && github.actor == github.repository_owner ) || github.ref == 'refs/heads/master' }}
+    if: ${{
+      ( github.event_name == 'pull_request'
+        && github.event.pull_request.merged == true )
+      || github.ref == 'refs/heads/master'
+    }}
 
     runs-on: ubuntu-latest
 
