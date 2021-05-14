@@ -1205,10 +1205,10 @@
     cldr-core "38"
     tslib "^2.1.0"
 
-"@formatjs/intl-pluralrules@^4.0.18":
-  version "4.0.18"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-4.0.18.tgz#da4bda058cce5217691836c4f46ba3e9f25b0eeb"
-  integrity sha512-qRFITPsNoeXfsiGc97pp8mVgqcC7aQNuXsiJjY9LpXVTkYNfjUP4ZpbYXflM4xoWCXMJNz3ilsrQhZWXy9td5g==
+"@formatjs/intl-pluralrules@^4.0.19":
+  version "4.0.19"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-4.0.19.tgz#12ce848973fe607c1cf468d229648c5114e6666c"
+  integrity sha512-ArxXyH1NVLHKjiEVG0Lg8BMjGJoC7M+0FZnr2ln5uhrosQoctKmTrTXpezhqw0NOKyo05jIQY/keMlfRgEpIsw==
   dependencies:
     "@formatjs/ecma402-abstract" "1.7.1"
     tslib "^2.1.0"
@@ -1762,10 +1762,10 @@
     lz-string "^1.4.4"
     pretty-format "^26.6.2"
 
-"@testing-library/jest-dom@^5.11.4":
-  version "5.11.9"
-  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.11.9.tgz#e6b3cd687021f89f261bd53cbe367041fbd3e975"
-  integrity sha512-Mn2gnA9d1wStlAIT2NU8J15LNob0YFBVjs2aEQ3j8rsfRQo+lAs7/ui1i2TGaJjapLmuNPLTsrm+nPjmZDwpcQ==
+"@testing-library/jest-dom@^5.12.0":
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.12.0.tgz#6a5d340b092c44b7bce17a4791b47d9bc2c61443"
+  integrity sha512-N9Y82b2Z3j6wzIoAqajlKVF1Zt7sOH0pPee0sUHXHc5cv2Fdn23r+vpWm0MBBoGJtPOly5+Bdx1lnc3CD+A+ow==
   dependencies:
     "@babel/runtime" "^7.9.2"
     "@types/testing-library__jest-dom" "^5.9.1"
