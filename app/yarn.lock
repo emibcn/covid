@@ -1187,6 +1187,13 @@
   dependencies:
     tslib "^2.1.0"
 
+"@formatjs/ecma402-abstract@1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.8.0.tgz#f404af11d29d0bf78ca6b259c5abb1f2086e676b"
+  integrity sha512-X+nxZcIQr0YfYNtw1ZkHjN3YSyi0fEmdAJqRzk24KwNvqLv7GmVfw70mf7ADnwOvkcrSaAdx24GfAqckGTv9ww==
+  dependencies:
+    tslib "^2.1.0"
+
 "@formatjs/intl-getcanonicallocales@1.5.10", "@formatjs/intl-getcanonicallocales@^1.5.6":
   version "1.5.10"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-getcanonicallocales/-/intl-getcanonicallocales-1.5.10.tgz#f57f12f19fd28a241767986b081331f8b26fb18b"
@@ -1205,12 +1212,12 @@
     cldr-core "38"
     tslib "^2.1.0"
 
-"@formatjs/intl-pluralrules@^4.0.19":
-  version "4.0.19"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-4.0.19.tgz#12ce848973fe607c1cf468d229648c5114e6666c"
-  integrity sha512-ArxXyH1NVLHKjiEVG0Lg8BMjGJoC7M+0FZnr2ln5uhrosQoctKmTrTXpezhqw0NOKyo05jIQY/keMlfRgEpIsw==
+"@formatjs/intl-pluralrules@^4.0.20":
+  version "4.0.20"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-4.0.20.tgz#e441a5e7372a92daf300a6e212dec924eab0836a"
+  integrity sha512-ayyjvIh9ShXQxo0Y9GhUTyW9zyB3jiBFRIEhMmGowpIlTVRhOwl57XZ+YuUgo/yCvtJqnvGPu/4/fQTouxHuGw==
   dependencies:
-    "@formatjs/ecma402-abstract" "1.7.1"
+    "@formatjs/ecma402-abstract" "1.8.0"
     tslib "^2.1.0"
 
 "@fortawesome/fontawesome-common-types@^0.2.35":
@@ -10019,10 +10026,10 @@ react-sortable-hoc@^2.0.0:
     invariant "^2.2.4"
     prop-types "^15.5.7"
 
-react-svg@^13.0.4:
-  version "13.0.4"
-  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-13.0.4.tgz#92a12fa4f8cf41d587eb11580e09a90f0687f03d"
-  integrity sha512-rzekFkFJrUSiT/t6/pEMGpzVwtGKvuuWMug0upm+fSnyG4+w81cJ7rNWS2Twsu62tu3SWDvHQwCnaKkJ/Tj7mg==
+react-svg@^13.0.5:
+  version "13.0.5"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-13.0.5.tgz#bb2db9a731d5ddcad17d082ecd35821d04d833b0"
+  integrity sha512-kv65oO49S+DUZLJIvxMEjiimpYr1aL4Ls2ix1uXrnBFH68K/EKV6xf48nN/Qv/amrPOQwKA8x93Mnc6L1TA79A==
   dependencies:
     "@babel/runtime" "^7.14.0"
     "@tanem/svg-injector" "^10.0.2"
