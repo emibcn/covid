@@ -143,8 +143,8 @@ jobs:
     steps:
     - name: Check test coverage
       env:
-      COVERAGE: ${{ needs.test-code.outputs.coverage }}
-      COVERAGE_ROUNDED: ${{ needs.test-code.outputs.coverage-rounded-display }}
+        COVERAGE: ${{ needs.test-code.outputs.coverage }}
+        COVERAGE_ROUNDED: ${{ needs.test-code.outputs.coverage-rounded-display }}
       run: |
         echo "Coverage: ${COVERAGE}"
         echo "Coverage Rounded: ${COVERAGE_ROUNDED}"
