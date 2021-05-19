@@ -120,7 +120,6 @@ jobs:
       run: |
         yarn install
         yarn test --color --coverage
-        yarn clean
 
     # Coverage badges will be updated on any branch
     # and saved into a dedicated one
