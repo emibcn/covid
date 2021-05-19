@@ -175,10 +175,35 @@ jobs:
       env:
         BRANCH: ${{ steps.extract_branch.outputs.branch }}
         FILE: 'test-coverage.svg'
+        COVERAGE: ${{ needs.test.outputs.coverage-rounded-display }}
       run: |
         URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/badges/${BRANCH}/${FILE}"
+        MARKDOWN="![Coverage ${COVERAGE}](${URL})"
         echo "Badge URL: ${URL}"
+        echo "Badge image for Markdown: ${MARKDOWN}"
         echo "##[set-output name=url;]${URL}"
+        echo "##[set-output name=markdown;]${MARKDOWN}"
+
+  comment_pr_badge:
+    needs: badge
+    if: ${{ github.event_name == 'pull_request' && contains(github.event.head_commit.message, '#comment-badge') }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Generate comment file with test coverage badge
+      shell: bash
+      env:
+        BADGE: ${{ needs.badge.outputs.markdown }}
+      run: |
+        echo "${BADGE}" > output.md
+
+    - name: Comment PR with test coverage badge
+      uses: machine-learning-apps/pr-comment@1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        path: output.md
 
   publish:
 
