@@ -131,6 +131,9 @@ jobs:
     name: Generate badge image with test coverage value
     needs: test
     if: ${{ ( github.event_name == 'pull_request' && github.actor == github.repository_owner ) || github.ref == 'refs/heads/master' }}
+    outputs:
+      url: ${{ steps.url.outputs.url }}
+      markdown: ${{ steps.url.outputs.markdown }}
 
     runs-on: ubuntu-latest
 
