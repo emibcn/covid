@@ -19,8 +19,33 @@ on:
     branches: [ master ]
 
 jobs:
+  pre_ci:
+    name: Prepare CI environment
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    outputs:
+      commit_message: ${{ steps.pr_get_commit_message.outputs.pr_commit_message }}
+
+    steps:
+
+    - name: Checkout Project
+      uses: actions/checkout@v2
+      with:
+        # We need to fetch with a depth of 2 for pull_request so we can do HEAD^2
+        fetch-depth: 2
+
+    - name: "[Pull Request] Get commit message"
+      if: github.event_name == 'pull_request'
+      id: pr_get_commit_message
+      env:
+        FROM_ENV: ${{ github.event.head_commit.message }}
+      run: |
+        COMMIT_MESSAGE="$(git log --format=%B -n 1 HEAD^2)"
+        echo "::set-output name=pr_commit_message::${COMMIT_MESSAGE}"
+
   test:
 
+    name: Test code and generate test coverage value
     runs-on: ubuntu-latest
 
     strategy:
@@ -58,8 +83,7 @@ jobs:
       working-directory: ./app
       run: |
         yarn install
-        # Disabled exit until we reach at least 50% coverage
-        yarn test --color --coverage || true
+        yarn test --color --coverage
         # Ensure we can build
         yarn build
         yarn clean
@@ -75,6 +99,28 @@ jobs:
         rounded-precision: 2
         filename: "app/coverage/clover.xml"
 
+  comment_pr:
+    name: Comment on PR with test coverage value
+    needs: [test, pre_ci]
+    if: ${{ github.event_name == 'pull_request' && !contains(needs.pre_ci.outputs.commit_message, '#comment-badge') }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Generate comment file with test coverage
+      shell: bash
+      env:
+        COVERAGE: ${{ needs.test.outputs.coverage-rounded-display }}
+      run: |
+        echo "**Test coverage: ${COVERAGE}**" > output.md
+
+    - name: Comment PR with test coverage
+      uses: machine-learning-apps/pr-comment@1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        path: output.md
+
   badge:
 
     # Only generate and publish if these conditions are met:
@@ -82,8 +128,12 @@ jobs:
     # - One of these is met:
     #   - This is a pull request event and the pull actor is the same as the repo owner
     #   - This is a push event and the push event is on branch 'master'
+    name: Generate badge image with test coverage value
     needs: test
     if: ${{ ( github.event_name == 'pull_request' && github.actor == github.repository_owner ) || github.ref == 'refs/heads/master' }}
+    outputs:
+      url: ${{ steps.url.outputs.url }}
+      markdown: ${{ steps.url.outputs.markdown }}
 
     runs-on: ubuntu-latest
 
@@ -101,7 +151,7 @@ jobs:
         else
             EXPORT_VALUE="${TMP_GITHUB_REF}"
         fi
-        echo "##[set-output name=branch;]$(echo ${EXPORT_VALUE})"
+        echo "##[set-output name=branch;]${EXPORT_VALUE}"
       id: extract_branch
 
     - uses: actions/checkout@v2
@@ -150,15 +200,54 @@ jobs:
         branch: badges
         directory: badges
 
+    - name: Badge image URL
+      id: url
+      env:
+        BRANCH: ${{ steps.extract_branch.outputs.branch }}
+        FILE: 'test-coverage.svg'
+        COVERAGE: ${{ needs.test.outputs.coverage-rounded-display }}
+      run: |
+        URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/badges/${BRANCH}/${FILE}"
+        MARKDOWN="![Coverage ${COVERAGE}](${URL})"
+        echo "Badge URL: ${URL}"
+        echo "Badge image for Markdown: ${MARKDOWN}"
+        echo "##[set-output name=url;]${URL}"
+        echo "##[set-output name=markdown;]${MARKDOWN}"
+
+  comment_pr_badge:
+    name: Comment on PR with generated badge
+    needs: [pre_ci, badge]
+    if: ${{ github.event_name == 'pull_request' && contains(needs.pre_ci.outputs.commit_message, '#comment-badge') }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Generate comment file with test coverage badge
+      shell: bash
+      env:
+        BADGE: ${{ needs.badge.outputs.markdown }}
+      run: |
+        echo "Badge: ${BADGE}"
+        echo "${BADGE}" > output.md
+
+    - name: Comment PR with test coverage badge
+      uses: machine-learning-apps/pr-comment@1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        path: output.md
+
   publish:
 
     # Only generate and publish if these conditions are met:
+    # - Commit message does not contains #no-publish
     # - The test step ended successfully
     # - One of these is met:
     #   - This is a pull request event and the pull has been merged
     #   - This is a push event and the push event is on branch 'master'
-    needs: test
-    if: ${{ ( github.event_name == 'pull_request' && github.event.pull_request.merged == true ) || github.ref == 'refs/heads/master' }}
+    name: Publish code to GitHub Pages
+    needs: [pre_ci, test]
+    if: ${{ !contains(github.event.head_commit.message, '#no-publish') && (( github.event_name == 'pull_request' && github.event.pull_request.merged == true ) || github.ref == 'refs/heads/master' ) }}
 
     runs-on: ubuntu-latest
 
