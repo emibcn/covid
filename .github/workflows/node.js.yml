@@ -191,16 +191,22 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     outputs:
       commit_message: ${{ steps.pr_get_commit_message.outputs.pr_commit_message }}
+
     steps:
+
     - name: Checkout Project
       uses: actions/checkout@v2
+      with:
+        # We need to fetch with a depth of 2 for pull_request so we can do HEAD^2
+        fetch-depth: 2
+
     - name: "[Pull Request] Get commit message"
       if: github.event_name == 'pull_request'
       id: pr_get_commit_message
       env:
         FROM_ENV: ${{ github.event.head_commit.message }}
       run: |
-        COMMIT_MESSAGE="$(git log --format=%B -n 1 HEAD)"
+        COMMIT_MESSAGE="$(git log --format=%B -n 1 HEAD^2)"
         echo "github.event.head_commit.message: ${FROM_ENV}"
         echo "Commit Message: ${COMMIT_MESSAGE}"
         echo "::set-output name=pr_commit_message::${COMMIT_MESSAGE}"
