@@ -184,9 +184,24 @@ jobs:
         echo "##[set-output name=url;]${URL}"
         echo "##[set-output name=markdown;]${MARKDOWN}"
 
-  comment_pr_badge:
+  pre_ci:
+    name: Prepare CI environment
+    runs-on: ubuntu-latest
     needs: badge
-    if: ${{ github.event_name == 'pull_request' && contains(github.event.head_commit.message, '#comment-badge') }}
+    if: ${{ github.event_name == 'pull_request' }}
+    outputs:
+      commit_message: ${{ steps.pr_get_commit_message.outputs.pr_commit_message }}
+    steps:
+    - name: Checkout Project
+      uses: actions/checkout@v2
+    - name: "[Pull Request] Get commit message"
+      if: github.event_name == 'pull_request'
+      id: pr_get_commit_message
+      run: echo ::set-output name=pr_commit_message::$(git log --format=%B -n 1 HEAD)
+
+  comment_pr_badge:
+    needs: pre_ci
+    if: ${{ github.event_name == 'pull_request' && contains(needs.pre_ci.outputs.commit_message, '#comment-badge') }}
 
     runs-on: ubuntu-latest
 
