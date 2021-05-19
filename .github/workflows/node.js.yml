@@ -58,8 +58,7 @@ jobs:
       working-directory: ./app
       run: |
         yarn install
-        # Disabled exit until we reach at least 50% coverage
-        yarn test --color --coverage || true
+        yarn test --color --coverage
         # Ensure we can build
         yarn build
         yarn clean
