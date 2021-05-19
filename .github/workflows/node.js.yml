@@ -134,12 +134,20 @@ jobs:
         filename: "app/coverage/clover.xml"
 
   test:
-    name: test-ci
+    name: Tests waiter
     needs: [test-code, test-build]
-    # Map a step output to a job output
+    runs-on: ubuntu-latest
     outputs:
       coverage: ${{ needs.test-code.outputs.coverage }}
       coverage-rounded-display: ${{ needs.test-code.outputs.coverage-rounded-display }}
+    steps:
+    - name: Check test coverage
+      env:
+      COVERAGE: ${{ needs.test-code.outputs.coverage }}
+      COVERAGE_ROUNDED: ${{ needs.test-code.outputs.coverage-rounded-display }}
+      run: |
+        echo "Coverage: ${COVERAGE}"
+        echo "Coverage Rounded: ${COVERAGE_ROUNDED}"
 
   comment_pr:
     name: Comment on PR with test coverage value
