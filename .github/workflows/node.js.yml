@@ -75,6 +75,27 @@ jobs:
         rounded-precision: 2
         filename: "app/coverage/clover.xml"
 
+  comment_pr:
+    needs: test
+    if: ${{ github.event_name == 'pull_request' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Generate comment file with test coverage
+      shell: bash
+      env:
+        COVERAGE: ${{ needs.test.outputs.coverage-rounded-display }}
+      run: |
+        echo "**Test coverage: ${COVERAGE}**" > output.md
+
+    - name: Comment PR with test coverage
+      uses: machine-learning-apps/pr-comment@1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        path: output.md
+
   badge:
 
     # Only generate and publish if these conditions are met:
