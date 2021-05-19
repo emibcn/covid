@@ -45,6 +45,7 @@ jobs:
 
   test:
 
+    name: Test code and generate test coverage value
     runs-on: ubuntu-latest
 
     strategy:
@@ -99,6 +100,7 @@ jobs:
         filename: "app/coverage/clover.xml"
 
   comment_pr:
+    name: Comment on PR with test coverage value
     needs: test
     if: ${{ github.event_name == 'pull_request' }}
 
@@ -126,6 +128,7 @@ jobs:
     # - One of these is met:
     #   - This is a pull request event and the pull actor is the same as the repo owner
     #   - This is a push event and the push event is on branch 'master'
+    name: Generate badge image with test coverage value
     needs: test
     if: ${{ ( github.event_name == 'pull_request' && github.actor == github.repository_owner ) || github.ref == 'refs/heads/master' }}
 
@@ -209,6 +212,7 @@ jobs:
         echo "##[set-output name=markdown;]${MARKDOWN}"
 
   comment_pr_badge:
+    name: Comment on PR with generated badge
     needs: [pre_ci, badge]
     if: ${{ github.event_name == 'pull_request' && contains(needs.pre_ci.outputs.commit_message, '#comment-badge') }}
 
@@ -220,6 +224,7 @@ jobs:
       env:
         BADGE: ${{ needs.badge.outputs.markdown }}
       run: |
+        echo "Badge: ${BADGE}"
         echo "${BADGE}" > output.md
 
     - name: Comment PR with test coverage badge
@@ -237,6 +242,7 @@ jobs:
     # - One of these is met:
     #   - This is a pull request event and the pull has been merged
     #   - This is a push event and the push event is on branch 'master'
+    name: Publish code to GitHub Pages
     needs: [pre_ci, test]
     if: ${{ !contains(github.event.head_commit.message, '#no-publish') && (( github.event_name == 'pull_request' && github.event.pull_request.merged == true ) || github.ref == 'refs/heads/master' ) }}
 
