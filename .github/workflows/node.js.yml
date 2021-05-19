@@ -101,7 +101,7 @@ jobs:
 
   comment_pr:
     name: Comment on PR with test coverage value
-    needs: test
+    needs: [test, pre_ci]
     if: ${{ github.event_name == 'pull_request' && !contains(needs.pre_ci.outputs.commit_message, '#comment-badge') }}
 
     runs-on: ubuntu-latest
