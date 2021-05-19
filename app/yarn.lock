@@ -1194,10 +1194,18 @@
   dependencies:
     tslib "^2.1.0"
 
-"@formatjs/intl-getcanonicallocales@1.5.10", "@formatjs/intl-getcanonicallocales@^1.5.6":
+"@formatjs/intl-getcanonicallocales@1.5.10":
   version "1.5.10"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-getcanonicallocales/-/intl-getcanonicallocales-1.5.10.tgz#f57f12f19fd28a241767986b081331f8b26fb18b"
   integrity sha512-tFqGxZ9HkAzphupybyCKdWHzL1ge/sY8TtzEK57Hs3RCxrv/y+VxIPrE+Izw2oCFowQBz76cyi0zT6PjHuWArA==
+  dependencies:
+    cldr-core "38"
+    tslib "^2.1.0"
+
+"@formatjs/intl-getcanonicallocales@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-getcanonicallocales/-/intl-getcanonicallocales-1.6.0.tgz#eb27333facf815e9bec23e77e1e47a0835d1a3ea"
+  integrity sha512-1967VujZeow0K0NpzerdNOaskcE0KwnnchxT8TzlkLs4RjXx7Uz0bjQPtUYGV7kvbgMJ9qb6tWmCqIwe3sBKUw==
   dependencies:
     cldr-core "38"
     tslib "^2.1.0"
