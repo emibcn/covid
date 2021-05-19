@@ -184,12 +184,13 @@ jobs:
   publish:
 
     # Only generate and publish if these conditions are met:
+    # - Commit message does not contains #no-publish
     # - The test step ended successfully
     # - One of these is met:
     #   - This is a pull request event and the pull has been merged
     #   - This is a push event and the push event is on branch 'master'
     needs: test
-    if: ${{ ( github.event_name == 'pull_request' && github.event.pull_request.merged == true ) || github.ref == 'refs/heads/master' }}
+    if: ${{ !contains(github.event.head_commit.message, '#no-publish') && (( github.event_name == 'pull_request' && github.event.pull_request.merged == true ) || github.ref == 'refs/heads/master' ) }}
 
     runs-on: ubuntu-latest
 
