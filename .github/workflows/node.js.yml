@@ -19,6 +19,30 @@ on:
     branches: [ master ]
 
 jobs:
+  pre_ci:
+    name: Prepare CI environment
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    outputs:
+      commit_message: ${{ steps.pr_get_commit_message.outputs.pr_commit_message }}
+
+    steps:
+
+    - name: Checkout Project
+      uses: actions/checkout@v2
+      with:
+        # We need to fetch with a depth of 2 for pull_request so we can do HEAD^2
+        fetch-depth: 2
+
+    - name: "[Pull Request] Get commit message"
+      if: github.event_name == 'pull_request'
+      id: pr_get_commit_message
+      env:
+        FROM_ENV: ${{ github.event.head_commit.message }}
+      run: |
+        COMMIT_MESSAGE="$(git log --format=%B -n 1 HEAD^2)"
+        echo "::set-output name=pr_commit_message::${COMMIT_MESSAGE}"
+
   test:
 
     runs-on: ubuntu-latest
@@ -184,35 +208,8 @@ jobs:
         echo "##[set-output name=url;]${URL}"
         echo "##[set-output name=markdown;]${MARKDOWN}"
 
-  pre_ci:
-    name: Prepare CI environment
-    runs-on: ubuntu-latest
-    needs: badge
-    if: ${{ github.event_name == 'pull_request' }}
-    outputs:
-      commit_message: ${{ steps.pr_get_commit_message.outputs.pr_commit_message }}
-
-    steps:
-
-    - name: Checkout Project
-      uses: actions/checkout@v2
-      with:
-        # We need to fetch with a depth of 2 for pull_request so we can do HEAD^2
-        fetch-depth: 2
-
-    - name: "[Pull Request] Get commit message"
-      if: github.event_name == 'pull_request'
-      id: pr_get_commit_message
-      env:
-        FROM_ENV: ${{ github.event.head_commit.message }}
-      run: |
-        COMMIT_MESSAGE="$(git log --format=%B -n 1 HEAD^2)"
-        echo "github.event.head_commit.message: ${FROM_ENV}"
-        echo "Commit Message: ${COMMIT_MESSAGE}"
-        echo "::set-output name=pr_commit_message::${COMMIT_MESSAGE}"
-
   comment_pr_badge:
-    needs: pre_ci
+    needs: [pre_ci, badge]
     if: ${{ github.event_name == 'pull_request' && contains(needs.pre_ci.outputs.commit_message, '#comment-badge') }}
 
     runs-on: ubuntu-latest
@@ -240,7 +237,7 @@ jobs:
     # - One of these is met:
     #   - This is a pull request event and the pull has been merged
     #   - This is a push event and the push event is on branch 'master'
-    needs: test
+    needs: [pre_ci, test]
     if: ${{ !contains(github.event.head_commit.message, '#no-publish') && (( github.event_name == 'pull_request' && github.event.pull_request.merged == true ) || github.ref == 'refs/heads/master' ) }}
 
     runs-on: ubuntu-latest
