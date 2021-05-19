@@ -122,7 +122,7 @@ jobs:
         else
             EXPORT_VALUE="${TMP_GITHUB_REF}"
         fi
-        echo "##[set-output name=branch;]$(echo ${EXPORT_VALUE})"
+        echo "##[set-output name=branch;]${EXPORT_VALUE}"
       id: extract_branch
 
     - uses: actions/checkout@v2
@@ -170,6 +170,16 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: badges
         directory: badges
+
+    - name: Badge image URL
+      id: url
+      env:
+        BRANCH: ${{ steps.extract_branch.outputs.branch }}
+        FILE: 'test-coverage.svg'
+      run: |
+        URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/badges/${BRANCH}/${FILE}"
+        echo "Badge URL: ${URL}"
+        echo "##[set-output name=url;]${URL}"
 
   publish:
 
