@@ -41,7 +41,45 @@ jobs:
         COMMIT_MESSAGE="${COMMIT_PUSH:-$(git log --format=%B -n 1 HEAD^2)}"
         echo "::set-output name=commit_message::${COMMIT_MESSAGE}"
 
-  test:
+  test-build:
+
+    name: Test building
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2.1.5
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Manage cache
+      uses: actions/cache@v2.1.5
+      with:
+        path: |
+          app/node_modules
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          ${{ runner.OS }}-build
+
+    - name: yarn install and test building
+      env:
+        REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
+        REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
+      working-directory: ./app
+      run: |
+        yarn install
+        yarn build
+        yarn clean
+
+  test-code:
 
     name: Test code and generate test coverage value
     runs-on: ubuntu-latest
@@ -82,8 +120,6 @@ jobs:
       run: |
         yarn install
         yarn test --color --coverage
-        # Ensure we can build
-        yarn build
         yarn clean
 
     # Coverage badges will be updated on any branch
@@ -96,6 +132,14 @@ jobs:
         exit: 0
         rounded-precision: 2
         filename: "app/coverage/clover.xml"
+
+  test:
+    name: test-ci
+    needs: [test-code, test-build]
+    # Map a step output to a job output
+    outputs:
+      coverage: ${{ needs.test-code.outputs.coverage }}
+      coverage-rounded-display: ${{ needs.test-code.outputs.coverage-rounded-display }}
 
   comment_pr:
     name: Comment on PR with test coverage value
