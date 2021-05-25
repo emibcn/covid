@@ -9965,10 +9965,10 @@ react-sortable-hoc@^2.0.0:
     invariant "^2.2.4"
     prop-types "^15.5.7"
 
-react-svg@^13.0.5:
-  version "13.0.5"
-  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-13.0.5.tgz#bb2db9a731d5ddcad17d082ecd35821d04d833b0"
-  integrity sha512-kv65oO49S+DUZLJIvxMEjiimpYr1aL4Ls2ix1uXrnBFH68K/EKV6xf48nN/Qv/amrPOQwKA8x93Mnc6L1TA79A==
+react-svg@^13.0.6:
+  version "13.0.6"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-13.0.6.tgz#3b868cd955941203a323cbd50a1c745e04090ddd"
+  integrity sha512-e4+Mg4P46ZJ0O9mUOAA2WIhSQOi5Tvk2VPILzdFyYC8mrbQCCM/Wll+lJQirmn/SQSuCqRiVliHYMoDeSt1/NA==
   dependencies:
     "@babel/runtime" "^7.14.0"
     "@tanem/svg-injector" "^10.0.2"
