@@ -23,7 +23,8 @@ jobs:
     name: Prepare CI environment
     runs-on: ubuntu-latest
     outputs:
-      commit_message: ${{ steps.pr_get_commit_message.outputs.commit_message }}
+      commit_message: ${{ steps.get_commit_message.outputs.commit_message }}
+      branch: ${{ steps.extract_branch.outputs.branch }}
 
     steps:
 
@@ -34,16 +35,31 @@ jobs:
         fetch-depth: 2
 
     - name: "Get commit message"
-      id: pr_get_commit_message
+      id: get_commit_message
       env:
         COMMIT_PUSH: ${{ github.event.head_commit.message }}
       run: |
         COMMIT_MESSAGE="${COMMIT_PUSH:-$(git log --format=%B -n 1 HEAD^2)}"
         echo "::set-output name=commit_message::${COMMIT_MESSAGE}"
 
+    - name: Extract branch name
+      id: extract_branch
+      shell: bash
+      run: |
+        TMP_PULL_HEAD_REF="${{ github.head_ref }}"
+        TMP_GITHUB_REF="${GITHUB_REF#refs/heads/}"
+        EXPORT_VALUE=""
+        if [ "${TMP_PULL_HEAD_REF}" != "" ]
+        then
+            EXPORT_VALUE="${TMP_PULL_HEAD_REF}"
+        else
+            EXPORT_VALUE="${TMP_GITHUB_REF}"
+        fi
+        echo "##[set-output name=branch;]${EXPORT_VALUE}"
+
   test-build:
 
-    name: Test building
+    name: Build
     runs-on: ubuntu-latest
 
     strategy:
@@ -69,7 +85,7 @@ jobs:
           ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
           ${{ runner.OS }}-build
 
-    - name: yarn install and test building
+    - name: yarn install and build
       env:
         REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
         REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
@@ -77,7 +93,15 @@ jobs:
       run: |
         yarn install
         yarn build
-        yarn clean
+
+    - uses: actions/upload-artifact@v2
+      # Same condition as `publish`job
+      if: ${{ !contains(github.event.head_commit.message, '#no-publish') && (( github.event_name == 'pull_request' && github.event.pull_request.merged == true ) || github.ref == 'refs/heads/master' ) }}
+      with:
+        name: built-app
+        path: docs
+        if-no-files-found: error
+        retention-days: 5
 
   test-code:
 
@@ -178,7 +202,7 @@ jobs:
     #   - This is a pull request event and the pull actor is the same as the repo owner
     #   - This is a push event and the push event is on branch 'master'
     name: Generate badge image with test coverage value
-    needs: test
+    needs: [test, pre_ci]
     if: ${{ ( github.event_name == 'pull_request' && github.actor == github.repository_owner ) || github.ref == 'refs/heads/master' }}
     outputs:
       url: ${{ steps.url.outputs.url }}
@@ -187,21 +211,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    - name: Extract branch name
-      shell: bash
-      run: |
-        TMP_PULL_HEAD_REF="${{ github.head_ref }}"
-        TMP_GITHUB_REF="${GITHUB_REF#refs/heads/}"
-        EXPORT_VALUE=""
-        if [ "${TMP_PULL_HEAD_REF}" != "" ]
-        then
-            EXPORT_VALUE="${TMP_PULL_HEAD_REF}"
-        else
-            EXPORT_VALUE="${TMP_GITHUB_REF}"
-        fi
-        echo "##[set-output name=branch;]${EXPORT_VALUE}"
-      id: extract_branch
 
     - uses: actions/checkout@v2
       with:
@@ -229,7 +238,7 @@ jobs:
 
     - name: Commit badge
       env:
-        BRANCH: ${{ steps.extract_branch.outputs.branch }}
+        BRANCH: ${{ needs.pre_ci.outputs.branch }}
         FILE: 'test-coverage.svg'
       working-directory: ./badges
       run: |
@@ -252,7 +261,7 @@ jobs:
     - name: Badge image URL
       id: url
       env:
-        BRANCH: ${{ steps.extract_branch.outputs.branch }}
+        BRANCH: ${{ needs.pre_ci.outputs.branch }}
         FILE: 'test-coverage.svg'
         COVERAGE: ${{ needs.test.outputs.coverage-rounded-display }}
       run: |
@@ -266,7 +275,7 @@ jobs:
   comment_pr_badge:
     name: Comment on PR with generated badge
     needs: [pre_ci, badge]
-    if: ${{ github.event_name == 'pull_request' && contains(needs.pre_ci.outputs.commit_message, '#comment-badge') }}
+    if: ${{ github.event_name == 'pull_request' && github.actor == github.repository_owner && contains(needs.pre_ci.outputs.commit_message, '#comment-badge') }}
 
     runs-on: ubuntu-latest
 
@@ -300,40 +309,15 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
 
-    - uses: actions/checkout@v2
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.1.5
+    - name: Download built app from artifact
+      uses: actions/download-artifact@v2
       with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Manage cache
-      uses: actions/cache@v2.1.5
-      with:
-        path: |
-          app/node_modules
-        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
-        restore-keys: |
-          ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
-          ${{ runner.OS }}-build
-
-    - name: yarn install and build
-      env:
-        REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
-        REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
-      working-directory: ./app
-      run: |
-        yarn install
-        yarn build
+        name: built-app
+        path: docs
 
     - name: Deploy to GitHub Pages
-      if: success()
       uses: crazy-max/ghaction-github-pages@v2
       with:
         target_branch: gh-pages
