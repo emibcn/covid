@@ -324,3 +324,8 @@ jobs:
         build_dir: docs
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Delete the built app artifact: it's no needed anymore
+    - uses: geekyeggo/delete-artifact@v1
+      with:
+        name: built-app
