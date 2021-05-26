@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@3m1/service-worker-updater@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@3m1/service-worker-updater/-/service-worker-updater-1.0.5.tgz#3a81b7135cb2f946482fd819f81cf20cb6d4381d"
-  integrity sha512-xrsdD1/x3+0R3gL4eeT5iAQt1vFO3GBu7tQa6415giwucueEuSJAzp9rFm1eMjOqpinTxL0cN+0ZjRbf93VFUg==
+"@3m1/service-worker-updater@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@3m1/service-worker-updater/-/service-worker-updater-1.0.6.tgz#26d295555668281b6f282853dd2b36de5dbd3252"
+  integrity sha512-RzqUQIaHWq72Scn33j0nFsfQaT5VWAsVuSHIzyBNSjSwUuVmLpQHEc8PM00exyHwIvgZIDiE9q8Hb55Rktw2EA==
 
 "@babel/code-frame@7.10.4":
   version "7.10.4"
