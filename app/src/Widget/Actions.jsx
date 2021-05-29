@@ -60,6 +60,7 @@ class DraggableResponsiveDialogUntranslated extends React.PureComponent {
               /* Be fullsreen on `sm` sreens */
               fullScreen={ fullScreen }
               aria-labelledby={ `draggable-dialog-title-${id}-${open}` }
+              paperFullScreen
             >
               <DialogTitle style={{ cursor: 'move' }} id={ `draggable-dialog-title-${id}-${open}` }>
                 <Title { ...restProps } t={ t } />
