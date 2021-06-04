@@ -1195,10 +1195,10 @@
     cldr-core "38"
     tslib "^2.1.0"
 
-"@formatjs/intl-locale@^2.4.29":
-  version "2.4.29"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-locale/-/intl-locale-2.4.29.tgz#3b97fd21d368cc92a28ce318532c65cf2c77a25e"
-  integrity sha512-pzcnJi7CP/29aFLm8cch00r0kRWIYliyxRCUIOwdwVmCtQxbMBlxExzP/xPmyJgoAuONy42Ol1Y9Cabgy6r8XA==
+"@formatjs/intl-locale@^2.4.30":
+  version "2.4.30"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-locale/-/intl-locale-2.4.30.tgz#b1eed647d4a09a0411cf36ff1f8939a0e868d2b3"
+  integrity sha512-9pLjZzOu4CYbGnssrFJgC66CnrtYDLnC/VYjzCQxlaTERHhbTLKRN8Vs+5qAHXycrsnVORhYfe/AB+BL1xGAMA==
   dependencies:
     "@formatjs/ecma402-abstract" "1.9.2"
     "@formatjs/intl-getcanonicallocales" "1.7.0"
