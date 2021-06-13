@@ -44,7 +44,6 @@ jobs:
 
     - name: Extract branch name
       id: extract_branch
-      shell: bash
       run: |
         TMP_PULL_HEAD_REF="${{ github.head_ref }}"
         TMP_GITHUB_REF="${GITHUB_REF#refs/heads/}"
@@ -91,7 +90,7 @@ jobs:
         REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       working-directory: ./app
       run: |
-        yarn install
+        yarn --color --immutable
         yarn build
 
     - uses: actions/upload-artifact@v2
@@ -142,7 +141,7 @@ jobs:
         REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       working-directory: ./app
       run: |
-        yarn install
+        yarn --color --immutable
         yarn test --color --coverage
 
     # Coverage badges will be updated on any branch
@@ -181,7 +180,6 @@ jobs:
 
     steps:
     - name: Generate comment file with test coverage
-      shell: bash
       env:
         COVERAGE: ${{ needs.test.outputs.coverage-rounded-display }}
       run: |
@@ -281,7 +279,6 @@ jobs:
 
     steps:
     - name: Generate comment file with test coverage badge
-      shell: bash
       env:
         BADGE: ${{ needs.badge.outputs.markdown }}
       run: |
