@@ -28,7 +28,7 @@
     "react-tooltip": "^4.2.21",
     "react-translate": "^7.0.1",
     "recharts": "^2.0.9",
-    "web-vitals": "^2.0.1",
+    "web-vitals": "^2.1.0",
     "workbox-background-sync": "^6.1.5",
     "workbox-broadcast-update": "^6.1.5",
     "workbox-cacheable-response": "^6.1.5",
