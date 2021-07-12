@@ -68,7 +68,10 @@ class MapImage extends React.Component {
 
   // Get the SVG node itself
   isSVGMounted = () => {
-    return (this?.wrapperNodeSVG?.current?.container?.querySelector(`svg`) !== null);
+    return (
+      this?.wrapperNodeSVG?.current?.container?.querySelector(`svg`) !== null &&
+      this.svg !== null
+    );
   }
 
   // Gets the color for a given value (in func params) in a colors table (in props)
@@ -91,9 +94,12 @@ class MapImage extends React.Component {
 
     this.timer = requestAnimationFrame(() => {
       const values = props.values[ props.indexValues ] || {};
-      const elements = this.mapElements;
+      const { mapElements } = this;
       for( const [id, value] of values.entries() ) {
-        this.setColorBackground(elements.get(id), value);
+        const element = mapElements.get(id);
+        if(element !== undefined) {
+          this.setColorBackground(element, value);
+        }
       }
       this.timer = false;
     }, 0);
@@ -122,7 +128,6 @@ class MapImage extends React.Component {
   beforeInjection = (svg) => {
     this.svg = svg;
     this.saveElementsIndex();
-    this.fillColors(this.props);
     this.setState({svgStatus: 'beforeInjection'});
   }
 
@@ -135,12 +140,13 @@ class MapImage extends React.Component {
     // Call ReactTooltip to rebuild its database with new objects
     ReactTooltip.rebuild();
     this.svg = svg;
+    this.fillColors(this.props);
     this.setState({svgStatus: 'afterInjection'});
   }
 
   // Update background colors if SVG is mounted
   updateColorsIfPossible = (props) => {
-    if ( this.isSVGMounted() && this.svg ) {
+    if ( this.isSVGMounted() ) {
       this.fillColors(props);
     }
   }
