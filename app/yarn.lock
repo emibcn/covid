@@ -1833,10 +1833,10 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
-"@tanem/svg-injector@^10.0.4":
-  version "10.0.5"
-  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-10.0.5.tgz#46fe87e265ff1aeba6b60667d027777e32cb8528"
-  integrity sha512-+q+taSXk9rSPa/5cD9BP6+wCZX0l+t4lqLkJDfSYIYT0k517XkrsNb6ECaN+xiKf4NfK2MHGvvL7cIk8+FDtfg==
+"@tanem/svg-injector@^10.0.6":
+  version "10.0.7"
+  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-10.0.7.tgz#963d1f0094d2822441e68aa5d7bf73ad3d6eebc9"
+  integrity sha512-usN5X3RTaHdZIL197Q0METWtPLkvrhBWltGg8VD7xc/hz7V6JrGvIA0QPOOpTMVoH4CELK90rl8Tv8wSfiYWKA==
   dependencies:
     "@babel/runtime" "^7.14.6"
     content-type "^1.0.4"
@@ -2058,10 +2058,10 @@
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.3.0.tgz#2e8332cc7363f887d32ec5496b207d26ba8052bb"
   integrity sha512-hkc1DATxFLQo4VxPDpMH1gCkPpBbpOoJ/4nhuXw4n63/0R6bCpQECj4+K226UJ4JO/eJQz+1mC2I7JsWanAdQw==
 
-"@types/prop-types@*", "@types/prop-types@^15.7.3":
-  version "15.7.3"
-  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
-  integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
+"@types/prop-types@*", "@types/prop-types@^15.7.4":
+  version "15.7.4"
+  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
+  integrity sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==
 
 "@types/q@^1.5.1":
   version "1.5.4"
@@ -10199,14 +10199,14 @@ react-sortable-hoc@^2.0.0:
     invariant "^2.2.4"
     prop-types "^15.5.7"
 
-react-svg@^14.0.3:
-  version "14.0.3"
-  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-14.0.3.tgz#b8ffef92b8d4fa05eee16ed323ac57938bfc7315"
-  integrity sha512-oJT9LbXYDdrgMTQWx5WXU6fSXztaak58j22Xw+8MatBwW5ZoZqkL96nTXVcVGAJuf4EOckCHB/wdv1/K5W689Q==
+react-svg@^14.0.4:
+  version "14.0.4"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-14.0.4.tgz#f2f1765746bd78ff06977b3293c52916886d5451"
+  integrity sha512-r7CRN4gdKcly0BvYmnPP0+CI1Aif/rVNLx+EBVax45Rr0DQGtMNNv2MogD0j94lgRCmPy1N8Njkg09ZiFQkUZw==
   dependencies:
     "@babel/runtime" "^7.14.6"
-    "@tanem/svg-injector" "^10.0.4"
-    "@types/prop-types" "^15.7.3"
+    "@tanem/svg-injector" "^10.0.6"
+    "@types/prop-types" "^15.7.4"
     prop-types "^15.7.2"
 
 react-tooltip@^4.2.21:
