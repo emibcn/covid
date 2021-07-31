@@ -5,7 +5,7 @@ import { translate } from 'react-translate'
 
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -97,7 +97,7 @@ const Dashboard = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const shouldShowUpdateBadge = useMediaQuery(createMuiTheme().breakpoints.down('md')) && props.newServiceWorkerDetected;
+  const shouldShowUpdateBadge = useMediaQuery(createTheme().breakpoints.down('md')) && props.newServiceWorkerDetected;
 
   return (
     <AppThemeProvider type={ theme } >
