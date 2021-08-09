@@ -29,7 +29,7 @@
     "react-translate": "^7.0.1",
     "recharts": "^2.0.10",
     "web-vitals": "^2.1.0",
-    "workbox-background-sync": "^6.1.5",
+    "workbox-background-sync": "^6.2.2",
     "workbox-broadcast-update": "^6.1.5",
     "workbox-cacheable-response": "^6.1.5",
     "workbox-core": "^6.1.5",
@@ -74,7 +74,7 @@
   },
   "devDependencies": {
     "@formatjs/intl-getcanonicallocales": "^1.7.1",
-    "@formatjs/intl-locale": "^2.4.34",
+    "@formatjs/intl-locale": "^2.4.35",
     "@formatjs/intl-pluralrules": "^4.1.0",
     "intl": "^1.2.5",
     "jest-matchmedia-mock": "^1.1.0",

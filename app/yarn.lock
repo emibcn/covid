@@ -1273,26 +1273,41 @@
     "@formatjs/intl-localematcher" "0.2.18"
     tslib "^2.1.0"
 
-"@formatjs/intl-getcanonicallocales@1.7.1", "@formatjs/intl-getcanonicallocales@^1.7.1":
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-getcanonicallocales/-/intl-getcanonicallocales-1.7.1.tgz#dc3b353fa5ece03053320346f238be83d240d5f6"
-  integrity sha512-U+q2TNDn5LZataWFbo1vokRUgLYabUeVaSGietn22wr6ZR2O2gpMKiejoVBiyaWTDJYLckN581fsZYoJw59NMg==
+"@formatjs/ecma402-abstract@1.9.6":
+  version "1.9.6"
+  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.9.6.tgz#f7301096a585c5823180f76acc4a26e984913e3e"
+  integrity sha512-fgXUydhzng3JCSm3HB1bt01m1otnMybX4b/CEI/fJRPvzgtq5XwV2qW/WQQdOLTr29/ttRHCEk2Mb9IP5K/PjQ==
+  dependencies:
+    "@formatjs/intl-localematcher" "0.2.19"
+    tslib "^2.1.0"
+
+"@formatjs/intl-getcanonicallocales@1.7.2", "@formatjs/intl-getcanonicallocales@^1.7.1":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-getcanonicallocales/-/intl-getcanonicallocales-1.7.2.tgz#0e4250be844ae79eb8d07adc8da022907a5a2a85"
+  integrity sha512-v2wtcfk6/RW/UkJO/n3gpAFXH6PQqKw/LGMFHOiiCU0MP2VgmfxFhdfs3QVYl/NfwfKdt5xRS4FckfW3Iey0Ug==
   dependencies:
     tslib "^2.1.0"
 
-"@formatjs/intl-locale@^2.4.34":
-  version "2.4.34"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-locale/-/intl-locale-2.4.34.tgz#5be5f50b03c7e3f674a5109d1f97eef41ccc284c"
-  integrity sha512-IsjySVKvQ4w+QbPPX3l5iidE0PorLHdemvf/rIIYcgvDrw2hTaSQEocG7+C86B3wxxQgCIdVnbxYViCPXHG/Fw==
+"@formatjs/intl-locale@^2.4.35":
+  version "2.4.35"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-locale/-/intl-locale-2.4.35.tgz#38425d193d79753c2f8857e7888b3de90a7f4015"
+  integrity sha512-yW02SMF/jbMoJxmLBife1igqWd2BEizXZ4adkkSYRZ6F4LhkepihkJnGn9aj0WvWmiGzjRpF4dGqWA1Z5mZahw==
   dependencies:
-    "@formatjs/ecma402-abstract" "1.9.5"
-    "@formatjs/intl-getcanonicallocales" "1.7.1"
+    "@formatjs/ecma402-abstract" "1.9.6"
+    "@formatjs/intl-getcanonicallocales" "1.7.2"
     tslib "^2.1.0"
 
 "@formatjs/intl-localematcher@0.2.18":
   version "0.2.18"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.2.18.tgz#8fd26045d4f8d85a69519a29f5ee491577ff3eb8"
   integrity sha512-xI9X+mi7wbucbh35GNTY+C0+oMJXAp8ueC73SOyJlBpRNjLuOlSwgw3yJaCZxy3WpjcRBCP0laJ5zlpITO0QpA==
+  dependencies:
+    tslib "^2.1.0"
+
+"@formatjs/intl-localematcher@0.2.19":
+  version "0.2.19"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.2.19.tgz#a4ade690b122cc719b669808063e2a04414622f7"
+  integrity sha512-eyrTiqciBSBfwx6PyyVJCEhXeAOXVJWWlvyR0Lx7OkTikWIrqhl8VIifyq3wwBiCMPOyCDN1ccik9VBdGcDiHA==
   dependencies:
     tslib "^2.1.0"
 
@@ -6306,6 +6321,11 @@ icss-utils@^4.0.0, icss-utils@^4.1.1:
   integrity sha512-4aFq7wvWyMHKgxsH8QQtGpvbASCf+eM3wPRLI6R+MgAnTCZ6STYsRvttLvRWK0Nfif5piF394St3HeJDaljGPA==
   dependencies:
     postcss "^7.0.14"
+
+idb@^6.0.0:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/idb/-/idb-6.1.2.tgz#82ef5c951b8e1f47875d36ccafa4bedafc62f2f1"
+  integrity sha512-1DNDVu3yDhAZkFDlJf0t7r+GLZ248F5pTAtA7V0oVG3yjmV125qZOx3g0XpAEkGZVYQiFDAsSOnGet2bhugc3w==
 
 identity-obj-proxy@3.0.0:
   version "3.0.0"
@@ -12552,12 +12572,13 @@ workbox-background-sync@^5.1.4:
   dependencies:
     workbox-core "^5.1.4"
 
-workbox-background-sync@^6.1.5:
-  version "6.1.5"
-  resolved "https://registry.yarnpkg.com/workbox-background-sync/-/workbox-background-sync-6.1.5.tgz#83904fc6487722db98ed9b19eaa39ab5f826c33e"
-  integrity sha512-VbUmPLsdz+sLzuNxHvMylzyRTiM4q+q7rwLBk3p2mtRL5NZozI8j/KgoGbno96vs84jx4b9zCZMEOIKEUTPf6w==
+workbox-background-sync@^6.1.5, workbox-background-sync@^6.2.2:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/workbox-background-sync/-/workbox-background-sync-6.2.2.tgz#4b37389f6673300a77c9d7a57cafc55dff1e0e75"
+  integrity sha512-sKce57j+OE+GjJrwERqny4WwOvk1ersIPpibVCkGZf6Kx0G4Du3Z6mYGZRsYEWQ08XNTG08QMy6q4SzRhx58pg==
   dependencies:
-    workbox-core "^6.1.5"
+    idb "^6.0.0"
+    workbox-core "6.2.2"
 
 workbox-broadcast-update@^5.1.4:
   version "5.1.4"
@@ -12629,15 +12650,15 @@ workbox-cacheable-response@^6.1.5:
   dependencies:
     workbox-core "^6.1.5"
 
+workbox-core@6.2.2, workbox-core@^6.1.5:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/workbox-core/-/workbox-core-6.2.2.tgz#3ea0d0348f318e047db3911816d6a14318f268f0"
+  integrity sha512-cRosvK04AJ3vg4VwIaihLyKLbdwp96D0urukIXm5nsc6XaQqx2OaHFDRjaP1y9g4Js2uNHmBhuHrNSlzQZLoWw==
+
 workbox-core@^5.1.4:
   version "5.1.4"
   resolved "https://registry.yarnpkg.com/workbox-core/-/workbox-core-5.1.4.tgz#8bbfb2362ecdff30e25d123c82c79ac65d9264f4"
   integrity sha512-+4iRQan/1D8I81nR2L5vcbaaFskZC2CL17TLbvWVzQ4qiF/ytOGF6XeV54pVxAvKUtkLANhk8TyIUMtiMw2oDg==
-
-workbox-core@^6.1.5:
-  version "6.1.5"
-  resolved "https://registry.yarnpkg.com/workbox-core/-/workbox-core-6.1.5.tgz#424ff600e2c5448b14ebd58b2f5ac8ed91b73fb9"
-  integrity sha512-9SOEle7YcJzg3njC0xMSmrPIiFjfsFm9WjwGd5enXmI8Lwk8wLdy63B0nzu5LXoibEmS9k+aWF8EzaKtOWjNSA==
 
 workbox-expiration@^5.1.4:
   version "5.1.4"
