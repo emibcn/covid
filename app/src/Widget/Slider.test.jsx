@@ -5,8 +5,9 @@ import { delay, catchConsoleError } from '../testHelpers';
 import Slider from './Slider';
 
 test('renders slider', async () => {
+  const CHANGE_TIME = 41;
   const onChange = jest.fn( async () => {
-    console.warn("Not printing this warning causes the onChange called count to fail");
+    //console.warn("Not printing this warning causes the onChange called count to fail");
   });
   const formatter = jest.fn(value => value);
   const values = [0,1,2,3,4,5,6,7,8,9,10];
@@ -56,11 +57,11 @@ test('renders slider', async () => {
     expect(onChange).toHaveBeenCalledTimes(0);
 
     // Should have changed
-    await delay(40);
+    await delay(CHANGE_TIME);
     expect(onChange).toHaveBeenCalledTimes(1);
 
     // Should have changed again
-    await delay(40);
+    await delay(CHANGE_TIME);
     expect(onChange).toHaveBeenCalledTimes(2);
 
     // As the rendered value is the last one, the
@@ -73,7 +74,7 @@ test('renders slider', async () => {
     slider.rerender(objectCreator(0));
 
     // Should have changed
-    await delay(41);
+    await delay(CHANGE_TIME);
     expect(onChange).toHaveBeenCalledTimes(3);
 
     // As the rendered value is 0, the
@@ -86,11 +87,11 @@ test('renders slider', async () => {
     fireEvent.click(playPause);
 
     // Should not have changed anymore
-    await delay(41);
+    await delay(CHANGE_TIME);
     expect(onChange).toHaveBeenCalledTimes(3);
 
     // Even should have not changed again
-    await delay(41);
+    await delay(CHANGE_TIME);
     expect(onChange).toHaveBeenCalledTimes(3);
   });
 
@@ -99,12 +100,13 @@ test('renders slider', async () => {
     fireEvent.click(playPause);
 
     // Should have changed again
-    await waitFor(() => expect(onChange).toHaveBeenCalledTimes(4));
+    await delay(CHANGE_TIME * 2);
+    expect(onChange).toHaveBeenCalledTimes(4);
 
     slider.unmount();
 
     // Should NOT have changed again
-    await delay(41);
+    await delay(CHANGE_TIME);
     expect(onChange).toHaveBeenCalledTimes(4);
   });
 });
