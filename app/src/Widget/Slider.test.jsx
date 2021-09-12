@@ -100,7 +100,8 @@ test('renders slider', async () => {
     fireEvent.click(playPause);
 
     // Should have changed again
-    await delay(CHANGE_TIME * 2);
+    // Don't know why it needs some extra waiting time
+    await delay(CHANGE_TIME * 1.1);
     expect(onChange).toHaveBeenCalledTimes(4);
 
     slider.unmount();
