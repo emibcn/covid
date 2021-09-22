@@ -80,7 +80,7 @@
     "jest-matchmedia-mock": "^1.1.0",
     "jsdom": "^17.0.0",
     "mq-polyfill": "^1.1.8",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.5",
     "webpack-bundle-analyzer": "^4.4.2"
   }
 }
