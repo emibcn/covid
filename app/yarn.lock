@@ -1265,14 +1265,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@formatjs/ecma402-abstract@1.9.8":
-  version "1.9.8"
-  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.9.8.tgz#f3dad447fbc7f063f88e2a148b7a353161740e74"
-  integrity sha512-2U4n11bLmTij/k4ePCEFKJILPYwdMcJTdnKVBi+JMWBgu5O1N+XhCazlE6QXqVO1Agh2Doh0b/9Jf1mSmSVfhA==
-  dependencies:
-    "@formatjs/intl-localematcher" "0.2.20"
-    tslib "^2.1.0"
-
 "@formatjs/ecma402-abstract@1.9.9":
   version "1.9.9"
   resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.9.9.tgz#f556782fc12398af283ae2f8be64e938f969d240"
@@ -1297,13 +1289,6 @@
     "@formatjs/intl-getcanonicallocales" "1.7.3"
     tslib "^2.1.0"
 
-"@formatjs/intl-localematcher@0.2.20":
-  version "0.2.20"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.2.20.tgz#782aef53d1c1b6112ee67468dc59f9b8d1ba7b17"
-  integrity sha512-/Ro85goRZnCojzxOegANFYL0LaDIpdPjAukR7xMTjOtRx+3yyjR0ifGTOW3/Kjhmab3t6GnyHBYWZSudxEOxPA==
-  dependencies:
-    tslib "^2.1.0"
-
 "@formatjs/intl-localematcher@0.2.21":
   version "0.2.21"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.2.21.tgz#39ef33d701fe8084f3d693cd3ff7cbe03cdd3a49"
@@ -1311,13 +1296,13 @@
   dependencies:
     tslib "^2.1.0"
 
-"@formatjs/intl-pluralrules@^4.1.3":
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-4.1.3.tgz#f74aea3db38cd44393be48344b2ffed71278b6d7"
-  integrity sha512-srIwXwSvyOictM4cmz2jVw9IbP6eK8VRlJBP6kT5NVegB4Njpigd3jPHkD1RnmddJ/JusQPO01GERIw+yUg8LA==
+"@formatjs/intl-pluralrules@^4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-4.1.4.tgz#29e9035cc07bc14cc4cd62b836dfee76d3c557db"
+  integrity sha512-7dcHfnyQacEvfI63wKC4Srw31Uh270vYwx/82ECXGH0UIbtXnU1zi0qEcFmib4q+YRR9a6PBp8AnEIexHmNvog==
   dependencies:
-    "@formatjs/ecma402-abstract" "1.9.8"
-    "@formatjs/intl-localematcher" "0.2.20"
+    "@formatjs/ecma402-abstract" "1.9.9"
+    "@formatjs/intl-localematcher" "0.2.21"
     tslib "^2.1.0"
 
 "@fortawesome/fontawesome-common-types@^0.2.36":
