@@ -81,6 +81,6 @@
     "jsdom": "^18.0.0",
     "mq-polyfill": "^1.1.8",
     "node-fetch": "^2.6.5",
-    "webpack-bundle-analyzer": "^4.4.2"
+    "webpack-bundle-analyzer": "^4.5.0"
   }
 }
