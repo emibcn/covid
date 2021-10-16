@@ -27,7 +27,7 @@ const asyncComponent =
 
       // Returns the needed component markup
       // Can be a single child component or null or false
-      return C ? <C {...this.props} /> : <Loading />
+      return C ? <C {...props} /> : <Loading />
     }
 
 const asyncModuleComponent = (importModule, modules, Wrapped) => (props) => {

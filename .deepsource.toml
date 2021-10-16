@@ -8,7 +8,7 @@ enabled = true
 
   [analyzers.meta]
   plugins = ["react"]
-  environment = ["browser", "jest"]
+  environment = ["browser", "jest", "nodejs"]
 
 [[transformers]]
 name = "prettier"

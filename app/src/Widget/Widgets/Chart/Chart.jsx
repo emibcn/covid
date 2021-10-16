@@ -152,7 +152,7 @@ const TableSeguiment = ({ graph, ...props }) => {
 
   // Performance: use useState to cache the selected rows array reference
   const [selectedRowsCached, setSelectedRowsCached] = React.useState(
-    rowDates.map((date) => false)
+    rowDates.map(() => false)
   )
   if (
     selectedRows.length !== selectedRowsCached.length ||

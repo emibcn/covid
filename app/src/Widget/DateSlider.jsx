@@ -42,7 +42,7 @@ const DateSlider = ({ days, current, onSetDate }) => {
       .map((day, index) => ({ day, index }))
 
       // Get first day of each month
-      .filter(({ day, index }) => /^0?1\//.test(day))
+      .filter(({ day }) => /^0?1\//.test(day))
 
       // Map to Slider marks schema and remove initial `0`
       .map(({ day, index }) => ({
