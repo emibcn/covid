@@ -46,6 +46,17 @@ const ConditionalTooltip = ({ title, children, ...rest }) =>
     children
   )
 
+ConditionalTooltip.defaultProps = {
+  children: []
+}
+
+ConditionalTooltip.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.arrayOf(
+    PropTypes.node
+  )
+}
+
 // Renders a legend using prop `colors` (shaped as defined
 // with propTypes) as data origin for it
 const Legend = ({ colors }) => (

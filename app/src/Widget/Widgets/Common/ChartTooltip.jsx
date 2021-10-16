@@ -53,13 +53,24 @@ Element.propTypes = {
 const List = ({ payload }) => {
   return (
     <Grid container direction='column' justify='center' alignItems='flex-start'>
-      {(payload || []).map((pl, index) => (
+      {payload.map((pl, index) => (
         <Element key={index} {...pl} />
       ))}
     </Grid>
   )
 }
 
+List.defaultProps = {
+  payload: []
+}
+
+List.propTypes = {
+  payload: PropTypes.arrayOf(
+    PropTypes.exact(
+      Element.propTypes
+    )
+  )
+}
 const ChartLegend = (props) => {
   const { payload, data, indexValues, colors } = props
   const classes = useStyles()
