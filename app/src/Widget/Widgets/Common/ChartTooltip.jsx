@@ -65,11 +65,7 @@ List.defaultProps = {
 }
 
 List.propTypes = {
-  payload: PropTypes.arrayOf(
-    PropTypes.exact(
-      Element.propTypes
-    )
-  )
+  payload: PropTypes.arrayOf(PropTypes.exact(Element.propTypes))
 }
 const ChartLegend = (props) => {
   const { payload, data, indexValues, colors } = props

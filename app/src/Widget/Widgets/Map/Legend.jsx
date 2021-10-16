@@ -52,9 +52,7 @@ ConditionalTooltip.defaultProps = {
 
 ConditionalTooltip.propTypes = {
   title: PropTypes.string.isRequired,
-  children: PropTypes.arrayOf(
-    PropTypes.node
-  )
+  children: PropTypes.arrayOf(PropTypes.node)
 }
 
 // Renders a legend using prop `colors` (shaped as defined
