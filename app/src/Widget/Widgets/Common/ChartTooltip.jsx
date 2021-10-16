@@ -42,13 +42,15 @@ const Element = ({ name, value, color, unit, gridOptions }) => {
   )
 }
 
-Element.propTypes = {
+const ElementpropTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   color: PropTypes.string.isRequired,
   unit: PropTypes.string,
   gridOption: PropTypes.object
 }
+
+Element.propTypes = ElementpropTypes
 
 const List = ({ payload }) => {
   return (
@@ -65,7 +67,7 @@ List.defaultProps = {
 }
 
 List.propTypes = {
-  payload: PropTypes.arrayOf(PropTypes.exact(Element.propTypes))
+  payload: PropTypes.arrayOf(ElementpropTypes)
 }
 const ChartLegend = (props) => {
   const { payload, data, indexValues, colors } = props
