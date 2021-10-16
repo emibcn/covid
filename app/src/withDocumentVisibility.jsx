@@ -38,7 +38,7 @@ const withDocumentVisibility = (Wrapped) => {
     return (props) => <Wrapped {...props} visible />
   }
 
-  function WithDocumentVisibility(props) {
+  function WithDocumentVisibility (props) {
     const [visible, setVisible] = React.useState(checkVisibility())
 
     React.useEffect(() => {
