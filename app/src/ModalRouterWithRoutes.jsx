@@ -1,43 +1,41 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
+import React from 'react'
+import { Route } from 'react-router-dom'
 
-import ModalRouter from './ModalRouter';
-import { withErrorCatcher } from './ErrorCatcher';
-import About from './About';
-import Language from './Language';
-import Theme from './Theme';
+import ModalRouter from './ModalRouter'
+import { withErrorCatcher } from './ErrorCatcher'
+import About from './About'
+import Language from './Language'
+import Theme from './Theme'
 
 const ModalRouterWithRoutes = (props) => {
-  const { language, onLanguageChange, theme, onThemeChange } = props.routeProps;
+  const { language, onLanguageChange, theme, onThemeChange } = props.routeProps
   return (
-    <ModalRouter force={ false } >
+    <ModalRouter force={false}>
       <Route
         exact
         path='about'
-        render={ props => withErrorCatcher('About', <About />) }
+        render={(props) => withErrorCatcher('About', <About />)}
       />
       <Route
         exact
-        path="language"
+        path='language'
         render={(props) =>
           withErrorCatcher(
-            "Language",
+            'Language',
             <Language language={language} onLanguageChange={onLanguageChange} />
-          )
-        }
+          )}
       />
       <Route
         exact
-        path="theme"
+        path='theme'
         render={(props) =>
           withErrorCatcher(
-            "Theme",
+            'Theme',
             <Theme theme={theme} onThemeChange={onThemeChange} />
-          )
-        }
+          )}
       />
     </ModalRouter>
   )
-};
+}
 
-export default ModalRouterWithRoutes;
+export default ModalRouterWithRoutes

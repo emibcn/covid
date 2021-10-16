@@ -1,12 +1,13 @@
-import GHPages from '../Base/GHPages';
-import cache from '../Base/Cache';
+import GHPages from "../Base/GHPages";
+import cache from "../Base/Cache";
 
-const BcnStaticHost = process.env.REACT_APP_BCN_STATIC_HOST ?? "https://emibcn.github.io/covid-data/Bcn";
+const BcnStaticHost =
+  process.env.REACT_APP_BCN_STATIC_HOST ??
+  "https://emibcn.github.io/covid-data/Bcn";
 const BcnDataStaticURL = `${BcnStaticHost}/index.json`;
 
 // Handle data backend and cache for BCN
 class BcnDataHandler extends GHPages {
-
   // Visible backend name
   name = "Barcelona JSON Files";
   indexUrl = BcnDataStaticURL;
@@ -19,9 +20,8 @@ class BcnDataHandler extends GHPages {
 
     if (index) {
       this.parseIndex(index);
-    }
-    else {
-      this.unsubscribeIndex = this.indexInternal( this.parseIndex );
+    } else {
+      this.unsubscribeIndex = this.indexInternal(this.parseIndex);
     }
   }
 
@@ -29,17 +29,17 @@ class BcnDataHandler extends GHPages {
      Return dynamic data (with cache)
   */
   indexData = [];
-  indexInternal = (callback) => cache.fetch( BcnDataStaticURL, callback );
+  indexInternal = (callback) => cache.fetch(BcnDataStaticURL, callback);
 
   // Return unsubscription callback
   // Return unsubscription from possible automatic download
   index = (callback) => {
-    const unsubscribe = this.indexInternal( callback );
+    const unsubscribe = this.indexInternal(callback);
     return () => {
       unsubscribe();
       this.unsubscribeIndex();
-    }
-  }
+    };
+  };
 
   parseIndex = (index) => {
     // Save/cache index data
@@ -47,7 +47,7 @@ class BcnDataHandler extends GHPages {
 
     // Update active downloads
     this.invalidateAll();
-  }
+  };
 
   // Active URLs: those which will be invalidated on update
   active = [];
@@ -55,32 +55,35 @@ class BcnDataHandler extends GHPages {
   // Invalidate all URLs, except index
   invalidateAll = async () => {
     for (const url of this.active) {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === "development") {
         console.log(`${this.name}: Invalidate '?${url}'`);
       }
 
-      await cache.invalidate( `${BcnStaticHost}/${url}` );
+      await cache.invalidate(`${BcnStaticHost}/${url}`);
     }
-  }
+  };
 
   // Gets the breadcrumb of ancestors and the found node, or empty array (recursive)
-  findBreadcrumb = (node, value, compare = ({code}, value) => code === value) => {
+  findBreadcrumb = (
+    node,
+    value,
+    compare = ({ code }, value) => code === value
+  ) => {
     if (node === null) {
-      node = {sections: this.indexData};
+      node = { sections: this.indexData };
     }
-    if ( compare(node, value) ) {
-      return [node]
-    }
-    else if ('sections' in node) {
+    if (compare(node, value)) {
+      return [node];
+    } else if ("sections" in node) {
       for (const child of node.sections) {
         const found = this.findBreadcrumb(child, value, compare);
         if (found.length) {
-          return [...found, node]
+          return [...found, node];
         }
       }
     }
-    return []
-  }
+    return [];
+  };
 
   // Find a node in a tree
   findChild = (node, value, compare) => {
@@ -88,22 +91,21 @@ class BcnDataHandler extends GHPages {
     if (list.length) {
       return list[0];
     }
-  }
+  };
 
   // Find division/population section
   findInitialNode = (dataset) => {
-    return this.indexData.find( ({code}) => code === dataset );
-  }
+    return this.indexData.find(({ code }) => code === dataset);
+  };
 
   // Return filtered index data values
-  filter = (fn) => this.indexData.filter( fn );
+  filter = (fn) => this.indexData.filter(fn);
 
   // Active URLs: those which will be invalidated on update
   active = [];
 
   // Fetch JSON data and subscribe to updates
   data = (dataset, callback) => {
-
     // Find region name in link and children, recursively
     const found = this.findChild(null, dataset);
 
@@ -116,15 +118,15 @@ class BcnDataHandler extends GHPages {
       return () => {};
     }
 
-    // Add URL to active ones. Will be invalidated on update 
-    if ( !(this.active.includes(found.values)) ) {
+    // Add URL to active ones. Will be invalidated on update
+    if (!this.active.includes(found.values)) {
       this.active.push(found.values);
     }
 
     // Get URL content (download or cached)
     // Return unsubscription callback
-    return cache.fetch( `${BcnStaticHost}/${found.values}`, callback );
-  }
+    return cache.fetch(`${BcnStaticHost}/${found.values}`, callback);
+  };
 }
 
 export default BcnDataHandler;

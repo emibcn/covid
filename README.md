@@ -26,6 +26,7 @@ The aim of this application is to display the data in different ways than the or
 # Contributing
 
 If you have an idea about:
+
 - Improve app performance, design, usability, testing or translations
 - Add data sources
 - Add visualization widgets
@@ -113,6 +114,7 @@ The application, scripts and documentation in this project are released under th
 The scripts and documentation published in [covid-data](/emibcn/covid-data) are also released under the [GNU General Public License v3.0](https://github.com/emibcn/crypt-disk-image/blob/master/LICENSE).
 
 The data scrapped and published in [covid-data](/emibcn/covid-data) is licensed by their owners:
+
 - [Charts & Maps](https://dadescovid.cat): the _Generalitat de Catalunya_, under their own conditions ([Open Data Commons Attribution License](http://opendatacommons.org/licenses/by/1.0/) until now). See more at the [dataset API documentation](https://analisi.transparenciacatalunya.cat/Salut/Dades-setmanals-de-COVID-19-per-comarca/jvut-jxu8).
 - [BCN/Barcelona](https://dades.ajuntament.barcelona.cat/seguiment-covid19-bcn): the _Ajuntament de Barcelona_ under their own conditions ([Creative Commons CC-BY](https://creativecommons.org/licenses/by/2.0/) until now).
 

@@ -1,13 +1,12 @@
 const noop = () => {};
 
 const log = (...args) => {
-  if (['development', 'test'].includes(process.env.NODE_ENV)) {
+  if (["development", "test"].includes(process.env.NODE_ENV)) {
     console.log(...args);
   }
-}
+};
 
 class Common {
-
   // Visible backend name
   // Change when subclassing
   name = "Common";
@@ -20,7 +19,7 @@ class Common {
   onError = noop;
 
   // Can overload onError also on instantiation time
-  constructor({onError} = {}) {
+  constructor({ onError } = {}) {
     this.onError = onError || this.onError;
   }
 
@@ -30,33 +29,32 @@ class Common {
   abort = () => {
     this.controller.abort();
     this.controller = new AbortController();
-  }
+  };
 
   // Raises exception on response error
   handleFetchErrors = (response) => {
     // Raise succeeded non-ok responses
-    if ( !response.ok ) {
+    if (!response.ok) {
       throw new Error(response.statusText);
     }
     return response;
-  }
+  };
 
   // Catches fetch errors, original or 'self-raised', and throws to `onError` prop
   // Filters out non-error "Connection aborted"
   catchFetchErrorsMessage = (err) => `${this.name} backend: ${err.message}`;
-  catchFetchErrorsAbortMessage = (err) => 'Connection aborted';
+  catchFetchErrorsAbortMessage = (err) => "Connection aborted";
   catchFetchErrors = (err) => {
-    if ( err.name === 'AbortError' ) {
+    if (err.name === "AbortError") {
       console.log(this.catchFetchErrorsAbortMessage());
-    }
-    else {
+    } else {
       err.message = this.catchFetchErrorsMessage(err);
       this.onError(err);
     }
-  }
+  };
 
   log = log;
 }
 
 export default Common;
-export {log};
+export { log };
