@@ -1,44 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSyncAlt as faRefresh } from '@fortawesome/free-solid-svg-icons'
-import { translate } from 'react-translate'
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSyncAlt as faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { translate } from "react-translate";
 
 const ShowErrorDefault = (props) => {
-  const {onRetry, reloadOnRetry, errorMessage, errorStack, count, t} = props;
+  const { onRetry, reloadOnRetry, errorMessage, errorStack, count, t } = props;
   return (
     <>
-      <h1>{ t("Something went wrong :(") }</h1>
-      <button
-        onClick={ onRetry }
-        style={{ padding: '1em' }}
-      >
-        <FontAwesomeIcon
-          icon={ faRefresh }
-          style={{ margin: '0 .8em 0 .2em' }}
-        />
-        { reloadOnRetry
-            ? t("Try reloading the app to recover from it")
-            : t("Try recreating this component to recover from the error")
-        }
+      <h1>{t("Something went wrong :(")}</h1>
+      <button onClick={onRetry} style={{ padding: "1em" }}>
+        <FontAwesomeIcon icon={faRefresh} style={{ margin: "0 .8em 0 .2em" }} />
+        {reloadOnRetry
+          ? t("Try reloading the app to recover from it")
+          : t("Try recreating this component to recover from the error")}
       </button>
-      <div style={{ textAlign: 'left' }}>
-        <h2>{ errorMessage }</h2>
-        { reloadOnRetry ? null : (
-            <p>{ t("Counter") }: { count }</p>
+      <div style={{ textAlign: "left" }}>
+        <h2>{errorMessage}</h2>
+        {reloadOnRetry ? null : (
+          <p>
+            {t("Counter")}: {count}
+          </p>
         )}
-        <details style={{ whiteSpace: "pre-wrap" }}>
-          { errorStack }
-        </details>
+        <details style={{ whiteSpace: "pre-wrap" }}>{errorStack}</details>
       </div>
     </>
-  )
-}
+  );
+};
 
 ShowErrorDefault.defaultProps = {
-  t: text => text,
+  t: (text) => text,
 };
 
 ShowErrorDefault.propTypes = {
@@ -54,13 +46,12 @@ ShowErrorDefault.propTypes = {
 // - Show it to user
 // - Send them to GA to help improve app
 class ErrorCatcher extends React.PureComponent {
-
   initialState = {
     hasError: false,
-    errorMessage: '',
-    errorStack: '',
-    info: '',
-  }
+    errorMessage: "",
+    errorStack: "",
+    info: "",
+  };
 
   constructor(props) {
     super(props);
@@ -81,47 +72,42 @@ class ErrorCatcher extends React.PureComponent {
 
   // Catch unhandled errors and send them to help improving the app
   componentDidCatch(error, info) {
-
     this.setState(
-      ({count}) => ({
+      ({ count }) => ({
         info: info.componentStack,
         count: count + 1,
       }),
-      () => this.sendEvent('Unhandled Error')
+      () => this.sendEvent("Unhandled Error")
     );
   }
 
   reloadApp = () => {
-    this.sendEvent('Reload page from Error');
+    this.sendEvent("Reload page from Error");
 
     // Reload app
     window.location.reload();
-  }
+  };
 
   retry = () => {
     if (this.props.reloadOnRetry) {
       this.reloadApp();
-    }
-    else {
-      this.sendEvent('Reload component from Error');
+    } else {
+      this.sendEvent("Reload component from Error");
       this.props.onRetry(this.state.count);
       this.setState({
-        ...this.initialState
+        ...this.initialState,
       });
     }
-  }
+  };
 
   // Send event to GA
   sendEvent = (event) => {
     const {
-      props: {sendEvent, origin},
-      state: {errorMessage, count}
+      props: { sendEvent, origin },
+      state: { errorMessage, count },
     } = this;
-    sendEvent(
-      event,
-      origin,
-      `${errorMessage} (${count})`);
-  }
+    sendEvent(event, origin, `${errorMessage} (${count})`);
+  };
 
   render() {
     if (this.state.hasError) {
@@ -131,26 +117,26 @@ class ErrorCatcher extends React.PureComponent {
       // Show error to user
       return (
         <ShowError
-          onRetry={ this.retry }
-          reloadOnRetry={ reloadOnRetry }
-          errorMessage={ errorMessage }
-          errorStack={ errorStack }
-          count={ count }
+          onRetry={this.retry}
+          reloadOnRetry={reloadOnRetry}
+          errorMessage={errorMessage}
+          errorStack={errorStack}
+          count={count}
         />
-      )
+      );
     }
 
     // Execute contained components
-    return this.props.children
+    return this.props.children;
   }
 }
 
 ErrorCatcher.defaultProps = {
-  origin: 'No name',
+  origin: "No name",
   sendEvent: () => {},
   onRetry: () => {},
   reloadOnRetry: true,
-  ShowError: translate('ErrorCatcher')(ShowErrorDefault),
+  ShowError: translate("ErrorCatcher")(ShowErrorDefault),
 };
 
 ErrorCatcher.propTypes = {
@@ -161,8 +147,9 @@ ErrorCatcher.propTypes = {
   ShowError: PropTypes.elementType.isRequired,
 };
 
-const withErrorCatcher = (origin, component) =>
-  <ErrorCatcher {...{ origin , key: origin }}>{ component }</ErrorCatcher>;
+const withErrorCatcher = (origin, component) => (
+  <ErrorCatcher {...{ origin, key: origin }}>{component}</ErrorCatcher>
+);
 
 export default ErrorCatcher;
 export { withErrorCatcher, ShowErrorDefault };

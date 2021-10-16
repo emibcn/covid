@@ -1,28 +1,28 @@
-import Common, {log} from './Common';
+import Common, { log } from "./Common";
 
 // Transform a string into a smaller/hash one of it
-const hashStr = str => {
+const hashStr = (str) => {
   if (str.length === 0) {
     return 0;
   }
 
   return [...str]
-    .map( char => char.charCodeAt(0) )
-    .reduce( (hash, int) => {
-      const hashTmp = ((hash << 5) - hash) + int;
+    .map((char) => char.charCodeAt(0))
+    .reduce((hash, int) => {
+      const hashTmp = (hash << 5) - hash + int;
       return hashTmp & hashTmp; // Convert to 32bit integer
-    }, 0)
-}
+    }, 0);
+};
 
 // Handles an element inside the cache
 class FetchCacheElement extends Common {
-  name = 'Cache Element';
+  name = "Cache Element";
   fetching = false;
   result = null;
   lastModified = 0;
   invalidated = false;
   listeners = [];
-  url = '';
+  url = "";
 
   constructor(url) {
     super();
@@ -31,15 +31,16 @@ class FetchCacheElement extends Common {
 
   // Handle a fetch error by calling all the listeners' onError in the queue
   onError = (error) => {
-    this.listeners.forEach( listener => listener.onError(error));
+    this.listeners.forEach((listener) => listener.onError(error));
     this.cleanFetch();
   };
 
   // Add `this.url` to error messages
-  catchFetchErrorsMessage = (err) => `${this.url}: ${this.name} backend: ${err.message}`;
+  catchFetchErrorsMessage = (err) =>
+    `${this.url}: ${this.name} backend: ${err.message}`;
 
   // Removes all unneeded data related to a fetch
-  cleanFetch = () => this.fetching = false;
+  cleanFetch = () => (this.fetching = false);
 
   // Registers a listener
   addListener = (onSuccess, onError) => {
@@ -49,66 +50,59 @@ class FetchCacheElement extends Common {
     });
 
     // If this is the first listener, launch the fetch
-    if (!this.fetching &&
-        this.result === null ) {
+    if (!this.fetching && this.result === null) {
       this.fetch();
     }
 
     // If we already have the data and it has not been invalidated, create
     // a self-resolving promise which executes the listener after resolution
-    if ( !this.invalidated &&
-         this.result !== null) {
-      (new Promise(
-        (resolve, reject) => resolve(this.result)
-      )).then( onSuccess );
+    if (!this.invalidated && this.result !== null) {
+      new Promise((resolve, reject) => resolve(this.result)).then(onSuccess);
     }
-    
+
     this.log(`Added listener to ${this.url}: ${this.listeners.length - 1}`);
 
-    return () => this.removeListener( onSuccess );
-  }
+    return () => this.removeListener(onSuccess);
+  };
 
   // Disables/unregisters a listener
   removeListener = (onSuccess) => {
-
     // Finds the listener by comparing the onSuccess function pointer
     const found = this.listeners
-      .map( (listener, index) => ({ listener, index }))
-      .find( l => l.listener.onSuccess === onSuccess);
+      .map((listener, index) => ({ listener, index }))
+      .find((l) => l.listener.onSuccess === onSuccess);
 
-    if ( found ) {
+    if (found) {
       this.log(`Remove listener from ${this.url}: ${found.index}`);
 
       // Remove element from array
       this.listeners.splice(found.index, 1);
-    }
-    else {
+    } else {
       console.warn(`Remove listener from ${this.url}: Listener not found`);
     }
 
     // If there is an ongoing fetch and there are no more listeners left, abort the fetch
-    if (this.fetching &&
-        this.listeners.length === 0) {
+    if (this.fetching && this.listeners.length === 0) {
       this.abort();
       this.cleanFetch();
     }
-  }
+  };
 
   // Caches the data and calls all the listeners' onSuccess
   processSuccessFetch = ({ result, lastModified }) => {
     this.result = result;
     this.lastModified = lastModified;
-    this.listeners
-      .forEach( listener => listener.onSuccess(this.result) );
- 
+    this.listeners.forEach((listener) => listener.onSuccess(this.result));
+
     this.cleanFetch();
 
     // Allow re-chaining promises
     return this.result;
-  }
+  };
 
   // Gets a Date object from a fetch response `last-modified` HTTP header
-  getLastModifiedFromResponse = (response) => new Date(response.headers.get('last-modified'));
+  getLastModifiedFromResponse = (response) =>
+    new Date(response.headers.get("last-modified"));
 
   // Fetches a URL:
   // - Transforms from JSON to JS object
@@ -118,70 +112,71 @@ class FetchCacheElement extends Common {
   // - If there is an error, processes all error listeners
   fetch = (callback = () => {}) => {
     this.fetching = true;
-    return fetch( this.url, { signal: this.controller.signal })
-      .then( this.handleFetchErrors )
-      .then( response => response.json().then( result => ({
-        result,
-        lastModified: this.getLastModifiedFromResponse(response)
-      }) ))
-      .then( this.processSuccessFetch )
-      .then( callback )
-      .catch( this.catchFetchErrors )
-      .finally( this.cleanFetch )
-  }
+    return fetch(this.url, { signal: this.controller.signal })
+      .then(this.handleFetchErrors)
+      .then((response) =>
+        response.json().then((result) => ({
+          result,
+          lastModified: this.getLastModifiedFromResponse(response),
+        }))
+      )
+      .then(this.processSuccessFetch)
+      .then(callback)
+      .catch(this.catchFetchErrors)
+      .finally(this.cleanFetch);
+  };
 
   // Sends a HEAD request to download URL header's `last-modified` value and
   // returns the comparison against saved value: `true` if new one is higher
   checkIfNeedUpdate = (onSuccess, onError) => {
-    return fetch( this.url, { method: 'HEAD', signal: this.controller.signal })
-      .then( this.handleFetchErrors )
-      .then( this.getLastModifiedFromResponse )
-      .then( date => date > this.lastModified /* || true */ ) // TEST TODO BUG DEBUG
-      .then( onSuccess )
-      .catch( onError )
-  }
+    return fetch(this.url, { method: "HEAD", signal: this.controller.signal })
+      .then(this.handleFetchErrors)
+      .then(this.getLastModifiedFromResponse)
+      .then((date) => date > this.lastModified /* || true */) // TEST TODO BUG DEBUG
+      .then(onSuccess)
+      .catch(onError);
+  };
 
   // Invalidates the cache and recalls it's download if we have any listener
   invalidate = () => {
-    return (new Promise(
-      (resolve, reject) => {
-        if ( this.invalidated ) {
-          // Resolve without doing nothing
-          // It has already just been invalidated
-          this.log(`${this.url}: It has already been invalidated`);
-          resolve();
-        }
-        else if ( this.result !== null ) {
-          this.invalidated = true;
+    return new Promise((resolve, reject) => {
+      if (this.invalidated) {
+        // Resolve without doing nothing
+        // It has already just been invalidated
+        this.log(`${this.url}: It has already been invalidated`);
+        resolve();
+      } else if (this.result !== null) {
+        this.invalidated = true;
 
-          // Are there listeners?
-          if ( this.listeners.length > 0 ) {
-            this.log(`${this.url}: Fetch it!`);
-            this.fetch( () => { this.invalidated = false });
-            resolve();
-          }
-          else {
-            // Resolve without doing nothing
-            // Someone downloaded it, but unregistered from it: changed data source
-            this.log(`${this.url}: Someone downloaded it, but unregistered from it: changed data source`);
+        // Are there listeners?
+        if (this.listeners.length > 0) {
+          this.log(`${this.url}: Fetch it!`);
+          this.fetch(() => {
             this.invalidated = false;
-            resolve();
-          }
-        }
-        else {
-          // Resolve without doing nothing
-          // It was never downloaded
-          this.log(`${this.url}: It was never downloaded`, {
-            result: this.result,
-            invalidated: this.invalidated,
-            t: this,
           });
+          resolve();
+        } else {
+          // Resolve without doing nothing
+          // Someone downloaded it, but unregistered from it: changed data source
+          this.log(
+            `${this.url}: Someone downloaded it, but unregistered from it: changed data source`
+          );
           this.invalidated = false;
           resolve();
         }
+      } else {
+        // Resolve without doing nothing
+        // It was never downloaded
+        this.log(`${this.url}: It was never downloaded`, {
+          result: this.result,
+          invalidated: this.invalidated,
+          t: this,
+        });
+        this.invalidated = false;
+        resolve();
       }
-    ))
-  }
+    });
+  };
 }
 
 // Handles the whole cache
@@ -208,38 +203,37 @@ class FetchCache {
     const id = hashStr(url);
 
     // If we have not an ongoing request for this URL, create one
-    if ( !(id in this.data) ) {
-      this.data[id] = new FetchCacheElement( url );
+    if (!(id in this.data)) {
+      this.data[id] = new FetchCacheElement(url);
     }
 
-    return this.data[id].addListener(
-      onSuccess,
-      onError,
-    );
-  }
+    return this.data[id].addListener(onSuccess, onError);
+  };
 
   // Sends a HEAD request to download URL header's `last-modified` value and
   // returns the comparison against saved value: `true` if new one is higher
   checkIfNeedUpdate = (url, onSuccess, onError) => {
     const id = hashStr(url);
     return this.data[id].checkIfNeedUpdate(onSuccess, onError);
-  }
+  };
 
   // Invalidates a cache entry and recalls it's download if it has any listener
   invalidate = (url) => {
     const id = hashStr(url);
-    if ( !(id in this.data) ) {
-      return (new Promise(
-        (resolve, reject) => {
-          // Resolve without doing nothing
-          // It was never downloaded
-          this.log(`${url}: It was never downloaded`, {id, url, data: this.data});
-          resolve(true);
-        }
-      ))
+    if (!(id in this.data)) {
+      return new Promise((resolve, reject) => {
+        // Resolve without doing nothing
+        // It was never downloaded
+        this.log(`${url}: It was never downloaded`, {
+          id,
+          url,
+          data: this.data,
+        });
+        resolve(true);
+      });
     }
     return this.data[id].invalidate();
-  }
+  };
 }
 
 // This is a singleton:

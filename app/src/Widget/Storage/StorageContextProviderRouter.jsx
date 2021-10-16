@@ -1,15 +1,14 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
+import React from "react";
+import { PropTypes } from "prop-types";
+import { Route, Switch } from "react-router-dom";
 
-import WidgetStorageContext from './StorageContext';
-import withStorageHandler from './withStorageHandler';
+import WidgetStorageContext from "./StorageContext";
+import withStorageHandler from "./withStorageHandler";
 
 /*
    Context provider using React Route as data source for Widgets params
 */
 class RouterProvider extends React.Component {
-
   // History change listener
   unlisten = () => {};
 
@@ -18,48 +17,49 @@ class RouterProvider extends React.Component {
     this.history = props.history;
   }
 
-  historyPush = (data, replace=false) => {
+  historyPush = (data, replace = false) => {
     const newPath = this.props.paramsToString(data);
 
     // Only PUSH or REPLACE if something have to change
-    if ( this.history.location.pathname !== newPath ) {
-      if ( !replace ) {
+    if (this.history.location.pathname !== newPath) {
+      if (!replace) {
         this.history.push(newPath + this.history.location.hash);
-      }
-      else {
+      } else {
         this.history.replace(newPath + this.history.location.hash);
       }
     }
-  }
+  };
 
   handleHistoryChange = (location, action) => {
     // Do nothing when change is made by us
-    if( action !== 'POP' ) {
+    if (action !== "POP") {
       return;
     }
-  }
+  };
 
   componentDidMount = () => {
     // Register history change event listener
-    this.unlisten = this.history.listen( this.handleHistoryChange );
+    this.unlisten = this.history.listen(this.handleHistoryChange);
     // Check if data from localStorage is better
-    if ( !this.props.params.widgets.length &&
-          this.props.data.widgets &&
-          this.props.data.widgets.length ) {
-       this.historyPush(this.props.data, true);
+    if (
+      !this.props.params.widgets.length &&
+      this.props.data.widgets &&
+      this.props.data.widgets.length
+    ) {
+      this.historyPush(this.props.data, true);
     }
-  }
+  };
 
   componentWillUnmount = () => {
     // Unregister history change event listener
     this.unlisten();
-  }
+  };
 
   // Save data into location
   onChangeData = (data) => {
     this.historyPush({ ...data }, true);
     this.props.onChangeData({ ...data });
-  }
+  };
 
   // Render the provider and the children
   render() {
@@ -75,15 +75,17 @@ class RouterProvider extends React.Component {
     } = this.props;
 
     return (
-      <WidgetStorageContext.Provider value={{
-        onChangeData: this.onChangeData,
-        ...props,
-        ...data,
-        ...params,
-      }}>
-        { children }
+      <WidgetStorageContext.Provider
+        value={{
+          onChangeData: this.onChangeData,
+          ...props,
+          ...data,
+          ...params,
+        }}
+      >
+        {children}
       </WidgetStorageContext.Provider>
-    )
+    );
   }
 }
 
@@ -102,22 +104,25 @@ const RouterProviderWithSwitch = (props) => {
   return (
     <Switch>
       <Route
-        path={ pathFilter }
-        render={ propsRoute => {
-          const { match: { params }, history } = propsRoute;
+        path={pathFilter}
+        render={(propsRoute) => {
+          const {
+            match: { params },
+            history,
+          } = propsRoute;
           const processedParams = paramsFilter(params);
           return (
             <RouterProvider
-              { ...{ paramsFilter, paramsToString, history } }
-              { ...restProps }
-              params={ processedParams }
+              {...{ paramsFilter, paramsToString, history }}
+              {...restProps}
+              params={processedParams}
             />
-          )
+          );
         }}
       />
     </Switch>
-  )
-}
+  );
+};
 
 RouterProviderWithSwitch.propTypes = {
   // How to handle hash storage
@@ -129,7 +134,7 @@ RouterProviderWithSwitch.propTypes = {
 // Consume localStorage storage provider
 const RouterProviderWithSwitchWithStorageHandler = withStorageHandler(
   RouterProviderWithSwitch,
-  { data: { widgets: {type: 'map'} } } // TODO: default
+  { data: { widgets: { type: "map" } } } // TODO: default
 );
 
 export default RouterProviderWithSwitchWithStorageHandler;

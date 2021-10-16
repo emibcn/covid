@@ -1,19 +1,24 @@
-import { delay, MockFetch, AbortError, catchConsoleLog } from '../../testHelpers';
+import {
+  delay,
+  MockFetch,
+  AbortError,
+  catchConsoleLog,
+} from "../../testHelpers";
 
-import Common from './Common';
+import Common from "./Common";
 
 // Common is suposed to be extended
 class TestCommon extends Common {
-  constructor({onUpdate, ...rest}={}) {
+  constructor({ onUpdate, ...rest } = {}) {
     super(rest);
     this.onUpdate = onUpdate || (() => {});
   }
-  subscribe = jest.fn( (url) => {
-    return fetch( url, { signal: this.controller.signal })
-      .then( this.handleFetchErrors )
-      .then( response => response.json() )
-      .then( this.onUpdate )
-      .catch( this.catchFetchErrors )
+  subscribe = jest.fn((url) => {
+    return fetch(url, { signal: this.controller.signal })
+      .then(this.handleFetchErrors)
+      .then((response) => response.json())
+      .then(this.onUpdate)
+      .catch(this.catchFetchErrors);
   });
 }
 
@@ -30,8 +35,8 @@ afterAll(() => {
   mockedFetch.unmock();
 });
 
-test('Common calls onUpdate', async () => {
-  const url = 'test1';
+test("Common calls onUpdate", async () => {
+  const url = "test1";
   const options = {
     onUpdate: jest.fn(),
     onError: jest.fn(),
@@ -42,8 +47,8 @@ test('Common calls onUpdate', async () => {
   expect(options.onUpdate).toHaveBeenCalledTimes(1);
 });
 
-test('Common calls onError when error is thrown', async () => {
-  const url = 'test1';
+test("Common calls onError when error is thrown", async () => {
+  const url = "test1";
   const options = {
     onUpdate: jest.fn(),
     onError: jest.fn(),
@@ -57,8 +62,8 @@ test('Common calls onError when error is thrown', async () => {
   mockedFetch.options.throwError = fetchThrowErrorOld;
 });
 
-test('Common does not calls onUpdate nor onError when thrown error is an AbortError', async () => {
-  const url = 'test1';
+test("Common does not calls onUpdate nor onError when thrown error is an AbortError", async () => {
+  const url = "test1";
   const options = {
     onUpdate: jest.fn(),
     onError: jest.fn(),
@@ -66,7 +71,7 @@ test('Common does not calls onUpdate nor onError when thrown error is an AbortEr
   const testCommon = new TestCommon(options);
   const fetchThrowErrorOld = mockedFetch.options.throwError;
   mockedFetch.options.throwError = new AbortError("Testing abort errors");
-  const {output} = await catchConsoleLog( async () => {
+  const { output } = await catchConsoleLog(async () => {
     await testCommon.subscribe(url);
   });
 
@@ -76,8 +81,8 @@ test('Common does not calls onUpdate nor onError when thrown error is an AbortEr
   mockedFetch.options.throwError = fetchThrowErrorOld;
 });
 
-test('Common calls onError when response is errorish', async () => {
-  const url = 'test1';
+test("Common calls onError when response is errorish", async () => {
+  const url = "test1";
   const options = {
     onUpdate: jest.fn(),
     onError: jest.fn(),
@@ -96,8 +101,8 @@ test('Common calls onError when response is errorish', async () => {
   mockedFetch.options.responseOptions = fetchResponseOptionsOld;
 });
 
-test('Common uses noop default values for onUpdate and onError', async () => {
-  const url = 'test1';
+test("Common uses noop default values for onUpdate and onError", async () => {
+  const url = "test1";
   const testCommon = new TestCommon();
 
   // Test for onUpdate
@@ -118,8 +123,8 @@ test('Common uses noop default values for onUpdate and onError', async () => {
   mockedFetch.options.throwError = fetchThrowErrorOld;
 });
 
-test('Common aborts a connection correctly', async () => {
-  const url = 'test1';
+test("Common aborts a connection correctly", async () => {
+  const url = "test1";
   const testCommon = new TestCommon();
 
   // Mock controller's abort method to count its calls

@@ -1,29 +1,29 @@
-import withHandlerGenerator from '../Base/withHandlerGenerator';
-import { withHandler } from './context';
+import withHandlerGenerator from '../Base/withHandlerGenerator'
+import { withHandler } from './context'
 
 // Index HOC
-const withIndex = (WrappedComponent, name="index") =>
+const withIndex = (WrappedComponent, name = 'index') =>
   withHandlerGenerator(
     withHandler,
     () => ({}),
-    (props, Handler, setIndex) => Handler.index( setIndex ),
+    (props, Handler, setIndex) => Handler.index(setIndex),
     name,
-    WrappedComponent,
-  );
+    WrappedComponent
+  )
 
 // Data HOC
-const withData = (WrappedComponent, name="bcnData") => {
+const withData = (WrappedComponent, name = 'bcnData') => {
   const WrapperComponent = withHandlerGenerator(
     withHandler,
-    ({dataset}) => ({dataset}),
-    ({dataset}, Handler, setData) => Handler.data( dataset, setData ),
+    ({ dataset }) => ({ dataset }),
+    ({ dataset }, Handler, setData) => Handler.data(dataset, setData),
     name,
-    WrappedComponent,
-  );
+    WrappedComponent
+  )
 
-  WrapperComponent.defaultProps = WrappedComponent.defaultProps;
+  WrapperComponent.defaultProps = WrappedComponent.defaultProps
 
-  return WrapperComponent;
+  return WrapperComponent
 }
 
-export {withIndex, withData};
+export { withIndex, withData }
