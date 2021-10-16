@@ -1,6 +1,7 @@
 ![Node.js CI](https://github.com/emibcn/covid/workflows/Node.js%20CI/badge.svg)
 ![Coverage](https://raw.githubusercontent.com/emibcn/covid/badges/master/test-coverage.svg)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
+[![DeepSource](https://deepsource.io/gh/emibcn/covid.svg/?label=active+issues&show_trend=true&token=9V0USvdRqEdXWpHkpWYO6ZVQ)](https://deepsource.io/gh/emibcn/covid/?ref=repository-badge)
 ![Download maps and charts from backend and publish with GitHub Pages](https://github.com/emibcn/covid-data/workflows/Download%20maps%20and%20charts%20from%20backend%20and%20publish%20with%20GitHub%20Pages/badge.svg)
 
 # Covid Data `refactored` (Web Application)

@@ -14,11 +14,9 @@ const Language = (props) => {
   const handleLanguageChange = (e) => onLanguageChange(e.target.value)
 
   const filteredLanguages = available.reduce((languages, current) => {
-    if (!languages.find((item) => item.label === current.label)) {
-      return languages.concat([current])
-    } else {
-      return languages
-    }
+    return !languages.find((item) => item.label === current.label)
+      ? languages.concat([current])
+      : languages
   }, [])
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react'
 
 // From: https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
-// Side effects: adds an event listener to document (and remove on unmount)
+// Side effects: adds an event listener to document on mount and removes it on unmount
 
 // Set the name of the hidden property and the change event for visibility
 const { hidden, visibilityChange } =
@@ -27,17 +27,24 @@ const checkVisibility = () => !document[hidden]
 
 // HOC adding `visible` prop to Wrapped component (`true` for incompatible browsers)
 const withDocumentVisibility = (Wrapped) => {
+  // This component will be returned in case of a non-compatible browser
+  function WithoutDocumentVisibility (props) {
+    <Wrapped {...props} visible />
+  }
+
   // TODO: Backward compatibility using window.blur and window.focus?
   if (
     typeof document.addEventListener === 'undefined' ||
-    hidden === undefined
+    typeof hidden === 'undefined'
   ) {
     console.warn(
       'This component requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.'
     )
-    return (props) => <Wrapped {...props} visible />
+
+    return WithoutDocumentVisibility
   }
-  return (props) => {
+
+  function WithDocumentVisibility (props) {
     const [visible, setVisible] = React.useState(checkVisibility())
 
     React.useEffect(() => {
@@ -60,6 +67,8 @@ const withDocumentVisibility = (Wrapped) => {
 
     return <Wrapped {...props} visible={visible} />
   }
+
+  return WithDocumentVisibility
 }
 
 export default withDocumentVisibility
