@@ -28,7 +28,7 @@ const useStyles = makeStyles( (theme) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(.5),
+    marginBottom: theme.spacing(0.5),
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     // Marks labels not shown under 'md'
@@ -41,11 +41,11 @@ const useStyles = makeStyles( (theme) => ({
     // eslint-disable-next-line no-useless-computed-key
     ['@media (pointer: coarse)']: {
       [theme.breakpoints.up('md')]: {
-        marginTop: theme.spacing(.5),
+        marginTop: theme.spacing(0.5),
         paddingBottom: theme.spacing(1),
       },
       [theme.breakpoints.down('sm')]: {
-        paddingBottom: theme.spacing(.1),
+        paddingBottom: theme.spacing(0.1),
       },
     }
   },
