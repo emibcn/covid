@@ -35,7 +35,12 @@ const withDocumentVisibility = (Wrapped) => {
     console.warn(
       'This component requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.'
     )
-    return (props) => <Wrapped {...props} visible />
+
+    function WithoutDocumentVisibility (props) {
+      <Wrapped {...props} visible />
+    }
+
+    return WithoutDocumentVisibility
   }
 
   function WithDocumentVisibility (props) {
