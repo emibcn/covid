@@ -52,8 +52,8 @@ test('renders open menu, with update and update it', () => {
       <Menu
         handleDrawerOpen={() => {}}
         handleDrawerClose={() => {}}
-        open={true}
-        newServiceWorkerDetected={true}
+        open
+        newServiceWorkerDetected
         onLoadNewServiceWorkerAccept={UpdateCallback}
       />
     </Router>
@@ -79,7 +79,7 @@ test('renders open menu, without update (small screen)', async () => {
         <Menu
           handleDrawerOpen={() => {}}
           handleDrawerClose={CloseCallback}
-          open={true}
+          open
           newServiceWorkerDetected={false}
           onLoadNewServiceWorkerAccept={() => {}}
         />
@@ -118,7 +118,7 @@ test('renders closed menu, with update (small screen), swipe to open', async () 
           handleDrawerOpen={OpenCallback}
           handleDrawerClose={() => {}}
           open={false}
-          newServiceWorkerDetected={true}
+          newServiceWorkerDetected
           onLoadNewServiceWorkerAccept={() => {}}
         />
       </Router>
@@ -182,8 +182,8 @@ test('renders opened menu, with update (small screen), click backdrop to close',
         <Menu
           handleDrawerOpen={() => {}}
           handleDrawerClose={CloseCallback}
-          open={true}
-          newServiceWorkerDetected={true}
+          open
+          newServiceWorkerDetected
           onLoadNewServiceWorkerAccept={() => {}}
         />
       </Router>
@@ -219,8 +219,8 @@ test('renders opened menu, with update (small screen), close with Escape key on 
         <Menu
           handleDrawerOpen={() => {}}
           handleDrawerClose={CloseCallback}
-          open={true}
-          newServiceWorkerDetected={true}
+          open
+          newServiceWorkerDetected
           onLoadNewServiceWorkerAccept={() => {}}
         />
       </Router>

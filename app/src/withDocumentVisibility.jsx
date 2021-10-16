@@ -30,7 +30,7 @@ const withDocumentVisibility = (Wrapped) => {
   // TODO: Backward compatibility using window.blur and window.focus?
   if (typeof document.addEventListener === "undefined" || hidden === undefined) {
     console.warn("This component requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.");
-    return (props) => <Wrapped { ...props } visible={true} />;
+    return (props) => <Wrapped { ...props } visible />;
   }
   return (props) => {
     const [visible, setVisible] = React.useState(checkVisibility());
