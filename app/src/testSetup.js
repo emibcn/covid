@@ -1,13 +1,13 @@
 import matchMediaPolyfill from 'mq-polyfill'
 
 // Allow testing components with React.createPortal
-jest.mock("react-dom", () => {
-  const original = jest.requireActual("react-dom");
+jest.mock('react-dom', () => {
+  const original = jest.requireActual('react-dom')
   return {
     ...original,
-    createPortal: node => node,
-  };
-});
+    createPortal: (node) => node
+  }
+})
 
 beforeAll(() => {
   // https://github.com/enzymejs/enzyme/issues/1626#issuecomment-398588616
@@ -19,19 +19,19 @@ beforeAll(() => {
       ownerDocument: document
     },
     createContextualFragment: jest.fn
-  });
+  })
 
   // Allow testing MediaQuery:
   // https://github.com/testing-library/react-testing-library/issues/353#issuecomment-510074776
-  matchMediaPolyfill(window);
-  window.resizeTo = function resizeTo(width, height) {
+  matchMediaPolyfill(window)
+  window.resizeTo = function resizeTo (width, height) {
     Object.assign(this, {
       innerWidth: width,
       innerHeight: height,
       outerWidth: width,
       outerHeight: height,
       clientWidth: width,
-      clientHeight: height,
+      clientHeight: height
     }).dispatchEvent(new this.Event('resize'))
   }
-});
+})

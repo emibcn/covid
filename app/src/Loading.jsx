@@ -1,22 +1,22 @@
-import React from 'react';
-import loading from './loading.svg';
+import React from 'react'
+import loading from './loading.svg'
 
 const Loading = (props) => {
-  const { style = {}, restProps } = props;
+  const { style = {}, restProps } = props
 
   return (
     <img
-      alt="Loading..."
-      src={ loading }
+      alt='Loading...'
+      src={loading}
       style={{
         width: '80%',
         margin: 'auto',
         display: 'block',
         ...style
       }}
-      { ...restProps }
+      {...restProps}
     />
   )
 }
 
-export default Loading;
+export default Loading
