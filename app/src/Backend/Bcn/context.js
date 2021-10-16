@@ -1,14 +1,11 @@
-import ContextCreator from '../Base/ContextCreator';
-import Handler from './handler';
-import {withIndex, withData} from './withHandlers';
+import ContextCreator from '../Base/ContextCreator'
+import Handler from './handler'
+import { withIndex, withData } from './withHandlers'
 
-const {
-  Provider,
-  withHandler,
-  Consumer,
-  useHandler,
-  Context,
-} = ContextCreator(Handler, "bcnDataHandler");
+const { Provider, withHandler, Consumer, useHandler, Context } = ContextCreator(
+  Handler,
+  'bcnDataHandler'
+)
 
-export default Provider;
-export { withHandler, Consumer, useHandler, Context, withIndex, withData };
+export default Provider
+export { withHandler, Consumer, useHandler, Context, withIndex, withData }

@@ -1,6 +1,7 @@
 **Note:** This file was automatically created by Create React App. See [Contributing guidelines](https://github.com/emibcn/covid/blob/master/CONTRIBUTING.md) for the documentation of this specific project.
 
 # Create React App
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Installation
