@@ -15,6 +15,7 @@ const PlayPauseButtonUntranslated = ({
   className,
   t
 }) => {
+  const id = `playpause_${Math.random()}`.replace('0.', '')
   const onChange = React.useCallback(() => {
     if (isPlaying) {
       onPause()
@@ -30,15 +31,15 @@ const PlayPauseButtonUntranslated = ({
       aria-label={!isPlaying ? t('play') : t('pause')}
     >
       <div className={`playpause ${className || ''}`}>
-        <label style={{ borderLeftColor: '' }}>
-          <input
-            type='checkbox'
-            name='check'
-            checked={!isPlaying}
-            onChange={onChange}
-            aria-label={t('Toggle play status')}
-          />
-        </label>
+        <input
+          id={id}
+          type='checkbox'
+          name='check'
+          checked={!isPlaying}
+          onChange={onChange}
+          aria-label={t('Toggle play status')}
+        />
+        <label htmlFor={id} style={{ borderLeftColor: '' }} />
       </div>
     </Tooltip>
   )
