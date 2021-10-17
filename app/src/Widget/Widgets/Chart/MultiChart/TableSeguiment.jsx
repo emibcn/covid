@@ -66,7 +66,7 @@ const TableSeguimentInternalGraphPropTypes = PropTypes.shape({
 })
 const TableSeguimentInternalPropTypes = {
   graph: TableSeguimentInternalGraphPropTypes.isRequired,
-  selectedRows: PropTypes.array.isRequired
+  selectedRows: PropTypes.arrayOf(PropTypes.bool).isRequired
 }
 TableSeguimentInternalForCache.propTypes = TableSeguimentInternalPropTypes
 

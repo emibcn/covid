@@ -43,12 +43,17 @@ const ChartIEPGPropTypes = {
   graph: PropTypes.shape({
     data: PropTypes.arrayOf(
       PropTypes.shape({
-        data: PropTypes.array,
+        data: PropTypes.arrayOf(
+          PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+          ])
+        ),
         label: PropTypes.string
       })
     ).isRequired
   }),
-  dies: PropTypes.array,
+  dies: PropTypes.arrayOf(PropTypes.string),
   indexValues: PropTypes.number
 }
 ChartIEPG.propTypes = ChartIEPGPropTypes

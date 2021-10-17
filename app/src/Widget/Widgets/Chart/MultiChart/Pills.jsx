@@ -42,7 +42,7 @@ function PillsForCache ({ dies, ...props }) {
 const PillsPropTypes = {
   population: PropTypes.string,
   region: PropTypes.string,
-  dies: PropTypes.array
+  dies: PropTypes.arrayOf(PropTypes.string)
 }
 PillsForCache.propTypes = PillsPropTypes
 PillsForCache.defaultProps = {
