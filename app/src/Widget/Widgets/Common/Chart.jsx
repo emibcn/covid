@@ -177,9 +177,7 @@ function ChartForCached (props) {
             const types = { line: Line, area: Area }
             const { type, name, width, color, format } = line
             const Component =
-              type && Object.keys(types).includes(type)
-                ? types[type]
-                : Line
+              type && Object.keys(types).includes(type) ? types[type] : Line
             return (
               <Component
                 key={index}
@@ -261,7 +259,7 @@ const ChartCached = React.memo(ChartForCached)
 ChartForCached.propTypes = ChartCachedPropTypes
 ChartForCached.defaultProps = {
   children: [],
-  syncId: null,
+  syncId: null
 }
 
 // Optimized chart:
@@ -339,7 +337,9 @@ function Chart (props) {
         scale={scale}
         syncId={syncId}
         components={props.components}
-      >{children}</ChartCached>
+      >
+        {children}
+      </ChartCached>
 
       {/* Use outer legend to lower chart updates */}
       <ChartLegend
