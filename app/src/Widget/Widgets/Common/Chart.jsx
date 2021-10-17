@@ -166,7 +166,7 @@ function ChartForCached (props) {
         {graph // Don't save sorting in original array!
           .map((line, index) => {
             const types = { line: Line, area: Area }
-            const {type, name, width, color, format} = line
+            const { type, name, width, color, format } = line
             const Component =
               line.type && Object.keys(types).includes(type)
                 ? types[type]
@@ -182,9 +182,7 @@ function ChartForCached (props) {
                 strokeWidth={width ?? 2}
                 stroke={color ?? colors[index]}
                 fill={color ?? colors[index]}
-                unit={
-                  format?.replace(/^\{[^}]*\}/, '').trim() /* "{,.2f}€" */
-                }
+                unit={format?.replace(/^\{[^}]*\}/, '').trim() /* "{,.2f}€" */}
               />
             )
           })}
@@ -218,17 +216,21 @@ function ChartForCached (props) {
 }
 
 const ChartCachedPropTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-  })),
-  graph: PropTypes.arrayOf(PropTypes.shape({
-    type: PropTypes.string,
-    name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    color: PropTypes.string,
-    format: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-  })),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    })
+  ),
+  graph: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      color: PropTypes.string,
+      format: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    })
+  ),
   colors: PropTypes.arrayOf(PropTypes.string),
   yAxisLabel: PropTypes.string,
   scale: PropTypes.string,
