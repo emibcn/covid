@@ -29,7 +29,10 @@ function TableSeguimentInternalForCache ({ graph, selectedRows }) {
               style={selectedRows[index] ? { backgroundColor: '#eee' } : {}}
             >
               {row.map(({ content }) => (
-                <td key={content.replace(/[^a-zA-Z0-9]/gm, '_')} style={{ textAlign: 'right' }}>
+                <td
+                  key={content.replace(/[^a-zA-Z0-9]/gm, '_')}
+                  style={{ textAlign: 'right' }}
+                >
                   {content}
                 </td>
               ))}
