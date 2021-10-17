@@ -16,7 +16,7 @@ function TableSeguimentInternalForCache ({ graph, selectedRows }) {
         <thead>
           <tr>
             {graph.headers.map(({ content, title }) => (
-              <th key={title.replace(/[^a-zA-Z0-9]/gm, '_')} title={title}>
+              <th key={( typeof content !== 'undefined' ? content : "undef").replace(/[^a-zA-Z0-9]/gm, '_')} title={title}>
                 {content}
               </th>
             ))}
@@ -28,9 +28,9 @@ function TableSeguimentInternalForCache ({ graph, selectedRows }) {
               key={index}
               style={selectedRows[index] ? { backgroundColor: '#eee' } : {}}
             >
-              {row.map(({ content }) => (
+              {row.map(({ content }, indexRow) => (
                 <td
-                  key={content.replace(/[^a-zA-Z0-9]/gm, '_')}
+                  key={indexRow}
                   style={{ textAlign: 'right' }}
                 >
                   {content}

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { useTheme } from '@material-ui/core/styles'
 
@@ -138,7 +139,7 @@ const translateIndexDays = (diesBase, daysHash, indexValues) => {
 }
 
 // Memoized chart: show static data (independent from selected day)
-const ChartCached = React.memo(function ChartForCached (props) {
+function ChartForCached (props) {
   const { data, graph, colors, yAxisLabel, scale, children, syncId } = props
   const themeUI = useTheme()
   const {
@@ -165,9 +166,10 @@ const ChartCached = React.memo(function ChartForCached (props) {
         {graph // Don't save sorting in original array!
           .map((line, index) => {
             const types = { line: Line, area: Area }
+            const {type, name, width, color, format} = line
             const Component =
-              line.type && Object.keys(types).includes(line.type)
-                ? types[line.type]
+              line.type && Object.keys(types).includes(type)
+                ? types[type]
                 : Line
             return (
               <Component
@@ -176,12 +178,12 @@ const ChartCached = React.memo(function ChartForCached (props) {
                 dataKey={`v${index}`}
                 dot={null}
                 connectNulls
-                name={line.name}
-                strokeWidth={line.width ?? 2}
-                stroke={line.color ?? colors[index]}
-                fill={line.color ?? colors[index]}
+                name={name}
+                strokeWidth={width ?? 2}
+                stroke={color ?? colors[index]}
+                fill={color ?? colors[index]}
                 unit={
-                  line.format?.replace(/^\{[^}]*\}/, '').trim() /* "{,.2f}€" */
+                  format?.replace(/^\{[^}]*\}/, '').trim() /* "{,.2f}€" */
                 }
               />
             )
@@ -213,7 +215,28 @@ const ChartCached = React.memo(function ChartForCached (props) {
       </ComposedChart>
     </ResponsiveContainer>
   )
-})
+}
+
+const ChartCachedPropTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  })),
+  graph: PropTypes.arrayOf(PropTypes.shape({
+    type: PropTypes.string,
+    name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    color: PropTypes.string,
+    format: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  })),
+  colors: PropTypes.arrayOf(PropTypes.string),
+  yAxisLabel: PropTypes.string,
+  scale: PropTypes.string,
+  children: PropTypes.arrayOf(PropTypes.node),
+  syncId: PropTypes.string
+}
+const ChartCached = React.memo(ChartForCached)
+ChartForCached.propTypes = ChartCachedPropTypes
 
 // Optimized chart:
 // - Memoizes the static data
