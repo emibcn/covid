@@ -138,7 +138,7 @@ const translateIndexDays = (diesBase, daysHash, indexValues) => {
 }
 
 // Memoized chart: show static data (independent from selected day)
-const ChartCached = React.memo((props) => {
+const ChartCached = React.memo(function ChartForCached (props) {
   const { data, graph, colors, yAxisLabel, scale, children, syncId } = props
   const themeUI = useTheme()
   const {
@@ -219,7 +219,7 @@ const ChartCached = React.memo((props) => {
 // - Memoizes the static data
 // - Memoizes the real chart with all the static data
 // - Renders an extra chart to render time dependent value (reference line for selected date)
-const Chart = (props) => {
+function Chart (props) {
   const {
     data: graph,
     dies: diesBase,
