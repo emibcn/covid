@@ -71,7 +71,7 @@ function ChartExtensio (props) {
   return <Chart syncId='charts' {...{ dies, indexValues, data }} />
 }
 
-const Pills = React.memo(function PillsForCache({ dies, ...props }) {
+function PillsForCache({ dies, ...props }) {
   const dateStr = dies[dies.length - 1]
   return (
     <Grid
@@ -89,7 +89,8 @@ const Pills = React.memo(function PillsForCache({ dies, ...props }) {
       ))}
     </Grid>
   )
-})
+}
+const Pills = React.memo(PillsForCache)
 
 // TODO: Abstract it?
 // Copied from Widgets/Common/Chart
@@ -97,7 +98,7 @@ const parseDateStr = (dateStr, sep = '/') =>
   dateStr.split(sep).map((d) => Number(d))
 const parseDate = ([day, month, year]) => new Date(year, month - 1, day)
 
-const TableSeguimentInternal = React.memo(function TableSeguimentInternalForCache ({ graph, selectedRows }) {
+function TableSeguimentInternalForCache ({ graph, selectedRows }) {
   return (
     <div style={{ overflowY: 'auto' }}>
       <table>
@@ -127,7 +128,8 @@ const TableSeguimentInternal = React.memo(function TableSeguimentInternalForCach
       </table>
     </div>
   )
-})
+}
+const TableSeguimentInternal = React.memo(TableSeguimentInternalForCache)
 
 function TableSeguiment ({ graph, ...props }) {
   // Generate an array containing rows date ranges (as Date)
@@ -171,18 +173,21 @@ function TableSeguiment ({ graph, ...props }) {
   )
 }
 
-const TableSituacioInternal = React.memo(function TableSituacioInternalForCache ({ elements }) (
-  <Grid container direction='row' alignItems='center'>
-    {elements.map(({ name, value }, index) => (
-      <Grid key={index} item container direction='column' alignItems='center'>
-        <Grid item>
-          <strong>{name}</strong>
+function TableSituacioInternalForCache ({ elements }) {
+  return (
+    <Grid container direction='row' alignItems='center'>
+      {elements.map(({ name, value }, index) => (
+        <Grid key={index} item container direction='column' alignItems='center'>
+          <Grid item>
+            <strong>{name}</strong>
+          </Grid>
+          <Grid item>{value}</Grid>
         </Grid>
-        <Grid item>{value}</Grid>
-      </Grid>
-    ))}
-  </Grid>
-))
+      ))}
+    </Grid>
+  )
+}
+const TableSituacioInternal = React.memo(TableSituacioInternalForCache)
 
 function  TableSituacio ({ graph, ...props }) {
   // For Pills
