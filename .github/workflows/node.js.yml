@@ -19,6 +19,23 @@ on:
     branches: [ master ]
 
 jobs:
+  check-secrets:
+    runs-on: ubuntu-latest
+    outputs:
+      github-token: ${{ steps.github-token.outputs.defined }}
+      deepsource-token: ${{ steps.github-token.outputs.defined }}
+    steps:
+    - id: github-token
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: "${{ env.GITHUB_TOKEN != '' }}"
+      run: echo "::set-output name=defined::true"
+    - id: deepsource-token
+      env:
+        DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
+      if: "${{ env.DEEPSOURCE_DSN != '' }}"
+      run: echo "::set-output name=defined::true"
+
   pre_ci:
     name: Prepare CI environment
     runs-on: ubuntu-latest
@@ -104,6 +121,7 @@ jobs:
 
   test-code:
 
+    needs: [check-secrets]
     name: Test code and generate test coverage value
     runs-on: ubuntu-latest
 
@@ -155,7 +173,8 @@ jobs:
         rounded-precision: 2
         filename: "app/coverage/clover.xml"
 
-    - name: yarn install and test
+    - name: Get test coverage for DeepSource
+      if: ${{ needs.check-secrets.outputs.deepsource-token == 'true'  }}
       env:
         REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
         REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
@@ -164,6 +183,7 @@ jobs:
         yarn test:coverage:cobertura
 
     - name: Report test coverage to DeepSource
+      if: ${{ needs.check-secrets.outputs.deepsource-token == 'true'  }}
       uses: deepsourcelabs/test-coverage-action@master
       with:
         key: javascript
