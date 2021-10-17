@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import ChartIEPG, {ChartIEPGPropTypes} from './ChartIEPG'
-import ChartExtensio, {ChartExtensioPropTypes} from './ChartExtensio'
-import TableSituacio, {TableSituacioPropTypes} from './TableSituacio'
-import TableSeguiment, {TableSeguimentPropTypes} from './TableSeguiment'
+import ChartIEPG, { ChartIEPGPropTypes } from './ChartIEPG'
+import ChartExtensio, { ChartExtensioPropTypes } from './ChartExtensio'
+import TableSituacio, { TableSituacioPropTypes } from './TableSituacio'
+import TableSeguiment, { TableSeguimentPropTypes } from './TableSeguiment'
 
 const GraphFromDataset = {
   grafic_risc_iepg: {
@@ -34,7 +34,7 @@ const MultiChartPropTypes = {
   dataset: PropTypes.oneOf(Object.keys(GraphFromDataset)).isRequired,
   valors: PropTypes.shape(
     Object.entries(GraphFromDataset).reduce(
-      (acc, [key, {types}]) => ({
+      (acc, [key, { types }]) => ({
         ...acc,
         [key]: PropTypes.shape(types)
       }),

@@ -8,7 +8,13 @@ function TableSituacioInternalForCache ({ elements }) {
   return (
     <Grid container direction='row' alignItems='center'>
       {elements.map(({ name, value }, index) => (
-        <Grid key={name.replace(/[^a-zA-Z0-9]/gm,"_")} item container direction='column' alignItems='center'>
+        <Grid
+          key={name.replace(/[^a-zA-Z0-9]/gm, '_')}
+          item
+          container
+          direction='column'
+          alignItems='center'
+        >
           <Grid item>
             <strong>{name}</strong>
           </Grid>
