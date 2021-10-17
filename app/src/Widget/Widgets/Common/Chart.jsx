@@ -140,7 +140,7 @@ const translateIndexDays = (diesBase, daysHash, indexValues) => {
 
 // Memoized chart: show static data (independent from selected day)
 function ChartForCached (props) {
-  const { data, graph, colors, yAxisLabel, scale, children, syncId } = props
+  const { data, graph, colors, yAxisLabel, scale, children, syncId, components } = props
   const themeUI = useTheme()
   const {
     ResponsiveContainer,
@@ -152,7 +152,7 @@ function ChartForCached (props) {
     YAxis,
     Tooltip,
     Brush
-  } = props.components
+  } = components
   return (
     <ResponsiveContainer width='100%' height={250}>
       <ComposedChart
@@ -235,7 +235,18 @@ const ChartCachedPropTypes = {
   yAxisLabel: PropTypes.string,
   scale: PropTypes.string,
   children: PropTypes.arrayOf(PropTypes.node),
-  syncId: PropTypes.string
+  syncId: PropTypes.string,
+  components: PropTypes.shape({
+    ResponsiveContainer: PropTypes.elementType,
+    ComposedChart: PropTypes.elementType,
+    Line: PropTypes.elementType,
+    Area: PropTypes.elementType,
+    CartesianGrid: PropTypes.elementType,
+    XAxis: PropTypes.elementType,
+    YAxis: PropTypes.elementType,
+    Tooltip: PropTypes.elementType,
+    Brush: PropTypes.elementType
+  })
 }
 const ChartCached = React.memo(ChartForCached)
 ChartForCached.propTypes = ChartCachedPropTypes
