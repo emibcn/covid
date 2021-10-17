@@ -138,8 +138,8 @@ const PillsPropTypes = {
   region: PropTypes.string,
   dies: PropTypes.array
 }
-Pills.propTypes = PillsPropTypes
-Pills.defaultProps = {
+PillsForCache.propTypes = PillsPropTypes
+PillsForCache.defaultProps = {
   population: '',
   region: '',
   dies: []
@@ -204,7 +204,7 @@ const TableSeguimentInternalPropTypes = {
   graph: TableSeguimentInternalGraphPropTypes.isRequired,
   selectedRows: PropTypes.array.isRequired
 }
-TableSeguimentInternal.propTypes = TableSeguimentInternalPropTypes
+TableSeguimentInternalForCache.propTypes = TableSeguimentInternalPropTypes
 
 function TableSeguiment ({ graph, population, region, dies, indexValues }) {
   // Generate an array containing rows date ranges (as Date)
@@ -259,7 +259,7 @@ function TableSituacioInternalForCache ({ elements }) {
   return (
     <Grid container direction='row' alignItems='center'>
       {elements.map(({ name, value }, index) => (
-        <Grid key={index} item container direction='column' alignItems='center'>
+        <Grid key={name.replace(/[^a-zA-Z]/gm,"_")} item container direction='column' alignItems='center'>
           <Grid item>
             <strong>{name}</strong>
           </Grid>
@@ -279,7 +279,7 @@ const TableSituacioInternalPropTypes = {
     })
   ).isRequired
 }
-TableSituacioInternal.propTypes = TableSituacioInternalPropTypes
+TableSituacioInternalForCache.propTypes = TableSituacioInternalPropTypes
 
 function TableSituacio ({ graph: { elements }, population, region, dies }) {
   return (
@@ -302,19 +302,19 @@ TableSituacio.defaultProps = {
 const GraphFromDataset = {
   grafic_risc_iepg: {
     component: ChartIEPG,
-    propTypes: ChartIEPGPropTypes
+    types: ChartIEPGPropTypes
   },
   grafic_extensio: {
     component: ChartExtensio,
-    propTypes: ChartExtensioPropTypes
+    types: ChartExtensioPropTypes
   },
   situacio: {
     component: TableSituacio,
-    propTypes: TableSituacioPropTypes
+    types: TableSituacioPropTypes
   },
   seguiment: {
     component: TableSeguiment,
-    propTypes: TableSeguimentPropTypes
+    types: TableSeguimentPropTypes
   }
 }
 
@@ -327,13 +327,17 @@ MultiChart.propTypes = {
   dataset: PropTypes.oneOf(Object.keys(GraphFromDataset)).isRequired,
   valors: PropTypes.shape(
     Object.entries(GraphFromDataset).reduce(
-      (acc, [key, value]) => ({
+      (acc, [key, {types}]) => ({
         ...acc,
-        [key]: PropTypes.shape(value.propTypes)
+        [key]: PropTypes.shape(types)
       }),
       {}
     )
   )
+}
+
+MultiChart.defaultProps = {
+  valors: []
 }
 
 export default MultiChart
