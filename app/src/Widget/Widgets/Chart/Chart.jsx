@@ -71,7 +71,7 @@ function ChartExtensio (props) {
   return <Chart syncId='charts' {...{ dies, indexValues, data }} />
 }
 
-function PillsForCache({ dies, ...props }) {
+function PillsForCache ({ dies, ...props }) {
   const dateStr = dies[dies.length - 1]
   return (
     <Grid
@@ -189,7 +189,7 @@ function TableSituacioInternalForCache ({ elements }) {
 }
 const TableSituacioInternal = React.memo(TableSituacioInternalForCache)
 
-function  TableSituacio ({ graph, ...props }) {
+function TableSituacio ({ graph, ...props }) {
   // For Pills
   const { population, region, dies } = props
   return (
