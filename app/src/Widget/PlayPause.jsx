@@ -30,15 +30,15 @@ const PlayPauseButtonUntranslated = ({
       aria-label={!isPlaying ? t('play') : t('pause')}
     >
       <div className={`playpause ${className || ''}`}>
-        <input
-          type='checkbox'
-          id='playpause'
-          name='check'
-          checked={!isPlaying}
-          onChange={onChange}
-          aria-label={t('Toggle play status')}
-        />
-        <label htmlFor='playpause' style={{ borderLeftColor: '' }} />
+        <label style={{ borderLeftColor: '' }}>
+          <input
+            type='checkbox'
+            name='check'
+            checked={!isPlaying}
+            onChange={onChange}
+            aria-label={t('Toggle play status')}
+          />
+        </label>
       </div>
     </Tooltip>
   )
