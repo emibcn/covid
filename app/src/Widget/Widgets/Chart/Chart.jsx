@@ -26,7 +26,7 @@ const dataTransform = (dies, graph, chartsStyles = []) => {
 
 const chartsStylesIEPG = [{ type: 'line', color: '#000000', width: 3 }]
 
-const ChartIEPG = (props) => {
+function ChartIEPG (props) {
   const { graph, dies, indexValues } = props
   const { data, references } = React.useMemo(
     () => ({
@@ -61,7 +61,7 @@ const chartsStylesExtensio = [
   { type: 'line', order: 2, color: '#969696', width: 1 }
 ]
 
-const ChartExtensio = (props) => {
+function ChartExtensio (props) {
   const { graph, dies, indexValues } = props
   const data = React.useMemo(
     () => dataTransform(dies, graph, chartsStylesExtensio),
@@ -71,7 +71,7 @@ const ChartExtensio = (props) => {
   return <Chart syncId='charts' {...{ dies, indexValues, data }} />
 }
 
-const Pills = React.memo(({ dies, ...props }) => {
+const Pills = React.memo(function PillsForCache({ dies, ...props }) {
   const dateStr = dies[dies.length - 1]
   return (
     <Grid
@@ -97,7 +97,7 @@ const parseDateStr = (dateStr, sep = '/') =>
   dateStr.split(sep).map((d) => Number(d))
 const parseDate = ([day, month, year]) => new Date(year, month - 1, day)
 
-const TableSeguimentInternal = React.memo(({ graph, selectedRows }) => {
+const TableSeguimentInternal = React.memo(function TableSeguimentInternalForCache ({ graph, selectedRows }) {
   return (
     <div style={{ overflowY: 'auto' }}>
       <table>
@@ -129,7 +129,7 @@ const TableSeguimentInternal = React.memo(({ graph, selectedRows }) => {
   )
 })
 
-const TableSeguiment = ({ graph, ...props }) => {
+function TableSeguiment ({ graph, ...props }) {
   // Generate an array containing rows date ranges (as Date)
   const rowDates = React.useMemo(
     () =>
@@ -171,7 +171,7 @@ const TableSeguiment = ({ graph, ...props }) => {
   )
 }
 
-const TableSituacioInternal = React.memo(({ elements }) => (
+const TableSituacioInternal = React.memo(function TableSituacioInternalForCache ({ elements }) (
   <Grid container direction='row' alignItems='center'>
     {elements.map(({ name, value }, index) => (
       <Grid key={index} item container direction='column' alignItems='center'>
@@ -184,7 +184,7 @@ const TableSituacioInternal = React.memo(({ elements }) => (
   </Grid>
 ))
 
-const TableSituacio = ({ graph, ...props }) => {
+function  TableSituacio ({ graph, ...props }) {
   // For Pills
   const { population, region, dies } = props
   return (
@@ -202,7 +202,7 @@ const GraphFromDataset = {
   seguiment: TableSeguiment
 }
 
-const MultiChart = (props) => {
+function MultiChart (props) {
   const { dataset, valors, ...restProps } = props
   const ChartDataset = GraphFromDataset[dataset]
   return <ChartDataset graph={valors[dataset]} {...restProps} />
