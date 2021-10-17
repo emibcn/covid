@@ -140,7 +140,16 @@ const translateIndexDays = (diesBase, daysHash, indexValues) => {
 
 // Memoized chart: show static data (independent from selected day)
 function ChartForCached (props) {
-  const { data, graph, colors, yAxisLabel, scale, children, syncId, components } = props
+  const {
+    data,
+    graph,
+    colors,
+    yAxisLabel,
+    scale,
+    children,
+    syncId,
+    components
+  } = props
   const themeUI = useTheme()
   const {
     ResponsiveContainer,
