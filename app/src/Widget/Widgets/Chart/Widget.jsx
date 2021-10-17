@@ -9,7 +9,7 @@ import {
 
 import { withHandler, withData } from "../../../Backend/Charts/context";
 
-import Chart from "./Chart";
+import Chart from "./MultiChart";
 import Edit from "./Edit";
 import withWidget from "../../Widget";
 
