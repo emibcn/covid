@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Grid from '@material-ui/core/Grid'
 import Chip from '@material-ui/core/Chip'
@@ -26,8 +27,7 @@ const dataTransform = (dies, graph, chartsStyles = []) => {
 
 const chartsStylesIEPG = [{ type: 'line', color: '#000000', width: 3 }]
 
-function ChartIEPG (props) {
-  const { graph, dies, indexValues } = props
+function ChartIEPG ({ graph, dies, indexValues }) {
   const { data, references } = React.useMemo(
     () => ({
       data: dataTransform(dies, graph, chartsStylesIEPG),
@@ -55,14 +55,30 @@ function ChartIEPG (props) {
   )
 }
 
+const ChartIEPGPropTypes = {
+  graph: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({
+      data: PropTypes.array,
+      label: PropTypes.string
+    })).isRequired
+  }),
+  dies: PropTypes.array,
+  indexValues: PropTypes.number
+}
+ChartIEPG.propTypes = ChartIEPGPropTypes
+ChartIEPG.defaultProps = {
+  graph: {data: []},
+  dies: [],
+  indexValues: 0
+}
+
 const chartsStylesExtensio = [
   { type: 'area', order: 1, color: '#648ac8', width: 1 },
   { type: 'area', order: 0, color: '#cacaca', width: 1 },
   { type: 'line', order: 2, color: '#969696', width: 1 }
 ]
 
-function ChartExtensio (props) {
-  const { graph, dies, indexValues } = props
+function ChartExtensio ({ graph, dies, indexValues }) {
   const data = React.useMemo(
     () => dataTransform(dies, graph, chartsStylesExtensio),
     [graph, dies]
@@ -71,26 +87,61 @@ function ChartExtensio (props) {
   return <Chart syncId='charts' {...{ dies, indexValues, data }} />
 }
 
+const ChartExtensioPropTypes = ChartIEPGPropTypes
+ChartExtensio.propTypes = ChartExtensioPropTypes
+ChartExtensio.defaultProps = {
+  graph: {data: []},
+  dies: [],
+  indexValues: 0
+}
+
+function PillsList ({ list }) {
+  return list.map(
+    ({key, name}) => (
+      <Grid key={key} item>
+        <Chip color='primary' size='small' label={name} />
+      </Grid>
+    ))
+}
+
+PillsList.propTypes = {
+  list: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.string,
+    name: PropTypes.string
+  }))
+}
+
 function PillsForCache ({ dies, ...props }) {
   const dateStr = dies[dies.length - 1]
+  const list = [
+      ["dies", dateStr],
+      ...Object.entries(props)
+    ].map(([key, name]) => ({key, name}))
   return (
     <Grid
       container
       direction='row'
       alignItems='center'
-      justify='center'
+      justifyContent='center'
       spacing={1}
       style={{ position: 'relative', top: '-2em' }}
     >
-      {[dateStr, ...Object.values(props)].map((name, index) => (
-        <Grid key={index} item>
-          <Chip color='primary' size='small' label={name} />
-        </Grid>
-      ))}
+      <PillsList list={list} />
     </Grid>
   )
 }
 const Pills = React.memo(PillsForCache)
+const PillsPropTypes = {
+  population: PropTypes.string,
+  region: PropTypes.string,
+  dies: PropTypes.array
+}
+Pills.propTypes = PillsPropTypes
+Pills.defaultProps = {
+  population: "",
+  region: "",
+  dies: []
+}
 
 // TODO: Abstract it?
 // Copied from Widgets/Common/Chart
@@ -131,7 +182,25 @@ function TableSeguimentInternalForCache ({ graph, selectedRows }) {
 }
 const TableSeguimentInternal = React.memo(TableSeguimentInternalForCache)
 
-function TableSeguiment ({ graph, ...props }) {
+const TableSeguimentInternalGraphPropTypes =
+  PropTypes.shape({
+    headers: PropTypes.arrayOf(PropTypes.shape({
+      content: PropTypes.string,
+      title: PropTypes.string
+    })).isRequired,
+    // [row].[cell].content
+    body: PropTypes.arrayOf(PropTypes.arrayOf(
+      PropTypes.shape({
+        content: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    }))).isRequired
+  })
+const TableSeguimentInternalPropTypes = {
+  graph: TableSeguimentInternalGraphPropTypes.isRequired,
+  selectedRows: PropTypes.array.isRequired
+}
+TableSeguimentInternal.propTypes = TableSeguimentInternalPropTypes
+
+function TableSeguiment ({ graph, population, region, dies, indexValues }) {
   // Generate an array containing rows date ranges (as Date)
   const rowDates = React.useMemo(
     () =>
@@ -144,7 +213,6 @@ function TableSeguiment ({ graph, ...props }) {
   )
 
   // Find which rows are selected by currently selected day
-  const { dies, indexValues } = props
   const dateStr = dies[indexValues]
   const currentDate = parseDate(parseDateStr(dateStr))
   const selectedRows = rowDates.map(
@@ -164,13 +232,21 @@ function TableSeguiment ({ graph, ...props }) {
   }
 
   // For Pills
-  const { population, region } = props
   return (
     <>
       <Pills {...{ population, region, dies }} />
       <TableSeguimentInternal graph={graph} selectedRows={selectedRowsCached} />
     </>
   )
+}
+
+const TableSeguimentPropTypes = {
+  graph: TableSeguimentInternalGraphPropTypes,
+  ...PillsPropTypes
+}
+TableSeguiment.propTypes = TableSeguimentPropTypes
+TableSeguiment.defaultProps = {
+  graph: {header: [], body: []}
 }
 
 function TableSituacioInternalForCache ({ elements }) {
@@ -189,28 +265,69 @@ function TableSituacioInternalForCache ({ elements }) {
 }
 const TableSituacioInternal = React.memo(TableSituacioInternalForCache)
 
-function TableSituacio ({ graph, ...props }) {
-  // For Pills
-  const { population, region, dies } = props
+const TableSituacioInternalPropTypes = {
+  elements: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  })).isRequired,
+}
+TableSituacioInternal.propTypes = TableSituacioInternalPropTypes
+
+function TableSituacio ({ graph: {elements}, population, region, dies }) {
   return (
     <>
       <Pills {...{ population, region, dies }} />
-      <TableSituacioInternal elements={graph.elements} />
+      <TableSituacioInternal elements={elements} />
     </>
   )
 }
 
-const GraphFromDataset = {
-  grafic_risc_iepg: ChartIEPG,
-  grafic_extensio: ChartExtensio,
-  situacio: TableSituacio,
-  seguiment: TableSeguiment
+const TableSituacioPropTypes = {
+  graph: PropTypes.shape(
+    TableSituacioInternalPropTypes,
+  ),
+  ...PillsPropTypes
+}
+TableSituacio.propTypes = TableSituacioPropTypes
+TableSituacio.defaultProps = {
+  graph: {elements: []}
 }
 
-function MultiChart (props) {
-  const { dataset, valors, ...restProps } = props
-  const ChartDataset = GraphFromDataset[dataset]
-  return <ChartDataset graph={valors[dataset]} {...restProps} />
+const GraphFromDataset = {
+  grafic_risc_iepg: {
+    component: ChartIEPG,
+    propTypes: ChartIEPGPropTypes,
+  },
+  grafic_extensio: {
+    component: ChartExtensio,
+    propTypes: ChartExtensioPropTypes,
+  },
+  situacio: {
+    component: TableSituacio,
+    propTypes: TableSituacioPropTypes,
+  },
+  seguiment: {
+    component: TableSeguiment,
+    propTypes: TableSeguimentPropTypes,
+  },
+}
+
+function MultiChart ({ dataset, valors, ...restProps }) {
+  const ChartComponent = GraphFromDataset[dataset].component
+  return <ChartComponent graph={valors[dataset]} {...restProps} />
+}
+
+MultiChart.propTypes = {
+  dataset: PropTypes.oneOf(Object.keys(GraphFromDataset)).isRequired,
+  valors: PropTypes.shape(
+    Object.entries(GraphFromDataset).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key]: PropTypes.shape(value.propTypes)
+      }),
+      {}
+    )
+  )
 }
 
 export default MultiChart
