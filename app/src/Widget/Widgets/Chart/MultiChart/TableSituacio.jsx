@@ -7,7 +7,7 @@ import Pills, { PillsPropTypes } from './Pills'
 function TableSituacioInternalForCache ({ elements }) {
   return (
     <Grid container direction='row' alignItems='center'>
-      {elements.map(({ name, value }, index) => (
+      {elements.map(({ name, value }) => (
         <Grid
           key={name.replace(/[^a-zA-Z0-9]/gm, '_')}
           item
@@ -39,7 +39,7 @@ TableSituacioInternalForCache.propTypes = TableSituacioInternalPropTypes
 function TableSituacio ({ graph: { elements }, population, region, dies }) {
   return (
     <>
-      <Pills {...{ population, region, dies }} />
+      <Pills population={population} region={region} dies={dies} />
       <TableSituacioInternal elements={elements} />
     </>
   )

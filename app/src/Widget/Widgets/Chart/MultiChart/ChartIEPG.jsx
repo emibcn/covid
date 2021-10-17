@@ -19,9 +19,9 @@ function ChartIEPG ({ graph, dies, indexValues }) {
         { y: 30, color: '#0f0' },
         { y: 70, color: '#ff0' },
         { y: 100, color: '#f00' }
-      ].map(({ y, color }, key) => (
+      ].map(({ y, color }) => (
         <ReferenceLine
-          key={key}
+          key={`y_${y}`}
           y={y}
           stroke={color}
           strokeDasharray='3 3'
@@ -33,7 +33,7 @@ function ChartIEPG ({ graph, dies, indexValues }) {
   )
 
   return (
-    <Chart syncId='charts' {...{ dies, indexValues, data }}>
+    <Chart syncId='charts' dies={dies} indexValues={indexValues} data={data}>
       {references}
     </Chart>
   )

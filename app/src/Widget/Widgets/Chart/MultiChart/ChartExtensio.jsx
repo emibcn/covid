@@ -16,7 +16,7 @@ function ChartExtensio ({ graph, dies, indexValues }) {
     [graph, dies]
   )
 
-  return <Chart syncId='charts' {...{ dies, indexValues, data }} />
+  return <Chart syncId='charts' dies={dies} indexValues={indexValues} data={data} />
 }
 
 const ChartExtensioPropTypes = ChartIEPGPropTypes

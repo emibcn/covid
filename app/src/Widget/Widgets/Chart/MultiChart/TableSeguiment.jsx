@@ -15,8 +15,8 @@ function TableSeguimentInternalForCache ({ graph, selectedRows }) {
       <table>
         <thead>
           <tr>
-            {graph.headers.map(({ content, title }, index) => (
-              <th key={index} title={title}>
+            {graph.headers.map(({ content, title }) => (
+              <th key={title.replace(/[^a-zA-Z0-9]/gm, '_')} title={title}>
                 {content}
               </th>
             ))}
@@ -28,8 +28,8 @@ function TableSeguimentInternalForCache ({ graph, selectedRows }) {
               key={index}
               style={selectedRows[index] ? { backgroundColor: '#eee' } : {}}
             >
-              {row.map(({ content }, cellIndex) => (
-                <td key={cellIndex} style={{ textAlign: 'right' }}>
+              {row.map(({ content }) => (
+                <td key={content.replace(/[^a-zA-Z0-9]/gm, '_')} style={{ textAlign: 'right' }}>
                   {content}
                 </td>
               ))}
@@ -98,7 +98,7 @@ function TableSeguiment ({ graph, population, region, dies, indexValues }) {
   // For Pills
   return (
     <>
-      <Pills {...{ population, region, dies }} />
+      <Pills population={population} region={region} dies={dies} />
       <TableSeguimentInternal graph={graph} selectedRows={selectedRowsCached} />
     </>
   )
