@@ -61,9 +61,9 @@ const parseData = (graph, dies) => {
   const fillDays = (range, range2) => {
     // Generates a range (array with starting and ending
     // dates) containing both ranges
-    const fixRange = (range, range2) => {
-      const parsed = range.map((date) => parseDate(parseDateStr(date, '-'))) // 17/10/2020
-      const parsed2 = range2.map((date) =>
+    const fixRange = (rangeFix, rangeFix2) => {
+      const parsed = rangeFix.map((date) => parseDate(parseDateStr(date, '-'))) // 17/10/2020
+      const parsed2 = rangeFix2.map((date) =>
         parseDate(parseDateStr(date).reverse())
       ) // 2020-10-17
       return [
@@ -177,7 +177,7 @@ function ChartForCached (props) {
             const types = { line: Line, area: Area }
             const { type, name, width, color, format } = line
             const Component =
-              line.type && Object.keys(types).includes(type)
+              type && Object.keys(types).includes(type)
                 ? types[type]
                 : Line
             return (
@@ -230,7 +230,7 @@ const ChartCachedPropTypes = {
       name: PropTypes.string,
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     })
-  ),
+  ).isRequired,
   graph: PropTypes.arrayOf(
     PropTypes.shape({
       type: PropTypes.string,
@@ -239,10 +239,10 @@ const ChartCachedPropTypes = {
       color: PropTypes.string,
       format: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     })
-  ),
-  colors: PropTypes.arrayOf(PropTypes.string),
-  yAxisLabel: PropTypes.string,
-  scale: PropTypes.string,
+  ).isRequired,
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  yAxisLabel: PropTypes.string.isRequired,
+  scale: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.node),
   syncId: PropTypes.string,
   components: PropTypes.shape({
@@ -255,10 +255,14 @@ const ChartCachedPropTypes = {
     YAxis: PropTypes.elementType,
     Tooltip: PropTypes.elementType,
     Brush: PropTypes.elementType
-  })
+  }).isRequired
 }
 const ChartCached = React.memo(ChartForCached)
 ChartForCached.propTypes = ChartCachedPropTypes
+ChartForCached.defaultProps = {
+  children: [],
+  syncId: null,
+}
 
 // Optimized chart:
 // - Memoizes the static data
@@ -328,26 +332,21 @@ function Chart (props) {
 
       {/* Memoized component, independent of the selected day */}
       <ChartCached
-        {...{
-          data,
-          graph: graphSorted,
-          children,
-          colors,
-          yAxisLabel,
-          scale,
-          syncId
-        }}
+        data={data}
+        graph={graphSorted}
+        colors={colors}
+        yAxisLabel={yAxisLabel}
+        scale={scale}
+        syncId={syncId}
         components={props.components}
-      />
+      >{children}</ChartCached>
 
       {/* Use outer legend to lower chart updates */}
       <ChartLegend
-        {...{
-          data,
-          colors,
-          indexValues: indexTranslated,
-          payload: graphSorted
-        }}
+        data={data}
+        colors={colors}
+        indexValues={indexTranslated}
+        payload={graphSorted}
       />
     </div>
   )
