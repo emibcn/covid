@@ -14,12 +14,12 @@ const ModalRouterWithRoutes = (props) => {
       <Route
         exact
         path='about'
-        render={(props) => withErrorCatcher('About', <About />)}
+        render={() => withErrorCatcher('About', <About />)}
       />
       <Route
         exact
         path='language'
-        render={(props) =>
+        render={() =>
           withErrorCatcher(
             'Language',
             <Language language={language} onLanguageChange={onLanguageChange} />
@@ -28,7 +28,7 @@ const ModalRouterWithRoutes = (props) => {
       <Route
         exact
         path='theme'
-        render={(props) =>
+        render={() =>
           withErrorCatcher(
             'Theme',
             <Theme theme={theme} onThemeChange={onThemeChange} />
