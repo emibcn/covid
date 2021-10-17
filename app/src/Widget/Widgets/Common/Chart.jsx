@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { useTheme } from '@material-ui/core/styles'
 
@@ -60,9 +61,9 @@ const parseData = (graph, dies) => {
   const fillDays = (range, range2) => {
     // Generates a range (array with starting and ending
     // dates) containing both ranges
-    const fixRange = (range, range2) => {
-      const parsed = range.map((date) => parseDate(parseDateStr(date, '-'))) // 17/10/2020
-      const parsed2 = range2.map((date) =>
+    const fixRange = (rangeFix, rangeFix2) => {
+      const parsed = rangeFix.map((date) => parseDate(parseDateStr(date, '-'))) // 17/10/2020
+      const parsed2 = rangeFix2.map((date) =>
         parseDate(parseDateStr(date).reverse())
       ) // 2020-10-17
       return [
@@ -138,8 +139,17 @@ const translateIndexDays = (diesBase, daysHash, indexValues) => {
 }
 
 // Memoized chart: show static data (independent from selected day)
-const ChartCached = React.memo((props) => {
-  const { data, graph, colors, yAxisLabel, scale, children, syncId } = props
+function ChartForCached (props) {
+  const {
+    data,
+    graph,
+    colors,
+    yAxisLabel,
+    scale,
+    children,
+    syncId,
+    components
+  } = props
   const themeUI = useTheme()
   const {
     ResponsiveContainer,
@@ -151,7 +161,7 @@ const ChartCached = React.memo((props) => {
     YAxis,
     Tooltip,
     Brush
-  } = props.components
+  } = components
   return (
     <ResponsiveContainer width='100%' height={250}>
       <ComposedChart
@@ -165,10 +175,9 @@ const ChartCached = React.memo((props) => {
         {graph // Don't save sorting in original array!
           .map((line, index) => {
             const types = { line: Line, area: Area }
+            const { type, name, width, color, format } = line
             const Component =
-              line.type && Object.keys(types).includes(line.type)
-                ? types[line.type]
-                : Line
+              type && Object.keys(types).includes(type) ? types[type] : Line
             return (
               <Component
                 key={index}
@@ -176,13 +185,11 @@ const ChartCached = React.memo((props) => {
                 dataKey={`v${index}`}
                 dot={null}
                 connectNulls
-                name={line.name}
-                strokeWidth={line.width ?? 2}
-                stroke={line.color ?? colors[index]}
-                fill={line.color ?? colors[index]}
-                unit={
-                  line.format?.replace(/^\{[^}]*\}/, '').trim() /* "{,.2f}€" */
-                }
+                name={name}
+                strokeWidth={width ?? 2}
+                stroke={color ?? colors[index]}
+                fill={color ?? colors[index]}
+                unit={format?.replace(/^\{[^}]*\}/, '').trim() /* "{,.2f}€" */}
               />
             )
           })}
@@ -213,13 +220,53 @@ const ChartCached = React.memo((props) => {
       </ComposedChart>
     </ResponsiveContainer>
   )
-})
+}
+
+const ChartCachedPropTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    })
+  ).isRequired,
+  graph: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      color: PropTypes.string,
+      format: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    })
+  ).isRequired,
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  yAxisLabel: PropTypes.string.isRequired,
+  scale: PropTypes.string.isRequired,
+  children: PropTypes.arrayOf(PropTypes.node),
+  syncId: PropTypes.string,
+  components: PropTypes.shape({
+    ResponsiveContainer: PropTypes.elementType,
+    ComposedChart: PropTypes.elementType,
+    Line: PropTypes.elementType,
+    Area: PropTypes.elementType,
+    CartesianGrid: PropTypes.elementType,
+    XAxis: PropTypes.elementType,
+    YAxis: PropTypes.elementType,
+    Tooltip: PropTypes.elementType,
+    Brush: PropTypes.elementType
+  }).isRequired
+}
+const ChartCached = React.memo(ChartForCached)
+ChartForCached.propTypes = ChartCachedPropTypes
+ChartForCached.defaultProps = {
+  children: [],
+  syncId: null
+}
 
 // Optimized chart:
 // - Memoizes the static data
 // - Memoizes the real chart with all the static data
 // - Renders an extra chart to render time dependent value (reference line for selected date)
-const Chart = (props) => {
+function Chart (props) {
   const {
     data: graph,
     dies: diesBase,
@@ -283,26 +330,23 @@ const Chart = (props) => {
 
       {/* Memoized component, independent of the selected day */}
       <ChartCached
-        {...{
-          data,
-          graph: graphSorted,
-          children,
-          colors,
-          yAxisLabel,
-          scale,
-          syncId
-        }}
+        data={data}
+        graph={graphSorted}
+        colors={colors}
+        yAxisLabel={yAxisLabel}
+        scale={scale}
+        syncId={syncId}
         components={props.components}
-      />
+      >
+        {children}
+      </ChartCached>
 
       {/* Use outer legend to lower chart updates */}
       <ChartLegend
-        {...{
-          data,
-          colors,
-          indexValues: indexTranslated,
-          payload: graphSorted
-        }}
+        data={data}
+        colors={colors}
+        indexValues={indexTranslated}
+        payload={graphSorted}
       />
     </div>
   )

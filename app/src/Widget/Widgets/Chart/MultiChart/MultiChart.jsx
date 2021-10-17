@@ -30,11 +30,11 @@ function MultiChart ({ dataset, valors, ...restProps }) {
   return <ChartComponent graph={valors[dataset]} {...restProps} />
 }
 
-const MultiChartpropTypes = {
+const MultiChartPropTypes = {
   dataset: PropTypes.oneOf(Object.keys(GraphFromDataset)).isRequired,
   valors: PropTypes.shape(
     Object.entries(GraphFromDataset).reduce(
-      (acc, [key, {types}]) => ({
+      (acc, [key, { types }]) => ({
         ...acc,
         [key]: PropTypes.shape(types)
       }),
@@ -42,12 +42,11 @@ const MultiChartpropTypes = {
     )
   )
 }
-
-MultiChart.propTypes = MultiChartpropTypes
+MultiChart.propTypes = MultiChartPropTypes
 
 MultiChart.defaultProps = {
   valors: []
 }
 
 export default MultiChart
-export MultiChartpropTypes
+export { MultiChartPropTypes }
