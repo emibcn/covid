@@ -20,10 +20,7 @@ function RenderTree({ url, name, children = [] }) {
 // Recursive PropTypes
 const RenderTreePropTypes = {
   name: PropTypes.string.isRequired,
-  url: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]).isRequired,
+  url: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 const RenderTreePropTypesShape = PropTypes.shape(RenderTreePropTypes);

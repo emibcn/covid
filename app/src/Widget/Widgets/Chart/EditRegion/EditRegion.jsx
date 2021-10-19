@@ -46,10 +46,7 @@ function EditRegion(props) {
 const EditRegionPropTypes = {
   division: PropTypes.string.isRequired,
   population: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   chartsDataHandler: PropTypes.shape({
     findInitialNode: PropTypes.func.isRequired,
@@ -61,6 +58,6 @@ const EditRegionPropTypes = {
 EditRegion.propTypes = EditRegionPropTypes;
 EditRegion.defaultProps = {
   chartsIndex: "",
-}
+};
 
 export default withHandler(EditRegion);
