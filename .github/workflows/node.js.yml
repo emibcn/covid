@@ -102,9 +102,6 @@ jobs:
           ${{ runner.OS }}-build
 
     - name: yarn install and build
-      env:
-        REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
-        REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       working-directory: ./app
       run: |
         yarn --color --immutable
@@ -154,9 +151,6 @@ jobs:
           ${{ runner.OS }}-build
 
     - name: yarn install and test
-      env:
-        REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
-        REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       working-directory: ./app
       run: |
         yarn --color --immutable
@@ -173,17 +167,41 @@ jobs:
         rounded-precision: 2
         filename: "app/coverage/clover.xml"
 
+  test-code-deepsource:
+    needs: [check-secrets]
+    if: ${{ needs.check-secrets.outputs.deepsource-token == 'true'  }}
+    name: Get test coverage for DeepSource and report it
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2.4.1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Manage cache
+      uses: actions/cache@v2.1.6
+      with:
+        path: |
+          app/node_modules
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          ${{ runner.OS }}-build
+
     - name: Get test coverage for DeepSource
-      if: ${{ needs.check-secrets.outputs.deepsource-token == 'true'  }}
-      env:
-        REACT_APP_MAP_STATIC_HOST: https://emibcn.github.io/covid-data/Maps
-        REACT_APP_CHART_STATIC_HOST: https://emibcn.github.io/covid-data/Charts
       working-directory: ./app
       run: |
+        yarn --color --immutable
         yarn test:coverage:cobertura
 
     - name: Report test coverage to DeepSource
-      if: ${{ needs.check-secrets.outputs.deepsource-token == 'true'  }}
       uses: deepsourcelabs/test-coverage-action@master
       with:
         key: javascript
@@ -192,6 +210,7 @@ jobs:
 
   test:
     name: Tests waiter
+    # No need to wait for deepsource test and report
     needs: [test-code, test-build]
     runs-on: ubuntu-latest
     outputs:
