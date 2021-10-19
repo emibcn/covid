@@ -1,23 +1,23 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
-import TreeView from '@material-ui/lab/TreeView'
-import { makeStyles } from '@material-ui/core/styles'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import TreeView from "@material-ui/lab/TreeView";
+import { makeStyles } from "@material-ui/core/styles";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
-import RenderTree, {RenderTreePropTypesShape} from './RenderTree'
+import RenderTree, { RenderTreePropTypesShape } from "./RenderTree";
 
 const useStyles = makeStyles({
   root: {
     height: 110,
     flexGrow: 1,
-    maxWidth: 400
-  }
-})
+    maxWidth: 400,
+  },
+});
 
-function RecursiveTreeView ({value, found, node, onNodeSelect, ...props}) {
-  const classes = useStyles()
+function RecursiveTreeView({ value, found, node, onNodeSelect, ...props }) {
+  const classes = useStyles();
 
   return (
     <TreeView
@@ -33,17 +33,17 @@ function RecursiveTreeView ({value, found, node, onNodeSelect, ...props}) {
         {node.children}
       </RenderTree>
     </TreeView>
-  )
+  );
 }
 
 const RecursiveTreeViewPropTypes = {
   value: PropTypes.string.isRequired,
   found: PropTypes.arrayOf(PropTypes.string).isRequired,
   node: RenderTreePropTypesShape.isRequired,
-  onNodeSelect: PropTypes.func.isRequired
-}
+  onNodeSelect: PropTypes.func.isRequired,
+};
 
-RecursiveTreeView.propTypes = RecursiveTreeViewPropTypes
+RecursiveTreeView.propTypes = RecursiveTreeViewPropTypes;
 
-export default RecursiveTreeView
-export {RecursiveTreeViewPropTypes}
+export default RecursiveTreeView;
+export { RecursiveTreeViewPropTypes };

@@ -1,11 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
-import { withHandler } from '../../../../Backend/Charts/context'
+import { withHandler } from "../../../../Backend/Charts/context";
 
-import RecursiveTreeView from './RecursiveTreeView'
+import RecursiveTreeView from "./RecursiveTreeView";
 
-function EditRegion (props) {
+function EditRegion(props) {
   const {
     chartsIndex: _, // Remove it from restProps
     division,
@@ -14,17 +14,20 @@ function EditRegion (props) {
     onChange,
     chartsDataHandler,
     ...restProps
-  } = props
+  } = props;
 
-  const onNodeSelect = (event, value) => onChange(Number(value))
-  const initialNode = React.useMemo(() => (
-    chartsDataHandler.findInitialNode(division, population)
-  ), [chartsDataHandler, division, population]);
-  const found = React.useMemo(() => (
-    chartsDataHandler
-      .findBreadcrumb(initialNode, value)
-      .map(({ url }) => `${url}`)
-  ), [initialNode, value, chartsDataHandler])
+  const onNodeSelect = (event, value) => onChange(Number(value));
+  const initialNode = React.useMemo(
+    () => chartsDataHandler.findInitialNode(division, population),
+    [chartsDataHandler, division, population]
+  );
+  const found = React.useMemo(
+    () =>
+      chartsDataHandler
+        .findBreadcrumb(initialNode, value)
+        .map(({ url }) => `${url}`),
+    [initialNode, value, chartsDataHandler]
+  );
 
   return (
     <RecursiveTreeView
@@ -34,7 +37,7 @@ function EditRegion (props) {
       value={`${value}`}
       {...restProps}
     />
-  )
+  );
 }
 
 const EditRegionPropTypes = {
@@ -42,12 +45,12 @@ const EditRegionPropTypes = {
   population: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([
     PropTypes.string.isRequired,
-    PropTypes.number.isRequired
+    PropTypes.number.isRequired,
   ]),
   onChange: PropTypes.func.isRequired,
-  chartsDataHandler: PropTypes.object.isRequired
-}
+  chartsDataHandler: PropTypes.object.isRequired,
+};
 
-EditRegion.propTypes = EditRegionPropTypes
+EditRegion.propTypes = EditRegionPropTypes;
 
-export default withHandler(EditRegion)
+export default withHandler(EditRegion);

@@ -1,3 +1,3 @@
-import EditRegion from './EditRegion'
+import EditRegion from "./EditRegion";
 
-export default EditRegion
+export default EditRegion;
