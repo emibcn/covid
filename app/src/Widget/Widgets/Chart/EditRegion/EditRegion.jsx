@@ -52,8 +52,12 @@ const EditRegionPropTypes = {
   ]).isRequired,
   onChange: PropTypes.func.isRequired,
   chartsDataHandler: PropTypes.object.isRequired,
+  chartsIndex: PropTypes.string,
 };
 
 EditRegion.propTypes = EditRegionPropTypes;
+EditRegion.defaultProps = {
+  chartsIndex: "",
+}
 
 export default withHandler(EditRegion);
