@@ -5,10 +5,14 @@ import TreeItem from "@material-ui/lab/TreeItem";
 
 // From: https://material-ui.com/components/tree-view/#rich-object
 
-function RenderTree({ url, name, children = null }) {
+function RenderTree({ url, name, children = [] }) {
   return (
-    <TreeItem key={url} nodeId={`${url}`} label={name}>
-      {children.map(RenderTree)}
+    <TreeItem nodeId={`${url}`} label={name}>
+      {children.map((child) => (
+        <RenderTree key={child.url} url={child.url} name={child.name}>
+          {child.children}
+        </RenderTree>
+      ))}
     </TreeItem>
   );
 }
@@ -21,7 +25,9 @@ const RenderTreePropTypes = {
     PropTypes.number,
   ]).isRequired,
 };
+
 const RenderTreePropTypesShape = PropTypes.shape(RenderTreePropTypes);
+
 RenderTreePropTypes.children = PropTypes.oneOfType([
   PropTypes.arrayOf(RenderTreePropTypesShape),
   PropTypes.any,
