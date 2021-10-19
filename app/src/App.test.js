@@ -1,10 +1,8 @@
 import React from 'react'
 import {
   render,
-  createEvent,
   fireEvent,
   act,
-  screen
 } from '@testing-library/react'
 
 import './testSetup'

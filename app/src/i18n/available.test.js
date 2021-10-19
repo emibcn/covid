@@ -36,7 +36,7 @@ test('all languages define all and only all translations defined in English', ()
         expect(english[component][text]).toBe(text)
       } catch (err) {
         throw new Error(
-          `Component '${component}' defined in English is NOT defined in language '${language.locale}'`
+          `Component '${component}' defined in English is NOT defined in English`
         )
       }
 

@@ -185,6 +185,37 @@ jobs:
         rounded-precision: 2
         filename: "app/coverage/clover.xml"
 
+  test-lint:
+    needs: [pre-tests]
+    name: Lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2.4.1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Manage cache
+      uses: actions/cache@v2.1.6
+      with:
+        path: |
+          app/node_modules
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          ${{ runner.OS }}-build
+
+    - name: Get test coverage for DeepSource
+      working-directory: ./app
+      run: yarn lint
+
   test-code-deepsource:
     needs: [check-secrets, pre-tests]
     if: ${{ needs.check-secrets.outputs.deepsource-token == 'true'  }}
@@ -227,7 +258,7 @@ jobs:
   test:
     name: Tests waiter
     # No need to wait for deepsource test and report
-    needs: [test-code, test-build]
+    needs: [test-code, test-build, test-lint]
     runs-on: ubuntu-latest
     outputs:
       coverage: ${{ needs.test-code.outputs.coverage }}
