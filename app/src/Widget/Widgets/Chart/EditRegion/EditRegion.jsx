@@ -19,7 +19,7 @@ function EditRegion(props) {
     ...restProps
   } = props;
 
-  const onNodeSelect = (event, value) => onChange(Number(value));
+  const onNodeSelect = (event, v) => onChange(Number(v));
   const initialNode = React.useMemo(
     () => chartsDataHandler.findInitialNode(division, population),
     [chartsDataHandler, division, population]
