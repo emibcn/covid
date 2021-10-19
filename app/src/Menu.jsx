@@ -1,93 +1,93 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
-import { translate } from 'react-translate'
+import { translate } from "react-translate";
 
-import clsx from 'clsx'
+import clsx from "clsx";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-import Drawer from '@material-ui/core/Drawer'
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
-import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
-import List from '@material-ui/core/List'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import Tooltip from '@material-ui/core/Tooltip'
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import List from "@material-ui/core/List";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Tooltip from "@material-ui/core/Tooltip";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowAltCircleUp as faUpgrade } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowAltCircleUp as faUpgrade } from "@fortawesome/free-solid-svg-icons";
 
-import { MainMenuItems, SecondaryMenuItems } from './MenuItems'
+import { MainMenuItems, SecondaryMenuItems } from "./MenuItems";
 
-const drawerWidth = 240
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar,
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
+    position: "relative",
+    whiteSpace: "nowrap",
     width: drawerWidth,
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
+    overflowX: "hidden",
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9)
-    }
+    [theme.breakpoints.up("sm")]: {
+      width: theme.spacing(9),
+    },
   },
   updateItem: {
-    color: 'green'
-  }
-}))
+    color: "green",
+  },
+}));
 
-const MenuContent = translate('Menu')((props) => {
-  const classes = useStyles()
-  const { t } = props
+const MenuContent = translate("Menu")((props) => {
+  const classes = useStyles();
+  const { t } = props;
   return (
     <>
       <div className={classes.toolbarIcon}>
         <IconButton
-          edge='start'
-          color='inherit'
-          aria-label={t('close menu')}
+          edge="start"
+          color="inherit"
+          aria-label={t("close menu")}
           onClick={props.handleDrawerClose}
         >
           <MenuIcon />
         </IconButton>
         <Typography
-          component='h1'
-          variant='h6'
-          color='inherit'
+          component="h1"
+          variant="h6"
+          color="inherit"
           noWrap
           className={classes.title}
         >
-          {t('Menu')}
+          {t("Menu")}
         </Typography>
         <IconButton
-          aria-label={t('close menu')}
+          aria-label={t("close menu")}
           onClick={props.handleDrawerClose}
         >
           <ChevronLeftIcon />
@@ -102,54 +102,54 @@ const MenuContent = translate('Menu')((props) => {
         <SecondaryMenuItems />
       </List>
     </>
-  )
-})
+  );
+});
 
 // Renders the menu, responsive
-const Menu = translate('Menu')((props) => {
-  const classes = useStyles()
+const Menu = translate("Menu")((props) => {
+  const classes = useStyles();
   const {
     handleDrawerOpen,
     handleDrawerClose,
     open,
     newServiceWorkerDetected,
     onLoadNewServiceWorkerAccept,
-    t
-  } = props
-  const theme = useTheme()
-  const isBig = useMediaQuery(theme.breakpoints.up('md'))
-  const DrawerComponent = isBig ? Drawer : SwipeableDrawer
-  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
+    t,
+  } = props;
+  const theme = useTheme();
+  const isBig = useMediaQuery(theme.breakpoints.up("md"));
+  const DrawerComponent = isBig ? Drawer : SwipeableDrawer;
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   const toggleDrawer = (open) => (event) => {
     if (open) {
-      handleDrawerOpen()
+      handleDrawerOpen();
     } else {
-      handleDrawerClose()
+      handleDrawerClose();
     }
-  }
+  };
 
   const handleClickUpdate = (e) => {
-    e.preventDefault()
-    handleDrawerClose()
-    onLoadNewServiceWorkerAccept()
-  }
+    e.preventDefault();
+    handleDrawerClose();
+    onLoadNewServiceWorkerAccept();
+  };
 
   return (
     <DrawerComponent
       {...(isBig
         ? {
-            variant: 'permanent'
+            variant: "permanent",
           }
         : {
-            anchor: 'left',
+            anchor: "left",
             onClose: toggleDrawer(false),
             onOpen: toggleDrawer(true),
             disableBackdropTransition: !iOS,
-            disableDiscovery: iOS
+            disableDiscovery: iOS,
           })}
       classes={{
-        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
+        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
       }}
       open={open}
     >
@@ -160,27 +160,27 @@ const Menu = translate('Menu')((props) => {
           onClick={handleClickUpdate}
           className={classes.updateItem}
         >
-          <Tooltip title={t('Update!')}>
+          <Tooltip title={t("Update!")}>
             <ListItemIcon>
               <FontAwesomeIcon
                 icon={faUpgrade}
-                style={{ fontSize: '1.5rem', color: 'green' }}
+                style={{ fontSize: "1.5rem", color: "green" }}
               />
             </ListItemIcon>
           </Tooltip>
-          <ListItemText primary={t('Update!')} />
+          <ListItemText primary={t("Update!")} />
         </ListItem>
       ) : null}
     </DrawerComponent>
-  )
-})
+  );
+});
 
 Menu.propTypes = {
   handleDrawerOpen: PropTypes.func.isRequired,
   handleDrawerClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onLoadNewServiceWorkerAccept: PropTypes.func.isRequired,
-  newServiceWorkerDetected: PropTypes.bool.isRequired
-}
+  newServiceWorkerDetected: PropTypes.bool.isRequired,
+};
 
-export default Menu
+export default Menu;

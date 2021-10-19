@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
-import BcnProvider from './Bcn/context'
-import MapsProvider from './Maps/context'
-import ChartsProvider from './Charts/context'
+import BcnProvider from "./Bcn/context";
+import MapsProvider from "./Maps/context";
+import ChartsProvider from "./Charts/context";
 
 const BackendProvider = ({ children, bcn, maps, charts }) => {
   return (
@@ -11,7 +11,7 @@ const BackendProvider = ({ children, bcn, maps, charts }) => {
         <ChartsProvider value={charts}>{children}</ChartsProvider>
       </MapsProvider>
     </BcnProvider>
-  )
-}
+  );
+};
 
-export default BackendProvider
+export default BackendProvider;

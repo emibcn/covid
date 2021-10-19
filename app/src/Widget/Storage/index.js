@@ -1,4 +1,4 @@
-import WidgetStorageContextProvider from './StorageContextProvider'
-import withStorageHandler from './withStorageHandler'
+import WidgetStorageContextProvider from "./StorageContextProvider";
+import withStorageHandler from "./withStorageHandler";
 
-export { WidgetStorageContextProvider, withStorageHandler }
+export { WidgetStorageContextProvider, withStorageHandler };

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-import Loading from '../../Loading'
+import Loading from "../../Loading";
 
 // HOC generator
 const withHandlerGenerator = (
@@ -12,38 +12,38 @@ const withHandlerGenerator = (
 ) => {
   // Functional wrapper component
   const WithValue = ({ BackendHandler, ...props }) => {
-    const [value, setValue] = React.useState(false)
-    const [params, setParams] = React.useState(relevantParams(props))
+    const [value, setValue] = React.useState(false);
+    const [params, setParams] = React.useState(relevantParams(props));
 
     // Find if any relevant prop (param=relevant prop) has changed
-    const newParams = relevantParams(props)
+    const newParams = relevantParams(props);
     if (
       Object.keys(newParams).some((param) => newParams[param] !== params[param])
     ) {
-      setParams(newParams)
+      setParams(newParams);
     }
 
     // Subscribe to index updates
     // Return unsubscribing function to let React execute it on cleanup
     React.useEffect(
       () => {
-        setValue(false)
-        return getValue(params, BackendHandler, setValue)
+        setValue(false);
+        return getValue(params, BackendHandler, setValue);
       },
       // Only execute on mount and on relevant props (param) change
       [BackendHandler, params]
-    )
+    );
 
     return value === false ? (
       <Loading />
     ) : (
       <WrappedComponent {...props} {...{ [name]: value }} />
-    )
-  }
+    );
+  };
 
   // Return wrapper component wrapped with a
   // HOC providing the backend handler as a prop
-  return withBackendHandlerHOC(WithValue, 'BackendHandler')
-}
+  return withBackendHandlerHOC(WithValue, "BackendHandler");
+};
 
-export default withHandlerGenerator
+export default withHandlerGenerator;

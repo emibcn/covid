@@ -1,33 +1,33 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
-import ChartIEPG, { ChartIEPGPropTypes } from './ChartIEPG'
-import ChartExtensio, { ChartExtensioPropTypes } from './ChartExtensio'
-import TableSituacio, { TableSituacioPropTypes } from './TableSituacio'
-import TableSeguiment, { TableSeguimentPropTypes } from './TableSeguiment'
+import ChartIEPG, { ChartIEPGPropTypes } from "./ChartIEPG";
+import ChartExtensio, { ChartExtensioPropTypes } from "./ChartExtensio";
+import TableSituacio, { TableSituacioPropTypes } from "./TableSituacio";
+import TableSeguiment, { TableSeguimentPropTypes } from "./TableSeguiment";
 
 const GraphFromDataset = {
   grafic_risc_iepg: {
     component: ChartIEPG,
-    types: ChartIEPGPropTypes
+    types: ChartIEPGPropTypes,
   },
   grafic_extensio: {
     component: ChartExtensio,
-    types: ChartExtensioPropTypes
+    types: ChartExtensioPropTypes,
   },
   situacio: {
     component: TableSituacio,
-    types: TableSituacioPropTypes
+    types: TableSituacioPropTypes,
   },
   seguiment: {
     component: TableSeguiment,
-    types: TableSeguimentPropTypes
-  }
-}
+    types: TableSeguimentPropTypes,
+  },
+};
 
-function MultiChart ({ dataset, valors, ...restProps }) {
-  const ChartComponent = GraphFromDataset[dataset].component
-  return <ChartComponent graph={valors[dataset]} {...restProps} />
+function MultiChart({ dataset, valors, ...restProps }) {
+  const ChartComponent = GraphFromDataset[dataset].component;
+  return <ChartComponent graph={valors[dataset]} {...restProps} />;
 }
 
 const MultiChartPropTypes = {
@@ -36,17 +36,17 @@ const MultiChartPropTypes = {
     Object.entries(GraphFromDataset).reduce(
       (acc, [key, { types }]) => ({
         ...acc,
-        [key]: PropTypes.shape(types)
+        [key]: PropTypes.shape(types),
       }),
       {}
     )
-  )
-}
-MultiChart.propTypes = MultiChartPropTypes
+  ),
+};
+MultiChart.propTypes = MultiChartPropTypes;
 
 MultiChart.defaultProps = {
-  valors: []
-}
+  valors: [],
+};
 
-export default MultiChart
-export { MultiChartPropTypes }
+export default MultiChart;
+export { MultiChartPropTypes };

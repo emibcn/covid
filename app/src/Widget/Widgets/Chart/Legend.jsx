@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react";
 
 /*
    Renders the legend of a map
 */
 const Legend = (props) => (
-  <table style={{ margin: '0 auto', marginTop: '.5em' }}>
+  <table style={{ margin: "0 auto", marginTop: ".5em" }}>
     <tbody>
       {props.colors.map((color, index) => (
         <tr key={index}>
           <td
             style={{
               paddingRight: 20,
-              textAlign: 'left'
+              textAlign: "left",
             }}
           >
             {color.nom}
@@ -25,13 +25,13 @@ const Legend = (props) => (
             style={{
               backgroundColor: color.color,
               width: 50,
-              border: '1px solid #000'
+              border: "1px solid #000",
             }}
           />
         </tr>
       ))}
     </tbody>
   </table>
-)
+);
 
-export default Legend
+export default Legend;

@@ -1,5 +1,5 @@
-import React from 'react'
+import React from "react";
 
-const WidgetStorageContext = React.createContext(() => {})
+const WidgetStorageContext = React.createContext(() => {});
 
-export default WidgetStorageContext
+export default WidgetStorageContext;

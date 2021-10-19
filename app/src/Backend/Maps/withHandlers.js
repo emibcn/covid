@@ -1,18 +1,18 @@
-import withHandlerGenerator from '../Base/withHandlerGenerator'
-import { withHandler } from './context'
+import withHandlerGenerator from "../Base/withHandlerGenerator";
+import { withHandler } from "./context";
 
 // Index HOC
-const withIndex = (WrappedComponent, name = 'days') =>
+const withIndex = (WrappedComponent, name = "days") =>
   withHandlerGenerator(
     withHandler,
     () => ({}),
     (props, Handler, setIndex) => Handler.index(setIndex),
     name,
     WrappedComponent
-  )
+  );
 
 // Data HOC
-const withData = (WrappedComponent, name = 'mapData') => {
+const withData = (WrappedComponent, name = "mapData") => {
   const WrapperComponent = withHandlerGenerator(
     withHandler,
     ({ mapKind, mapValue }) => ({ mapKind, mapValue }),
@@ -24,16 +24,16 @@ const withData = (WrappedComponent, name = 'mapData') => {
           ...data,
           valors: data.valors.map(
             (dayValues) => new Map(Object.entries(dayValues))
-          )
-        }
-        return setData(newData)
-      })
+          ),
+        };
+        return setData(newData);
+      });
     },
     name,
     WrappedComponent
-  )
+  );
 
-  return WrapperComponent
-}
+  return WrapperComponent;
+};
 
-export { withIndex, withData }
+export { withIndex, withData };

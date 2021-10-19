@@ -1,4 +1,4 @@
-import MultiChart, { MultiChartPropTypes } from './MultiChart'
+import MultiChart, { MultiChartPropTypes } from "./MultiChart";
 
-export default MultiChart
-export { MultiChartPropTypes }
+export default MultiChart;
+export { MultiChartPropTypes };

@@ -1,13 +1,13 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
-import Select from '@material-ui/core/Select'
+import Select from "@material-ui/core/Select";
 
-import FormDecorators from './FormDecorators'
+import FormDecorators from "./FormDecorators";
 
 // Renders a Select, with options from props
 const Selector = (props) => {
-  const { label, help, id, options, ...restProps } = props
+  const { label, help, id, options, ...restProps } = props;
   return (
     <FormDecorators id={id} label={label} help={help}>
       <Select
@@ -16,7 +16,7 @@ const Selector = (props) => {
         aria-describedby={`helper-text-${id}`}
         inputProps={{
           name: label,
-          id: id
+          id: id,
         }}
       >
         {options.map((option) => (
@@ -26,8 +26,8 @@ const Selector = (props) => {
         ))}
       </Select>
     </FormDecorators>
-  )
-}
+  );
+};
 
 Selector.propTypes = {
   label: PropTypes.string.isRequired,
@@ -36,9 +36,9 @@ Selector.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired
+      label: PropTypes.string.isRequired,
     })
-  ).isRequired
-}
+  ).isRequired,
+};
 
-export default Selector
+export default Selector;

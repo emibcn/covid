@@ -1,3 +1,3 @@
-import Widget from './Widget'
+import Widget from "./Widget";
 
-export default Widget
+export default Widget;

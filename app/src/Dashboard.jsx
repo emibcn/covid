@@ -1,118 +1,118 @@
-import React from 'react'
+import React from "react";
 
-import clsx from 'clsx'
-import { translate } from 'react-translate'
+import clsx from "clsx";
+import { translate } from "react-translate";
 
-import { makeStyles, createTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { makeStyles, createTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-import Box from '@material-ui/core/Box'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
-import Container from '@material-ui/core/Container'
-import Link from '@material-ui/core/Link'
-import MenuIcon from '@material-ui/icons/Menu'
-import Badge from '@material-ui/core/Badge'
+import Box from "@material-ui/core/Box";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import Container from "@material-ui/core/Container";
+import Link from "@material-ui/core/Link";
+import MenuIcon from "@material-ui/icons/Menu";
+import Badge from "@material-ui/core/Badge";
 /*
 import NotificationsIcon from '@material-ui/icons/Notifications';
 */
 
-import Menu from './Menu'
-import ModalRouterWithRoutes from './ModalRouterWithRoutes'
-import AppThemeProvider from './AppThemeProvider'
-import { withServiceWorkerUpdater } from '@3m1/service-worker-updater'
+import Menu from "./Menu";
+import ModalRouterWithRoutes from "./ModalRouterWithRoutes";
+import AppThemeProvider from "./AppThemeProvider";
+import { withServiceWorkerUpdater } from "@3m1/service-worker-updater";
 
-const Copyright = translate('Copyright')((props) => {
-  const { t } = props
+const Copyright = translate("Copyright")((props) => {
+  const { t } = props;
   return (
-    <Typography variant='body2' color='textSecondary' align='center'>
-      {'Copyright © '}
-      <Link color='inherit' href='https://github.com/emibcn/covid'>
-        {t('Source code of:')}{' '}
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://github.com/emibcn/covid">
+        {t("Source code of:")}{" "}
         <em>
-          {t('Covid Data')} <code>{t('Refactored')}</code>
+          {t("Covid Data")} <code>{t("Refactored")}</code>
         </em>
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}.
     </Typography>
-  )
-})
+  );
+});
 
-const drawerWidth = 240
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex'
+    display: "flex",
   },
   toolbar: {
-    paddingRight: 24 // keep right padding when drawer closed
+    paddingRight: 24, // keep right padding when drawer closed
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
-    marginRight: 36
+    marginRight: 36,
   },
   menuButtonHidden: {
-    display: 'none'
+    display: "none",
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   content: {
     flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto'
+    height: "100vh",
+    overflow: "auto",
   },
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
-  }
-}))
+    paddingBottom: theme.spacing(4),
+  },
+}));
 
 const Dashboard = (props) => {
-  const classes = useStyles()
-  const { children, theme, t, ...restProps } = props
-  const [open, setOpen] = React.useState(false)
+  const classes = useStyles();
+  const { children, theme, t, ...restProps } = props;
+  const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
   const handleDrawerClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
   const shouldShowUpdateBadge =
-    useMediaQuery(createTheme().breakpoints.down('md')) &&
-    props.newServiceWorkerDetected
+    useMediaQuery(createTheme().breakpoints.down("md")) &&
+    props.newServiceWorkerDetected;
 
   return (
     <AppThemeProvider type={theme}>
       <ModalRouterWithRoutes routeProps={props} />
-      <div id='root' className={classes.root}>
+      <div id="root" className={classes.root}>
         <AppBar
-          position='absolute'
+          position="absolute"
           className={clsx(classes.appBar, open && classes.appBarShift)}
         >
           <Toolbar className={classes.toolbar}>
             <IconButton
-              edge='start'
-              color='inherit'
-              aria-label='open menu'
-              data-testid='open-menu'
+              edge="start"
+              color="inherit"
+              aria-label="open menu"
+              data-testid="open-menu"
               onClick={handleDrawerOpen}
               className={clsx(
                 classes.menuButton,
@@ -121,20 +121,20 @@ const Dashboard = (props) => {
             >
               <Badge
                 badgeContent={1}
-                color='secondary'
+                color="secondary"
                 invisible={!shouldShowUpdateBadge}
               >
                 <MenuIcon />
               </Badge>
             </IconButton>
             <Typography
-              component='h1'
-              variant='h6'
-              color='inherit'
+              component="h1"
+              variant="h6"
+              color="inherit"
               noWrap
               className={classes.title}
             >
-              {t('Covid Data')} <code>{t('Refactored')}</code>
+              {t("Covid Data")} <code>{t("Refactored")}</code>
             </Typography>
             {/*
             <IconButton color="inherit">
@@ -151,7 +151,7 @@ const Dashboard = (props) => {
         />
         <main className={classes.content}>
           {children}
-          <Container maxWidth='lg' className={classes.container}>
+          <Container maxWidth="lg" className={classes.container}>
             <Box pt={4}>
               <Copyright />
             </Box>
@@ -159,8 +159,8 @@ const Dashboard = (props) => {
         </main>
       </div>
     </AppThemeProvider>
-  )
-}
+  );
+};
 
-export default translate('Widget')(withServiceWorkerUpdater(Dashboard))
-export { Copyright }
+export default translate("Widget")(withServiceWorkerUpdater(Dashboard));
+export { Copyright };

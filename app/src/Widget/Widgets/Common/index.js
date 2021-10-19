@@ -1,8 +1,8 @@
-import FormDecorators from './FormDecorators'
-import Selector from './Selector'
-import Chart from './Chart'
-import ChartTooltip, { ChartLegend } from './ChartTooltip'
-import LegendElement from './LegendElement'
+import FormDecorators from "./FormDecorators";
+import Selector from "./Selector";
+import Chart from "./Chart";
+import ChartTooltip, { ChartLegend } from "./ChartTooltip";
+import LegendElement from "./LegendElement";
 
 export {
   FormDecorators,
@@ -10,5 +10,5 @@ export {
   Chart,
   ChartTooltip,
   ChartLegend,
-  LegendElement
-}
+  LegendElement,
+};

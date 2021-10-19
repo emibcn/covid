@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   render,
   createEvent,
@@ -6,43 +6,43 @@ import {
   act,
   waitFor,
   screen,
-  cleanup
-} from '@testing-library/react'
-import MatchMediaMock from 'jest-matchmedia-mock'
+  cleanup,
+} from "@testing-library/react";
+import MatchMediaMock from "jest-matchmedia-mock";
 
-import './testSetup'
-import AppThemeProvider from './AppThemeProvider'
+import "./testSetup";
+import AppThemeProvider from "./AppThemeProvider";
 
-let matchMedia
+let matchMedia;
 
 beforeAll(() => {
-  matchMedia = new MatchMediaMock()
-})
+  matchMedia = new MatchMediaMock();
+});
 
 afterEach(() => {
-  matchMedia.clear()
-})
+  matchMedia.clear();
+});
 
-test('renders AppThemeProvider with unset theme and unset browser mediaQuery', () => {
-  const { getByText } = render(<AppThemeProvider />)
-})
+test("renders AppThemeProvider with unset theme and unset browser mediaQuery", () => {
+  const { getByText } = render(<AppThemeProvider />);
+});
 
-test('renders AppThemeProvider with unset theme, with mediaQuery set to light', () => {
-  const mediaQuery = '(prefers-color-scheme: light)'
-  matchMedia.useMediaQuery(mediaQuery)
-  const { getByText } = render(<AppThemeProvider />)
-})
+test("renders AppThemeProvider with unset theme, with mediaQuery set to light", () => {
+  const mediaQuery = "(prefers-color-scheme: light)";
+  matchMedia.useMediaQuery(mediaQuery);
+  const { getByText } = render(<AppThemeProvider />);
+});
 
-test('renders AppThemeProvider with unset theme, with mediaQuery set to dark', () => {
-  const mediaQuery = '(prefers-color-scheme: dark)'
-  matchMedia.useMediaQuery(mediaQuery)
-  const { getByText } = render(<AppThemeProvider />)
-})
+test("renders AppThemeProvider with unset theme, with mediaQuery set to dark", () => {
+  const mediaQuery = "(prefers-color-scheme: dark)";
+  matchMedia.useMediaQuery(mediaQuery);
+  const { getByText } = render(<AppThemeProvider />);
+});
 
-test('renders AppThemeProvider with dark theme', () => {
-  const { getByText } = render(<AppThemeProvider type='dark' />)
-})
+test("renders AppThemeProvider with dark theme", () => {
+  const { getByText } = render(<AppThemeProvider type="dark" />);
+});
 
-test('renders AppThemeProvider with light theme', () => {
-  const { getByText } = render(<AppThemeProvider type='light' />)
-})
+test("renders AppThemeProvider with light theme", () => {
+  const { getByText } = render(<AppThemeProvider type="light" />);
+});

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   render,
   createEvent,
@@ -6,15 +6,15 @@ import {
   act,
   waitFor,
   screen,
-  cleanup
-} from '@testing-library/react'
+  cleanup,
+} from "@testing-library/react";
 
-import './testSetup'
-import Loading from './Loading'
+import "./testSetup";
+import Loading from "./Loading";
 
-test('renders loading image', () => {
-  const loading = render(<Loading />)
+test("renders loading image", () => {
+  const loading = render(<Loading />);
 
-  const img = loading.getByAltText('Loading...')
-  expect(img).toBeInTheDocument()
-})
+  const img = loading.getByAltText("Loading...");
+  expect(img).toBeInTheDocument();
+});
