@@ -51,7 +51,10 @@ const EditRegionPropTypes = {
     PropTypes.number,
   ]).isRequired,
   onChange: PropTypes.func.isRequired,
-  chartsDataHandler: PropTypes.object.isRequired,
+  chartsDataHandler: PropTypes.shape({
+    findInitialNode: PropTypes.func.isRequired,
+    findBreadcrumb: PropTypes.func.isRequired,
+  }).isRequired,
   chartsIndex: PropTypes.string,
 };
 
