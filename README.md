@@ -8,7 +8,7 @@
 
 [This applications](https://emibcn.github.io/covid) displays public information about Covid19 Pandemy in Catalonia, extracted from the official webs [https://dadescovid.cat](https://dadescovid.cat) and [Seguiment Covid19 BCN](https://dades.ajuntament.barcelona.cat/seguiment-covid19-bcn/).
 
-The aim of this application is to display the data in different ways than the originals, improving performance and adding more value to it, trying to help the users to better understand the situation and evolution of the Covid19 pandemy in the region of Catalunya.
+The aim of this application is to display the data in different ways than the originals, improving performance and adding more value to it, trying to help the users to better understand the situation and evolution of the Covid-19 pandemic in the region of Catalunya(Catalonia).
 
 - [Contributing](#contributing)
 - [Thanks to](#trophy-thanks-to)
