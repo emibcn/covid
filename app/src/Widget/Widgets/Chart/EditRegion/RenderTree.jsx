@@ -8,7 +8,7 @@ import TreeItem from "@material-ui/lab/TreeItem";
 function RenderTree({ url, name, children = null }) {
   return (
     <TreeItem key={url} nodeId={`${url}`} label={name}>
-      {Array.isArray(children) ? children.map(RenderTree) : null}
+      {children.map(RenderTree)}
     </TreeItem>
   );
 }
@@ -29,7 +29,7 @@ RenderTreePropTypes.children = PropTypes.oneOfType([
 
 RenderTree.propTypes = RenderTreePropTypes;
 RenderTree.defaultProps = {
-  children: null,
+  children: [],
 };
 
 // Cache the tree
