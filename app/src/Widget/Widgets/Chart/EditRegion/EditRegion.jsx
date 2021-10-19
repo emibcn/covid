@@ -47,9 +47,9 @@ const EditRegionPropTypes = {
   division: PropTypes.string.isRequired,
   population: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.number.isRequired,
-  ]),
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
   onChange: PropTypes.func.isRequired,
   chartsDataHandler: PropTypes.object.isRequired,
 };

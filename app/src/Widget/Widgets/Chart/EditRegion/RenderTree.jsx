@@ -17,9 +17,9 @@ function RenderTree({ url, name, children = null }) {
 const RenderTreePropTypes = {
   name: PropTypes.string.isRequired,
   url: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.number.isRequired,
-  ]),
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
 };
 const RenderTreePropTypesShape = PropTypes.shape(RenderTreePropTypes);
 RenderTreePropTypes.children = PropTypes.oneOfType([
