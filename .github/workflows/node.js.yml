@@ -73,17 +73,39 @@ jobs:
         fi
         echo "##[set-output name=branch;]${EXPORT_VALUE}"
 
-  test-build:
+  pre-tests:
+    name: Install dependencies (if needed)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
 
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v2.4.1
+      with:
+        node-version: 12.x
+
+    - name: Manage cache
+      uses: actions/cache@v2.1.6
+      with:
+        path: |
+          app/node_modules
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          ${{ runner.OS }}-build
+
+    - name: yarn install
+      working-directory: ./app
+      run: yarn --color --immutable
+
+  test-build:
+    needs: [pre-tests]
     name: Build
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x]
-
     steps:
-
     - uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
@@ -101,11 +123,9 @@ jobs:
           ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
           ${{ runner.OS }}-build
 
-    - name: yarn install and build
+    - name: yarn build
       working-directory: ./app
-      run: |
-        yarn --color --immutable
-        yarn build
+      run: yarn build
 
     - uses: actions/upload-artifact@v2
       # Same condition as `publish`job
@@ -118,7 +138,7 @@ jobs:
 
   test-code:
 
-    needs: [check-secrets]
+    needs: [check-secrets, pre-tests]
     name: Test code and generate test coverage value
     runs-on: ubuntu-latest
 
@@ -150,11 +170,9 @@ jobs:
           ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
           ${{ runner.OS }}-build
 
-    - name: yarn install and test
+    - name: yarn test
       working-directory: ./app
-      run: |
-        yarn --color --immutable
-        yarn test:coverage:color
+      run: yarn test:coverage:color
 
     # Coverage badges will be updated on any branch
     # and saved into a dedicated one
@@ -168,7 +186,7 @@ jobs:
         filename: "app/coverage/clover.xml"
 
   test-code-deepsource:
-    needs: [check-secrets]
+    needs: [check-secrets, pre-tests]
     if: ${{ needs.check-secrets.outputs.deepsource-token == 'true'  }}
     name: Get test coverage for DeepSource and report it
     runs-on: ubuntu-latest
@@ -197,9 +215,7 @@ jobs:
 
     - name: Get test coverage for DeepSource
       working-directory: ./app
-      run: |
-        yarn --color --immutable
-        yarn test:coverage:cobertura
+      run: yarn test:coverage:cobertura
 
     - name: Report test coverage to DeepSource
       uses: deepsourcelabs/test-coverage-action@master
