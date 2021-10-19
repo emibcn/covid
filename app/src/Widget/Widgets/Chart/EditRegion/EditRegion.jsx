@@ -7,7 +7,10 @@ import RecursiveTreeView from "./RecursiveTreeView";
 
 function EditRegion(props) {
   const {
-    chartsIndex: _, // Remove it from restProps
+    // Remove it from restProps: it comes from
+    // Charts handler, not parent component
+    // eslint-disable-next-line no-unused-vars
+    chartsIndex: _,
     division,
     population,
     value,
