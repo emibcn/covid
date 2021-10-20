@@ -1,3 +1,3 @@
-import DateSlider from "./DateSlider"
+import DateSlider from './DateSlider'
 
 export default DateSlider

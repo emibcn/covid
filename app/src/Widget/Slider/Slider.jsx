@@ -14,13 +14,7 @@ function Slider (props) {
   // TODO: Allow changing the timeout/speed
 
   // Manage props and classes
-  const {
-    classes = {},
-    value,
-    max,
-    onChange,
-    ...restProps
-  } = props
+  const { classes = {}, value, max, onChange, ...restProps } = props
   const { playPause, ...restClasses } = classes
 
   // Compose components
@@ -48,7 +42,7 @@ function Slider (props) {
 
 Slider.propTypes = {
   classes: PropTypes.shape({
-    playPause: PropTypes.string,
+    playPause: PropTypes.string
   }),
   value: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
