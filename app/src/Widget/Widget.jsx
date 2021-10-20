@@ -17,7 +17,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import WidgetActions from './Actions'
 import ErrorCatcher from '../ErrorCatcher'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     height: '100%'
   },
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'move'
     }
   }
-}))
+})
 
 // HOC to create widgets easily
 const withWidget = (sectionsOrig) => {
