@@ -18,8 +18,7 @@ const useStyles = makeStyles({
 })
 
 // Component to render the label's value
-const ValueLabelComponent = (props) => {
-  const { children, open, value } = props
+const ValueLabelComponent = ({ children, open, value }) => {
   const classes = useStyles()
 
   return (
@@ -53,23 +52,16 @@ function Slider (props) {
   // TODO: Allow changing the timeout/speed
 
   // Manage props and classes
-  const { classes = {} } = props
-  const restProps = React.useMemo(() => {
-    // Remove classes from restProps
-    // eslint-disable-next-line no-unused-vars
-    const { classes: _, ...rest } = props
-    return rest
-  }, [props])
-  const { playPause } = classes
-  const restClasses = React.useMemo(() => {
-    // Remove our class from classes
-    // eslint-disable-next-line no-unused-vars
-    const { playPause: _, ...rest } = classes
-    return rest
-  }, [classes])
+  const {
+    classes = {},
+    value,
+    max,
+    onChange,
+    ...restProps
+  } = props
+  const { playPause, ...restClasses } = classes
 
   // Compose components
-  const { value, max, onChange } = props
   return (
     <>
       <SliderLib
@@ -77,6 +69,9 @@ function Slider (props) {
         step={1}
         min={0}
         classes={restClasses}
+        value={value}
+        max={max}
+        onChange={onChange}
         {...restProps}
       />
       <PlayPause
@@ -90,9 +85,16 @@ function Slider (props) {
 }
 
 Slider.propTypes = {
-  children: PropTypes.node.isRequired,
-  open: PropTypes.bool.isRequired,
-  value: PropTypes.node.isRequired
+  classes: PropTypes.shape({
+    playPause: PropTypes.string,
+  }),
+  value: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired
+}
+
+Slider.defaultProps = {
+  classes: {}
 }
 
 export default Slider
