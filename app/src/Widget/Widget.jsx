@@ -101,7 +101,9 @@ const withWidget = (sectionsOrig) => {
   // Renders the view with a header containing the title and the menu with the rest of sections
   const Widget = (props) => {
     const classes = useStyles()
-    // Prevent trigger actions components update when changing the day
+    // Prevent trigger actions components update when changing the day in slider
+    // indexValues will not be passed using restProps
+    // eslint-disable-next-line no-unused-vars
     const { indexValues, ...restProps } = props
     const action = <WidgetActions {...restProps} sections={sections} />
     const title = (
