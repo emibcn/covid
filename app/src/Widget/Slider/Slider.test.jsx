@@ -8,7 +8,7 @@ import {
   screen
 } from '@testing-library/react'
 
-import { delay, catchConsoleError } from '../testHelpers'
+import { delay, catchConsoleError } from '../../testHelpers'
 import Slider from './Slider'
 
 test('renders slider', async () => {
