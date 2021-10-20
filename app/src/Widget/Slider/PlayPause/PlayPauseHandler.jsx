@@ -31,7 +31,7 @@ function PlayPauseHandler ({ isPlaying, onNext }) {
       return stopTimer
     }
 
-    return () => {}
+    return () => null
   }, [isPlaying, startTimer, stopTimer])
 
   return null

@@ -12,7 +12,9 @@ function PlayPauseButtonUntranslated ({
   className,
   t
 }) {
-  const [id] = React.useState(() => `playpause_${Math.random()}`.replace('0.', ''))
+  const [id] = React.useState(() =>
+    `playpause_${Math.random()}`.replace('0.', '')
+  )
   const onChange = React.useCallback(() => {
     if (isPlaying) {
       onPause()
@@ -23,9 +25,7 @@ function PlayPauseButtonUntranslated ({
 
   // All the styling magic is done into the SCSS file Slider.sccs ;)
   return (
-    <Tooltip
-      title={t('Toggle play status')}
-    >
+    <Tooltip title={t('Toggle play status')}>
       <div className={`playpause ${className || ''}`}>
         <input
           id={id}
