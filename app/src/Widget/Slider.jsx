@@ -49,7 +49,7 @@ ValueLabelComponent.propTypes = {
    Renders a Slider with a play/pause button next to it, inside a
    sticky container at the top of the page
 */
-const Slider = (props) => {
+function Slider (props) {
   // TODO: Allow changing the timeout/speed
 
   // Manage props and classes
@@ -87,6 +87,12 @@ const Slider = (props) => {
       />
     </>
   )
+}
+
+Slider.propTypes = {
+  children: PropTypes.node.isRequired,
+  open: PropTypes.bool.isRequired,
+  value: PropTypes.node.isRequired
 }
 
 export default Slider
