@@ -51,7 +51,7 @@ test('renders slider', async () => {
     const sliderEl = slider.getByRole('slider')
     expect(sliderEl).toBeInTheDocument()
 
-    playPause = slider.getByLabelText('PlayPause.Toggle play status')
+    playPause = slider.getByLabelText('PlayPause.play')
     expect(playPause).toBeInTheDocument()
   })
 
