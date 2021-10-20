@@ -8,14 +8,14 @@ import Tooltip from '@material-ui/core/Tooltip'
 import PlayPause from './PlayPause'
 
 // Use special non-intrusive zIndex for the Slider tooltip
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   popper: {
     zIndex: 1200
   },
   tooltip: {
     fontSize: '1rem'
   }
-}))
+})
 
 // Component to render the label's value
 const ValueLabelComponent = (props) => {
@@ -55,12 +55,16 @@ const Slider = (props) => {
   // Manage props and classes
   const { classes = {} } = props
   const restProps = React.useMemo(() => {
-    const { classes, ...rest } = props
+    // Remove classes from restProps
+    // eslint-disable-next-line no-unused-vars
+    const { classes: _, ...rest } = props
     return rest
   }, [props])
   const { playPause } = classes
   const restClasses = React.useMemo(() => {
-    const { playPause, ...rest } = classes
+    // Remove our class from classes
+    // eslint-disable-next-line no-unused-vars
+    const { playPause: _, ...rest } = classes
     return rest
   }, [classes])
 
