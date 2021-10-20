@@ -54,7 +54,7 @@ PlayPause.propTypes = {
 }
 
 PlayPause.defaultProps = {
-  classes: ''
+  className: ''
 }
 
 export default PlayPause

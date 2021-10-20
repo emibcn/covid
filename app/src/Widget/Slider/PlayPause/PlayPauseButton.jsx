@@ -12,7 +12,7 @@ function PlayPauseButtonUntranslated ({
   className,
   t
 }) {
-  const id = `playpause_${Math.random()}`.replace('0.', '')
+  const [id] = React.useState(() => `playpause_${Math.random()}`.replace('0.', ''))
   const onChange = React.useCallback(() => {
     if (isPlaying) {
       onPause()
@@ -25,7 +25,6 @@ function PlayPauseButtonUntranslated ({
   return (
     <Tooltip
       title={t('Toggle play status')}
-      aria-label={!isPlaying ? t('play') : t('pause')}
     >
       <div className={`playpause ${className || ''}`}>
         <input
@@ -34,9 +33,12 @@ function PlayPauseButtonUntranslated ({
           name='check'
           checked={!isPlaying}
           onChange={onChange}
-          aria-label={t('Toggle play status')}
         />
-        <label htmlFor={id} style={{ borderLeftColor: '' }} />
+        <label
+          htmlFor={id}
+          style={{ borderLeftColor: '' }}
+          aria-label={!isPlaying ? t('play') : t('pause')}
+        />
       </div>
     </Tooltip>
   )
@@ -51,7 +53,7 @@ PlayPauseButtonUntranslated.propTypes = {
 }
 
 PlayPauseButtonUntranslated.defaultProps = {
-  classes: ''
+  className: ''
 }
 
 // Translate Play/Pause component

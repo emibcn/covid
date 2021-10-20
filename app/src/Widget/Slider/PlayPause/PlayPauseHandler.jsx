@@ -30,6 +30,8 @@ function PlayPauseHandler ({ isPlaying, onNext }) {
       // Ensure timer is stoped on unmount
       return stopTimer
     }
+
+    return () => {}
   }, [isPlaying, startTimer, stopTimer])
 
   return null
