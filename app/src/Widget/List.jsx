@@ -7,7 +7,7 @@ import WidgetsTypes from "./Widgets";
 import SortableWidgetContainer from "./SortableWidgetContainer";
 
 import Throtle from "../Throtle";
-import DateSlider from "./DateSlider";
+import DateSlider from "./Slider";
 import Loading from "../Loading";
 
 import { withIndex as withMapsIndex } from "../Backend/Maps/context";
