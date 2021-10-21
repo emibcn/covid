@@ -98,6 +98,7 @@ MenuUntranslated.propTypes = {
   open: PropTypes.bool.isRequired,
   onLoadNewServiceWorkerAccept: PropTypes.func.isRequired,
   newServiceWorkerDetected: PropTypes.bool.isRequired
+  t: PropTypes.func.isRequired
 }
 
 const Menu = translate('Menu')(MenuUntranslated)
