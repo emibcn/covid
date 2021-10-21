@@ -4,10 +4,6 @@ import { Link as RouterLink } from 'react-router-dom'
 
 import { translate } from 'react-translate'
 
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import Tooltip from '@material-ui/core/Tooltip'
 /*
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -17,45 +13,15 @@ import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 */
 import ThemeIcon from '@material-ui/icons/Brightness4'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faInfoCircle as faAbout,
   faLanguage
 } from '@fortawesome/free-solid-svg-icons'
 
-const ListItemLink = (props) => {
-  const { icon, primary, to } = props
+import ListItemLink from './ListItemLink'
 
-  const renderLink = React.useMemo(
-    () =>
-      React.forwardRef((itemProps, ref) => (
-        <RouterLink to={to} ref={ref} {...itemProps} />
-      )),
-    [to]
-  )
-
-  return (
-    <li>
-      <ListItem button component={renderLink}>
-        {icon ? (
-          <Tooltip title={primary}>
-            <ListItemIcon>{icon}</ListItemIcon>
-          </Tooltip>
-        ) : null}
-        <ListItemText primary={primary} />
-      </ListItem>
-    </li>
-  )
-}
-
-ListItemLink.propTypes = {
-  icon: PropTypes.element,
-  primary: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired
-}
-
-const MainMenuItems = translate('Menu')((props) => {
+function MainMenuItemsUntranslated (props) {
   const { t } = props
   return (
     <>
@@ -79,10 +45,12 @@ const MainMenuItems = translate('Menu')((props) => {
       />
     </>
   )
-})
+}
 
-const SecondaryMenuItems = (props) => {
+const MainMenuItems = translate('Menu')(MainMenuItemsUntranslated)
+
+function SecondaryMenuItems () {
   return <>{/* <ListSubheader inset>Saved reports</ListSubheader> */}</>
 }
 
-export { MainMenuItems, SecondaryMenuItems, ListItemLink }
+export { MainMenuItems, SecondaryMenuItems }

@@ -13,9 +13,10 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter as Router } from 'react-router-dom'
 import List from '@material-ui/core/List'
 
-import './testSetup'
-import { delay, LocationDisplay } from './testHelpers'
-import { MainMenuItems, SecondaryMenuItems, ListItemLink } from './MenuItems'
+import '../testSetup'
+import { delay, LocationDisplay } from '../testHelpers'
+import { MainMenuItems, SecondaryMenuItems } from './MenuItems'
+import ListItemLink from './ListItemLink'
 
 test('renders ListItemLink', async () => {
   const item = render(
