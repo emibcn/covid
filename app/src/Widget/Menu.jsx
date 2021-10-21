@@ -88,11 +88,20 @@ const WidgetMenu = (props) => {
   )
 }
 
+const optionPropTypes = PropTypes.shape({
+  icon: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired
+})
+
 WidgetMenu.propTypes = {
   id: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  // [optionID('view','edit','legend',...)]: {icon: string, label: string/fn }
-  options: PropTypes.object.isRequired
+  options: PropTypes.shape({
+    // These options are mandatory
+    remove: optionPropTypes.isRequired,
+    view: optionPropTypes.isRequired
+    // Other options are optionals
+  }).isRequired
 }
 
 export default translate('Widget')(WidgetMenu)

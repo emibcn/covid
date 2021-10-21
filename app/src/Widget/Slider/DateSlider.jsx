@@ -89,7 +89,7 @@ const DateSlider = ({ days, current, onSetDate }) => {
 }
 
 DateSlider.propTypes = {
-  days: PropTypes.array.isRequired,
+  days: PropTypes.arrayOf(PropTypes.string).isRequired,
   current: PropTypes.number.isRequired,
   onSetDate: PropTypes.func.isRequired
 }
