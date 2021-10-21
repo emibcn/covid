@@ -36,8 +36,8 @@ function MenuUntranslated (props) {
   const DrawerComponent = isBig ? Drawer : SwipeableDrawer
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-  const toggleDrawer = (open) => (/* event */) => {
-    if (open) {
+  const toggleDrawer = (openState) => (/* event */) => {
+    if (openState) {
       handleDrawerOpen()
     } else {
       handleDrawerClose()
