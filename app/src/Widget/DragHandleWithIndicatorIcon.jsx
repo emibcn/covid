@@ -6,7 +6,7 @@ import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
 import DragHandle from './DragHandle'
 
 // Use an Icon to handle dragging
-function DragHandleWithIndicatorIcon ({classes}) {
+function DragHandleWithIndicatorIcon ({ classes }) {
   return (
     <DragHandle classes={classes}>
       <DragIndicatorIcon />
@@ -22,7 +22,7 @@ DragHandleWithIndicatorIcon.propTypes = {
 
 DragHandleWithIndicatorIcon.defaultProps = {
   classes: {
-    draggableWidgetTitle: ""
+    draggableWidgetTitle: ''
   }
 }
 

@@ -10,7 +10,7 @@ import CardContent from '@material-ui/core/CardContent'
 
 import ErrorCatcher from '../ErrorCatcher'
 import WidgetActions from './Actions'
-import Remove, {RemovePropTypes, Icon as RemoveIcon} from './Remove'
+import Remove, { RemovePropTypes, Icon as RemoveIcon } from './Remove'
 import DragHandleWithIndicatorIcon from './DragHandleWithIndicatorIcon'
 
 const useStyles = makeStyles({

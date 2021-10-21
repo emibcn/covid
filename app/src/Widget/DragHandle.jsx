@@ -18,7 +18,7 @@ DragHandleInner.propTypes = {
 DragHandleInner.defaultProps = {
   children: <></>,
   classes: {
-    draggableWidgetTitle: ""
+    draggableWidgetTitle: ''
   }
 }
 

@@ -32,4 +32,4 @@ const RemovePropTypes = {
 Remove.propTypes = RemovePropTypes
 
 export default Remove
-export {RemovePropTypes, Icon}
+export { RemovePropTypes, Icon }
