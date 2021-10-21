@@ -32,10 +32,7 @@ function ListItemLink ({ icon, primary, to }) {
 }
 
 ListItemLink.propTypes = {
-  icon: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.string
-  ]),
+  icon: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   primary: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired
 }
