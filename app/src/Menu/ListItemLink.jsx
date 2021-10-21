@@ -37,7 +37,7 @@ ListItemLink.propTypes = {
   to: PropTypes.string.isRequired
 }
 
-ListItemLink.defaultValues = {
+ListItemLink.defaultProps = {
   icon: ''
 }
 
