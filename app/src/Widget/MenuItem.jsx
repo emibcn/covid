@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import MenuItem from '@material-ui/core/MenuItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+
 // Renders an item into the widget's popup actions menu
 // Ensures click event uses widget id
 function WidgetMenuItemForwarded (props, ref) {
