@@ -11,13 +11,13 @@ import {
 
 import { MemoryRouter as Router } from 'react-router-dom'
 
-import './testSetup'
+import '../testSetup'
 import {
   delay,
   createStartTouchEventObject,
   createMoveTouchEventObject,
   createEndTouchEventObject
-} from './testHelpers'
+} from '../testHelpers'
 import Menu from './Menu'
 
 // Mock HTML elements' clientWidth/clientHeight to be able to test swipe
