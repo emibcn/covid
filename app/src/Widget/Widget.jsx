@@ -3,20 +3,15 @@ import PropTypes from 'prop-types'
 
 import { translate } from 'react-translate'
 
-import { SortableHandle } from 'react-sortable-hoc'
-
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
 
-import Button from '@material-ui/core/Button'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
-
-import WidgetActions from './Actions'
 import ErrorCatcher from '../ErrorCatcher'
+import WidgetActions from './Actions'
+import Remove, {RemovePropTypes, Icon as RemoveIcon} from './Remove'
+import DragHandleWithIndicatorIcon from './DragHandleWithIndicatorIcon'
 
 const useStyles = makeStyles({
   root: {
@@ -32,58 +27,21 @@ const useStyles = makeStyles({
   }
 })
 
-// Used to remove a widget from the Dashboard
-function Remove ({ id, onRemove, t }) {
-  const handleRemove = () => onRemove(id)
-  return (
-    <Button
-      startIcon={<FontAwesomeIcon icon={faTrash} />}
-      onClick={handleRemove}
-      variant='contained'
-      color='primary'
-      aria-label={t('remove')}
-    >
-      {t('Confirm removal')}
-    </Button>
-  )
-}
-
-Remove.propTypes = {
-  id: PropTypes.string.isRequired,
-  onRemove: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired
-}
-
 const removeSection = {
-  icon: <FontAwesomeIcon icon={faTrash} />,
+  icon: RemoveIcon,
   label: ({ t }) => t('Remove'),
   title: ({ t }) => t('Remove?'),
   render: Remove
 }
 
-// Used to sort the widget
-function DragHandleInner ({ children }) {
-  const classes = useStyles()
-  return <span className={classes.draggableWidgetTitle}>{children}</span>
+const ViewPropTypes = {
+  t: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired
 }
-
-DragHandleInner.propTypes = {
-  children: PropTypes.node
-}
-
-DragHandleInner.defaultProps = {
-  children: <></>
-}
-
-const DragHandle = SortableHandle(DragHandleInner)
-
-// Use an Icon to handle dragging
-function DragHandleWithIndicatorIcon () {
-  return (
-    <DragHandle>
-      <DragIndicatorIcon />
-    </DragHandle>
-  )
+const WidgetPropTypes = {
+  indexValues: PropTypes.number.isRequired,
+  ...ViewPropTypes,
+  ...RemovePropTypes
 }
 
 // HOC to create widgets easily
@@ -111,6 +69,8 @@ const withWidget = (sectionsOrig) => {
     )
   }
 
+  View.propTypes = ViewPropTypes
+
   function Title (props) {
     const { t, name } = props
     return (
@@ -123,17 +83,19 @@ const withWidget = (sectionsOrig) => {
     )
   }
 
+  Title.propTypes = ViewPropTypes
+
   // Renders the view with a header containing the title and the menu with the rest of sections
-  const Widget = (props) => {
+  function Widget (props) {
     const classes = useStyles()
     // Prevent trigger actions components update when changing the day in slider
     // indexValues will not be passed using restProps
     // eslint-disable-next-line no-unused-vars
-    const { indexValues, ...restProps } = props
+    const { indexValues: _, ...restProps } = props
     const action = <WidgetActions {...restProps} sections={sections} />
     const title = (
       <>
-        <DragHandleWithIndicatorIcon />
+        <DragHandleWithIndicatorIcon classes={classes} />
         <Title {...props} />
       </>
     )
@@ -146,6 +108,8 @@ const withWidget = (sectionsOrig) => {
       </Card>
     )
   }
+
+  Widget.propTypes = WidgetPropTypes
 
   return translate('Widget')(Widget)
 }
