@@ -12,20 +12,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 
-// Renders an item into the widget's popup actions menu
-// Ensures click event uses widget id
-function WidgetMenuItemForwarded (props, ref) {
-  const { onClick, option, icon, label } = props
-  const handleClick = () => onClick(option)
-  return (
-    <MenuItem key={option} onClick={handleClick} ref={ref}>
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={label || option} />
-    </MenuItem>
-  )
-}
-
-const WidgetMenuItem = React.forwardRef(WidgetMenuItemForwarded)
+import WidgetMenuItem from './MenuItem'
 
 // Renders the widget's popup actions menu
 function WidgetMenu (props) {
@@ -49,7 +36,7 @@ function WidgetMenu (props) {
     <>
       <IconButton
         aria-label='actions'
-        aria-controls={anchorEl ? `widget-menu-${id}` : undefined}
+        aria-controls={anchorEl ? `widget-menu-${id}` : null}
         aria-haspopup='true'
         onClick={handleClickOpen}
       >
