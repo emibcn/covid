@@ -5,30 +5,15 @@ import { translate } from 'react-translate'
 
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 
-// Renders an item into the widget's popup actions menu
-// Ensures click event uses widget id
-const WidgetMenuItem = React.forwardRef((props, ref) => {
-  const { onClick, option, icon, label } = props
-  const handleClick = () => onClick(option)
-  return (
-    <MenuItem key={option} onClick={handleClick} ref={ref}>
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={label || option} />
-    </MenuItem>
-  )
-})
+import WidgetMenuItem from './MenuItem'
 
 // Renders the widget's popup actions menu
-const WidgetMenu = (props) => {
+function WidgetMenu (props) {
   const { onClick, options, id, ...restProps } = props
-
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
 
@@ -48,51 +33,62 @@ const WidgetMenu = (props) => {
     <>
       <IconButton
         aria-label='actions'
-        aria-controls={anchorEl ? `widget-menu-${id}` : undefined}
+        aria-controls={anchorEl ? `widget-menu-${id}` : null}
         aria-haspopup='true'
         onClick={handleClickOpen}
       >
         <FontAwesomeIcon icon={faEllipsisV} />
       </IconButton>
-      {anchorEl ? (
-        <Menu
-          id={`widget-menu-${id}`}
-          anchorEl={anchorEl}
-          keepMounted
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            style: {
-              width: '20ch'
-            }
-          }}
-        >
-          {Object.keys(options)
-            .filter((option) => option !== 'view')
-            .map((option) => (
-              <WidgetMenuItem
-                key={option}
-                option={option}
-                onClick={handleClickElement}
-                icon={options[option].icon}
-                label={
+      {anchorEl
+        ? (
+          <Menu
+            id={`widget-menu-${id}`}
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                width: '20ch'
+              }
+            }}
+          >
+            {Object.keys(options)
+              .filter((option) => option !== 'view')
+              .map((option) => (
+                <WidgetMenuItem
+                  key={option}
+                  option={option}
+                  onClick={handleClickElement}
+                  icon={options[option].icon}
+                  label={
                   typeof options[option].label === 'function'
                     ? options[option].label(restProps)
                     : options[option].label
                 }
-              />
-            ))}
-        </Menu>
-      ) : null}
+                />
+              ))}
+          </Menu>
+          )
+        : null}
     </>
   )
 }
 
+const optionPropTypes = PropTypes.shape({
+  icon: PropTypes.element,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired
+})
+
 WidgetMenu.propTypes = {
   id: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  // [optionID('view','edit','legend',...)]: {icon: string, label: string/fn }
-  options: PropTypes.object.isRequired
+  options: PropTypes.shape({
+    // These options are mandatory
+    remove: optionPropTypes.isRequired,
+    view: optionPropTypes.isRequired
+    // Other options are optionals
+  }).isRequired
 }
 
 export default translate('Widget')(WidgetMenu)

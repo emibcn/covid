@@ -14,7 +14,7 @@ import withWidget from "../../Widget";
 const ChartWrapper = withWidget({
   // The normal view
   view: {
-    icon: BcnLogo,
+    icon: <BcnLogo />,
     label: ({ t }) => t("View"),
     title: (props) => props.title,
     render: withData((props) => {
