@@ -9,14 +9,14 @@ function DragHandleInner ({ children, classes }) {
 }
 
 DragHandleInner.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.element,
   classes: PropTypes.shape({
     draggableWidgetTitle: PropTypes.string
   })
 }
 
 DragHandleInner.defaultProps = {
-  children: <></>,
+  children: '',
   classes: {
     draggableWidgetTitle: ''
   }
