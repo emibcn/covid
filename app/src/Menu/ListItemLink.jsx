@@ -9,10 +9,14 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 function ListItemLink ({ icon, primary, to }) {
   const renderLink = React.useMemo(
-    () =>
-      React.forwardRef((itemProps, ref) => (
-        <RouterLink to={to} ref={ref} {...itemProps} />
-      )),
+    () => {
+      function RouterLinkForwarded (itemProps, ref) {
+        return (
+          <RouterLink to={to} ref={ref} {...itemProps} />
+        )
+      }
+      return React.forwardRef(RouterLinkForwarded)
+    },
     [to]
   )
 
