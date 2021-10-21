@@ -97,7 +97,7 @@ MenuUntranslated.propTypes = {
   handleDrawerClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onLoadNewServiceWorkerAccept: PropTypes.func.isRequired,
-  newServiceWorkerDetected: PropTypes.bool.isRequired
+  newServiceWorkerDetected: PropTypes.bool.isRequired,
   t: PropTypes.func.isRequired
 }
 
