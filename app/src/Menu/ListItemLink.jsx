@@ -8,17 +8,12 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Tooltip from '@material-ui/core/Tooltip'
 
 function ListItemLink ({ icon, primary, to }) {
-  const renderLink = React.useMemo(
-    () => {
-      function RouterLinkForwarded (itemProps, ref) {
-        return (
-          <RouterLink to={to} ref={ref} {...itemProps} />
-        )
-      }
-      return React.forwardRef(RouterLinkForwarded)
-    },
-    [to]
-  )
+  const renderLink = React.useMemo(() => {
+    function RouterLinkForwarded (itemProps, ref) {
+      return <RouterLink to={to} ref={ref} {...itemProps} />
+    }
+    return React.forwardRef(RouterLinkForwarded)
+  }, [to])
 
   return (
     <li>
