@@ -14,7 +14,7 @@ import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 
 // Renders an item into the widget's popup actions menu
 // Ensures click event uses widget id
-const WidgetMenuItem = React.forwardRef((props, ref) => {
+function WidgetMenuItemForwarded (props, ref) {
   const { onClick, option, icon, label } = props
   const handleClick = () => onClick(option)
   return (
@@ -23,12 +23,13 @@ const WidgetMenuItem = React.forwardRef((props, ref) => {
       <ListItemText primary={label || option} />
     </MenuItem>
   )
-})
+}
+
+const WidgetMenuItem = React.forwardRef(WidgetMenuItemForwarded)
 
 // Renders the widget's popup actions menu
-const WidgetMenu = (props) => {
+function WidgetMenu (props) {
   const { onClick, options, id, ...restProps } = props
-
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
 
@@ -91,7 +92,7 @@ const WidgetMenu = (props) => {
 }
 
 const optionPropTypes = PropTypes.shape({
-  icon: PropTypes.string,
+  icon: PropTypes.element,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired
 })
 
