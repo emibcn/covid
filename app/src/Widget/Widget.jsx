@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { translate } from 'react-translate'
 
@@ -31,72 +32,103 @@ const useStyles = makeStyles({
   }
 })
 
+// Used to remove a widget from the Dashboard
+function Remove ({ id, onRemove, t }) {
+  const handleRemove = () => onRemove(id)
+  return (
+    <Button
+      startIcon={<FontAwesomeIcon icon={faTrash} />}
+      onClick={handleRemove}
+      variant='contained'
+      color='primary'
+      aria-label={t('remove')}
+    >
+      {t('Confirm removal')}
+    </Button>
+  )
+}
+
+Remove.propTypes = {
+  id: PropTypes.string.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired
+}
+
+const removeSection = {
+  icon: <FontAwesomeIcon icon={faTrash} />,
+  label: ({ t }) => t('Remove'),
+  title: ({ t }) => t('Remove?'),
+  render: Remove
+}
+
+// Used to sort the widget
+function DragHandleInner ({ children }) {
+  const classes = useStyles()
+  return (
+    <span className={classes.draggableWidgetTitle}>
+      {children}
+    </span>
+  )
+}
+
+DragHandleInner.propTypes = {
+  children: PropTypes.node
+}
+
+DragHandleInner.defaultProps = {
+  children: <></>
+}
+
+const DragHandle = SortableHandle(DragHandleInner)
+
+// Use an Icon to handle dragging
+function DragHandleWithIndicatorIcon () {
+  return (
+    <DragHandle>
+      <DragIndicatorIcon />
+    </DragHandle>
+  )
+}
+
 // HOC to create widgets easily
 const withWidget = (sectionsOrig) => {
   // Add always available `Remove` action
   const sections = {
     ...sectionsOrig,
-    remove: {
-      icon: <FontAwesomeIcon icon={faTrash} />,
-      label: ({ t }) => t('Remove'),
-      title: ({ t }) => t('Remove?'),
-      render: ({ id, onRemove, t }) => {
-        const handleRemove = () => onRemove(id)
-        return (
-          <Button
-            startIcon={<FontAwesomeIcon icon={faTrash} />}
-            onClick={handleRemove}
-            variant='contained'
-            color='primary'
-            aria-label={t('remove')}
-          >
-            {t('Confirm removal')}
-          </Button>
-        )
-      }
-    }
+    remove: removeSection
   }
 
-  // Get a shortcut to view's render function and
-  // wrap that with an error catcher
-  const ViewUnhandled = sections.view.render
-  const View = (props) => (
-    <ErrorCatcher
-      reloadOnRetry={false}
-      origin={`${props.t('View Widget')} ${
-        sections.view.title(props) || props.name
-      }`}
-    >
-      <ViewUnhandled {...props} />
-    </ErrorCatcher>
-  )
+  // Get a shortcut to view's render and title functions and
+  // wrap these with an error catcher
+  const { view: {
+    render: ViewUnhandled,
+    title: TitleUnhandled
+  }} = sections
+  function View (props) {
+    const {t, name} = props
+    return (
+      <ErrorCatcher
+        reloadOnRetry={false}
+        origin={`${t('View Widget')} ${
+          TitleUnhandled?.(props) ?? name
+        }`}
+      >
+        <ViewUnhandled {...props} />
+      </ErrorCatcher>
+    )
+  }
 
-  // Used to sort the widget
-  const DragHandle = SortableHandle((props) => {
-    const { children } = props
-    const classes = useStyles()
-
-    return <span className={classes.draggableWidgetTitle}>{children}</span>
-  })
-
-  // Use an Icon to handle dragging
-  const DragHandleWithIndicatorIcon = () => (
-    <DragHandle>
-      <DragIndicatorIcon />
-    </DragHandle>
-  )
-
-  // Get a shortcut to title's render function and
-  // wrap that with an error catcher
-  const TitleUnhandled = sections.view.title
-  const Title = (props) => (
-    <ErrorCatcher
-      reloadOnRetry={false}
-      origin={`${props.t('Title Widget')} ${props.name}`}
-    >
-      <TitleUnhandled {...props} />
-    </ErrorCatcher>
-  )
+  function Title (props) {
+    const {t, name} = props
+    return (
+      <ErrorCatcher
+        reloadOnRetry={false}
+        origin={`${t('Title Widget')} ${name}`}
+      >
+        <TitleUnhandled {...props} />
+      </ErrorCatcher>
+    )
+  }
 
   // Renders the view with a header containing the title and the menu with the rest of sections
   const Widget = (props) => {
