@@ -53,7 +53,7 @@ MainMenuItemsUntranslated.propTypes = {
 const MainMenuItems = translate('Menu')(MainMenuItemsUntranslated)
 
 function SecondaryMenuItems () {
-  //return <ListSubheader inset>Saved reports</ListSubheader>
+  // return <ListSubheader inset>Saved reports</ListSubheader>
   return null
 }
 

@@ -36,7 +36,7 @@ function MenuUntranslated (props) {
   const DrawerComponent = isBig ? Drawer : SwipeableDrawer
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-  const toggleDrawer = (open) => (/*event*/) => {
+  const toggleDrawer = (open) => (/* event */) => {
     if (open) {
       handleDrawerOpen()
     } else {
@@ -69,23 +69,25 @@ function MenuUntranslated (props) {
       open={open}
     >
       <MenuContent handleDrawerClose={handleDrawerClose} />
-      {newServiceWorkerDetected ? (
-        <ListItem
-          button
-          onClick={handleClickUpdate}
-          className={classes.updateItem}
-        >
-          <Tooltip title={t('Update!')}>
-            <ListItemIcon>
-              <FontAwesomeIcon
-                icon={faUpgrade}
-                style={{ fontSize: '1.5rem', color: 'green' }}
-              />
-            </ListItemIcon>
-          </Tooltip>
-          <ListItemText primary={t('Update!')} />
-        </ListItem>
-      ) : null}
+      {newServiceWorkerDetected
+        ? (
+          <ListItem
+            button
+            onClick={handleClickUpdate}
+            className={classes.updateItem}
+          >
+            <Tooltip title={t('Update!')}>
+              <ListItemIcon>
+                <FontAwesomeIcon
+                  icon={faUpgrade}
+                  style={{ fontSize: '1.5rem', color: 'green' }}
+                />
+              </ListItemIcon>
+            </Tooltip>
+            <ListItemText primary={t('Update!')} />
+          </ListItem>
+          )
+        : null}
     </DrawerComponent>
   )
 }

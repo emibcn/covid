@@ -35,10 +35,7 @@ function MenuContentUntranslated ({ t, handleDrawerClose }) {
         >
           {t('Menu')}
         </Typography>
-        <IconButton
-          aria-label={t('close menu')}
-          onClick={handleDrawerClose}
-        >
+        <IconButton aria-label={t('close menu')} onClick={handleDrawerClose}>
           <ChevronLeftIcon />
         </IconButton>
       </div>

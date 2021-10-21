@@ -19,11 +19,13 @@ function ListItemLink ({ icon, primary, to }) {
   return (
     <li>
       <ListItem button component={renderLink}>
-        {typeof icon !== 'undefined'  && icon !== "" ? (
-          <Tooltip title={primary}>
-            <ListItemIcon>{icon}</ListItemIcon>
-          </Tooltip>
-        ) : null}
+        {typeof icon !== 'undefined' && icon !== ''
+          ? (
+            <Tooltip title={primary}>
+              <ListItemIcon>{icon}</ListItemIcon>
+            </Tooltip>
+            )
+          : null}
         <ListItemText primary={primary} />
       </ListItem>
     </li>
@@ -37,7 +39,7 @@ ListItemLink.propTypes = {
 }
 
 ListItemLink.defaultValues = {
-  icon: "",
+  icon: ''
 }
 
 export default ListItemLink
