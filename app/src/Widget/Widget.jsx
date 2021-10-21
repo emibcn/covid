@@ -64,11 +64,7 @@ const removeSection = {
 // Used to sort the widget
 function DragHandleInner ({ children }) {
   const classes = useStyles()
-  return (
-    <span className={classes.draggableWidgetTitle}>
-      {children}
-    </span>
-  )
+  return <span className={classes.draggableWidgetTitle}>{children}</span>
 }
 
 DragHandleInner.propTypes = {
@@ -100,18 +96,15 @@ const withWidget = (sectionsOrig) => {
 
   // Get a shortcut to view's render and title functions and
   // wrap these with an error catcher
-  const { view: {
-    render: ViewUnhandled,
-    title: TitleUnhandled
-  }} = sections
+  const {
+    view: { render: ViewUnhandled, title: TitleUnhandled }
+  } = sections
   function View (props) {
-    const {t, name} = props
+    const { t, name } = props
     return (
       <ErrorCatcher
         reloadOnRetry={false}
-        origin={`${t('View Widget')} ${
-          TitleUnhandled?.(props) ?? name
-        }`}
+        origin={`${t('View Widget')} ${TitleUnhandled?.(props) ?? name}`}
       >
         <ViewUnhandled {...props} />
       </ErrorCatcher>
@@ -119,7 +112,7 @@ const withWidget = (sectionsOrig) => {
   }
 
   function Title (props) {
-    const {t, name} = props
+    const { t, name } = props
     return (
       <ErrorCatcher
         reloadOnRetry={false}
