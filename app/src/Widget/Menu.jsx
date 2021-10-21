@@ -54,36 +54,38 @@ const WidgetMenu = (props) => {
       >
         <FontAwesomeIcon icon={faEllipsisV} />
       </IconButton>
-      {anchorEl ? (
-        <Menu
-          id={`widget-menu-${id}`}
-          anchorEl={anchorEl}
-          keepMounted
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            style: {
-              width: '20ch'
-            }
-          }}
-        >
-          {Object.keys(options)
-            .filter((option) => option !== 'view')
-            .map((option) => (
-              <WidgetMenuItem
-                key={option}
-                option={option}
-                onClick={handleClickElement}
-                icon={options[option].icon}
-                label={
+      {anchorEl
+        ? (
+          <Menu
+            id={`widget-menu-${id}`}
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                width: '20ch'
+              }
+            }}
+          >
+            {Object.keys(options)
+              .filter((option) => option !== 'view')
+              .map((option) => (
+                <WidgetMenuItem
+                  key={option}
+                  option={option}
+                  onClick={handleClickElement}
+                  icon={options[option].icon}
+                  label={
                   typeof options[option].label === 'function'
                     ? options[option].label(restProps)
                     : options[option].label
                 }
-              />
-            ))}
-        </Menu>
-      ) : null}
+                />
+              ))}
+          </Menu>
+          )
+        : null}
     </>
   )
 }
