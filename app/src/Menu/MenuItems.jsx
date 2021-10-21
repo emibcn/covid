@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link as RouterLink } from 'react-router-dom'
 
 import { translate } from 'react-translate'
 
@@ -12,6 +11,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 */
+
 import ThemeIcon from '@material-ui/icons/Brightness4'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -21,8 +21,7 @@ import {
 
 import ListItemLink from './ListItemLink'
 
-function MainMenuItemsUntranslated (props) {
-  const { t } = props
+function MainMenuItemsUntranslated ({ t }) {
   return (
     <>
       {/* <ListItemLink to="/" primary={ "Dashboard" } icon={ <DashboardIcon /> } /> */}
@@ -47,10 +46,15 @@ function MainMenuItemsUntranslated (props) {
   )
 }
 
+MainMenuItemsUntranslated.propTypes = {
+  t: PropTypes.func.isRequired
+}
+
 const MainMenuItems = translate('Menu')(MainMenuItemsUntranslated)
 
 function SecondaryMenuItems () {
-  return <>{/* <ListSubheader inset>Saved reports</ListSubheader> */}</>
+  //return <ListSubheader inset>Saved reports</ListSubheader>
+  return null
 }
 
 export { MainMenuItems, SecondaryMenuItems }
