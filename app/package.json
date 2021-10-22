@@ -75,7 +75,7 @@
     ]
   },
   "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.7.1",
+    "@formatjs/intl-getcanonicallocales": "^1.8.0",
     "@formatjs/intl-locale": "^2.4.39",
     "@formatjs/intl-pluralrules": "^4.1.5",
     "intl": "^1.2.5",
