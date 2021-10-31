@@ -7,7 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 // Renders an item into the widget's popup actions menu
 // Ensures click event uses widget id
-function WidgetMenuItemForwarded(props, ref) {
+const WidgetMenuItem = React.forwardRef((props, ref) => {
   const { onClick, option, icon, label } = props;
   const handleClick = () => onClick(option);
   return (
@@ -16,10 +16,9 @@ function WidgetMenuItemForwarded(props, ref) {
       <ListItemText primary={label || option} />
     </MenuItem>
   );
-}
+});
 
-const WidgetMenuItem = React.forwardRef(WidgetMenuItemForwarded);
-
+WidgetMenuItem.displayName = WidgetMenuItem;
 WidgetMenuItem.propTypes = {
   icon: PropTypes.element.isRequired,
   label: PropTypes.string.isRequired,
