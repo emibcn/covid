@@ -59,7 +59,8 @@ jest.mock('./About', () => {
 jest.mock('@3m1/service-worker-updater', () => {
   return {
     __esModule: true,
-    withServiceWorkerUpdater: (Wrapped) => Wrapped
+    withServiceWorkerUpdater: (Wrapped) => Wrapped,
+    LocalStoragePersistenceService: class {}
   }
 })
 
