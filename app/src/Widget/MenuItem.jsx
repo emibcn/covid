@@ -18,13 +18,13 @@ function WidgetMenuItemForwarded (props, ref) {
   )
 }
 
-WidgetMenuItemForwarded.propTypes = {
+const WidgetMenuItem = React.forwardRef(WidgetMenuItemForwarded)
+
+WidgetMenuItem.propTypes = {
   icon: PropTypes.element.isRequired,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   option: PropTypes.string.isRequired
 }
-
-const WidgetMenuItem = React.forwardRef(WidgetMenuItemForwarded)
 
 export default WidgetMenuItem
