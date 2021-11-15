@@ -80,7 +80,7 @@
     "@formatjs/intl-pluralrules": "^4.1.5",
     "intl": "^1.2.5",
     "jest-matchmedia-mock": "^1.1.0",
-    "jsdom": "^18.0.1",
+    "jsdom": "^18.1.0",
     "mq-polyfill": "^1.1.8",
     "node-fetch": "^2.6.6",
     "webpack-bundle-analyzer": "^4.5.0"
