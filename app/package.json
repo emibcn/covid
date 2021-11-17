@@ -30,17 +30,16 @@
     "recharts": "^2.1.6",
     "web-vitals": "^2.1.2",
     "workbox-background-sync": "^6.4.1",
-    "workbox-broadcast-update": "^6.3.0",
-    "workbox-cacheable-response": "^6.3.0",
-    "workbox-core": "^6.3.0",
-    "workbox-expiration": "^6.3.0",
+    "workbox-expiration": "^6.4.1",
+    "workbox-cacheable-response": "^6.4.1",
+    "workbox-broadcast-update": "^6.4.1",
     "workbox-google-analytics": "^6.4.1",
     "workbox-navigation-preload": "^6.4.1",
     "workbox-precaching": "^6.3.0",
     "workbox-range-requests": "^6.4.1",
     "workbox-routing": "^6.3.0",
     "workbox-strategies": "^6.3.0",
-    "workbox-streams": "^6.3.0"
+    "workbox-streams": "^6.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
