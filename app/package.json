@@ -36,7 +36,7 @@
     "workbox-google-analytics": "^6.4.1",
     "workbox-navigation-preload": "^6.4.1",
     "workbox-precaching": "^6.4.1",
-    "workbox-range-requests": "^6.4.1",
+    "workbox-range-requests": "^6.4.2",
     "workbox-routing": "^6.3.0",
     "workbox-strategies": "^6.3.0",
     "workbox-streams": "^6.4.1"
@@ -79,7 +79,7 @@
     "@formatjs/intl-pluralrules": "^4.1.5",
     "intl": "^1.2.5",
     "jest-matchmedia-mock": "^1.1.0",
-    "jsdom": "^18.1.1",
+    "jsdom": "^19.0.0",
     "mq-polyfill": "^1.1.8",
     "node-fetch": "^2.6.6",
     "webpack-bundle-analyzer": "^4.5.0"
