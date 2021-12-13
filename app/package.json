@@ -33,7 +33,7 @@
     "workbox-expiration": "^6.4.1",
     "workbox-cacheable-response": "^6.4.1",
     "workbox-broadcast-update": "^6.4.1",
-    "workbox-google-analytics": "^6.4.1",
+    "workbox-google-analytics": "^6.4.2",
     "workbox-navigation-preload": "^6.4.1",
     "workbox-precaching": "^6.4.1",
     "workbox-range-requests": "^6.4.1",
