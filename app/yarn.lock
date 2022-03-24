@@ -12722,7 +12722,7 @@ word-wrap@^1.2.3, word-wrap@~1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
-workbox-background-sync@6.4.1, workbox-background-sync@^6.4.1:
+workbox-background-sync@6.4.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/workbox-background-sync/-/workbox-background-sync-6.4.1.tgz#67d71ab3812844115c90ee2fa57fee7a5f0d126b"
   integrity sha512-GiDklRhDF/oJ+WJhb6jO00wA+fjOZlY4SomqpumXP6OXp1WodmKu7xv75hpum0Kx4Fh3MZrj+9Ae+dIYlq21dA==
@@ -12736,6 +12736,14 @@ workbox-background-sync@^5.1.4:
   integrity sha512-AH6x5pYq4vwQvfRDWH+vfOePfPIYQ00nCEB7dJRU1e0n9+9HMRyvI63FlDvtFT2AvXVRsXvUt7DNMEToyJLpSA==
   dependencies:
     workbox-core "^5.1.4"
+
+workbox-background-sync@^6.5.2:
+  version "6.5.2"
+  resolved "https://registry.yarnpkg.com/workbox-background-sync/-/workbox-background-sync-6.5.2.tgz#28be9bf89b8e4e0379d45903280c7c12f4df836f"
+  integrity sha512-EjG37LSMDJ1TFlFg56wx6YXbH4/NkG09B9OHvyxx+cGl2gP5OuOzsCY3rOPJSpbcz6jpuA40VIC3HzSD4OvE1g==
+  dependencies:
+    idb "^6.1.4"
+    workbox-core "6.5.2"
 
 workbox-broadcast-update@^5.1.4:
   version "5.1.4"
@@ -12811,6 +12819,11 @@ workbox-core@6.4.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/workbox-core/-/workbox-core-6.4.1.tgz#41d181d52e86d3263d48b69253bcae66c2d7286a"
   integrity sha512-5hosqpSK+48jHlj+5EHN5dtH1Ade4fqTe4+xX3U9wWK1SDaXEqXpVxdHuBqYfg75UE1PUINA0rhMZWTqeGoLFg==
+
+workbox-core@6.5.2:
+  version "6.5.2"
+  resolved "https://registry.yarnpkg.com/workbox-core/-/workbox-core-6.5.2.tgz#f5e06a22c6cb4651d3e13107443d972fdbd47364"
+  integrity sha512-IlxLGQf+wJHCR+NM0UWqDh4xe/Gu6sg2i4tfZk6WIij34IVk9BdOQgi6WvqSHd879jbQIUgL2fBdJUJyAP5ypQ==
 
 workbox-core@^5.1.4:
   version "5.1.4"
