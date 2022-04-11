@@ -410,7 +410,7 @@ jobs:
     steps:
 
     - name: Download built app from artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: built-app
         path: docs
