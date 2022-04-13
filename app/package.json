@@ -29,7 +29,7 @@
     "react-translate": "^7.0.1",
     "recharts": "^2.1.6",
     "web-vitals": "^2.1.2",
-    "workbox-background-sync": "^6.4.1",
+    "workbox-background-sync": "^6.5.3",
     "workbox-expiration": "^6.4.1",
     "workbox-cacheable-response": "^6.4.1",
     "workbox-broadcast-update": "^6.4.1",
