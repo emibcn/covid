@@ -1281,19 +1281,12 @@
     "@formatjs/intl-localematcher" "0.2.27"
     tslib "2.4.0"
 
-"@formatjs/intl-getcanonicallocales@2.0.1":
+"@formatjs/intl-getcanonicallocales@2.0.1", "@formatjs/intl-getcanonicallocales@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-getcanonicallocales/-/intl-getcanonicallocales-2.0.1.tgz#da2b7749a99d4347e2dacef103e3044eed3ef915"
   integrity sha512-MDbYGYdBdhxNBNm5trIhYZWRu2yC6Le+2IQ0bzus7sY7AEHswz0TcyekfYywiV3QF4E7x0YtJDIKTi6oH14NRg==
   dependencies:
     tslib "2.4.0"
-
-"@formatjs/intl-getcanonicallocales@^1.7.1":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-getcanonicallocales/-/intl-getcanonicallocales-1.8.0.tgz#2987a879f399b2fdf2812e76431f1db8a5b02a64"
-  integrity sha512-nBwLvOaClSPt4UrvNKHuOf3vgQ8ofZ8jS5TB54bKBw1VKe3Rt/omvze/UhiboWFxs3VCWVHswqikHS5UfUq3SA==
-  dependencies:
-    tslib "^2.1.0"
 
 "@formatjs/intl-locale@^3.0.1":
   version "3.0.1"
