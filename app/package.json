@@ -19,7 +19,7 @@
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
     "react-helmet-async": "^1.2.2",
-    "react-modal": "^3.14.4",
+    "react-modal": "^3.15.1",
     "react-router-dom": "^5.3.0",
     "react-scripts": "^4.0.3",
     "react-simple-storage": "^1.4.2",
@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@formatjs/intl-getcanonicallocales": "^1.7.1",
-    "@formatjs/intl-locale": "^2.4.41",
+    "@formatjs/intl-locale": "^3.0.1",
     "@formatjs/intl-pluralrules": "^4.1.6",
     "intl": "^1.2.5",
     "jest-matchmedia-mock": "^1.1.0",
