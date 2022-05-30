@@ -9,7 +9,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@material-ui/core": "^4.12.4",
-    "@material-ui/icons": "^4.11.2",
+    "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@formatjs/intl-getcanonicallocales": "^1.7.1",
-    "@formatjs/intl-locale": "^2.4.41",
+    "@formatjs/intl-locale": "^3.0.1",
     "@formatjs/intl-pluralrules": "^4.1.6",
     "intl": "^1.2.5",
     "jest-matchmedia-mock": "^1.1.0",
