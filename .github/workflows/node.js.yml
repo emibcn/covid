@@ -424,6 +424,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # Delete the built app artifact: it's no needed anymore
-    - uses: geekyeggo/delete-artifact@v1
+    - uses: geekyeggo/delete-artifact@v2
       with:
         name: built-app
