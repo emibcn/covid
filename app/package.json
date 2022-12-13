@@ -38,7 +38,7 @@
     "workbox-precaching": "^6.5.3",
     "workbox-range-requests": "^6.5.3",
     "workbox-routing": "^6.3.0",
-    "workbox-strategies": "^6.3.0",
+    "workbox-strategies": "^6.5.4",
     "workbox-streams": "^6.5.3"
   },
   "scripts": {
