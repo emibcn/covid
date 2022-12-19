@@ -1265,14 +1265,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@formatjs/ecma402-abstract@1.11.8":
-  version "1.11.8"
-  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.11.8.tgz#f4015dfb6a837369d94c6ba82455c609e45bce20"
-  integrity sha512-fgLqyWlwmTEuqV/TSLEL/t9JOmHNLFvCdgzXB0jc2w+WOItPCOJ1T0eyN6fQBQKRPfSqqNlu+kWj7ijcOVTVVQ==
-  dependencies:
-    "@formatjs/intl-localematcher" "0.2.28"
-    tslib "2.4.0"
-
 "@formatjs/ecma402-abstract@1.14.3":
   version "1.14.3"
   resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.14.3.tgz#6428f243538a11126180d121ce8d4b2f17465738"
@@ -1297,13 +1289,6 @@
     "@formatjs/intl-getcanonicallocales" "2.0.5"
     tslib "^2.4.0"
 
-"@formatjs/intl-localematcher@0.2.28":
-  version "0.2.28"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.2.28.tgz#412ea7fefbfc7ed33cd6b43aa304fc14d816e564"
-  integrity sha512-FLsc6Gifs1np/8HnCn/7Q+lHMmenrD5fuDhRT82yj0gi9O19kfaFwjQUw1gZsyILuRyT93GuzdifHj7TKRhBcw==
-  dependencies:
-    tslib "2.4.0"
-
 "@formatjs/intl-localematcher@0.2.32":
   version "0.2.32"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.2.32.tgz#00d4d307cd7d514b298e15a11a369b86c8933ec1"
@@ -1311,14 +1296,14 @@
   dependencies:
     tslib "^2.4.0"
 
-"@formatjs/intl-pluralrules@^5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-5.0.3.tgz#78d76da83470495e3e4d82df8cd6250578c1685c"
-  integrity sha512-av3ks022vDE1dbCUAqwYc8bnGRcAPKK6C7ZRINNjjQn43ZQVX1AXc7PY2RqO/GXzkixsSWfHFZjSgzzbhbd21A==
+"@formatjs/intl-pluralrules@^5.1.8":
+  version "5.1.8"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-5.1.8.tgz#11eeca3cde088fd68d258a09b0791b327a8eb019"
+  integrity sha512-uevO916EWoeuueqeNzHjnUzpfWZzXFJibC/sEvPR/ZiZH5btWuOLeJLdb1To4nMH8ZJQlmAf8SDpFf+eWvz5lQ==
   dependencies:
-    "@formatjs/ecma402-abstract" "1.11.8"
-    "@formatjs/intl-localematcher" "0.2.28"
-    tslib "2.4.0"
+    "@formatjs/ecma402-abstract" "1.14.3"
+    "@formatjs/intl-localematcher" "0.2.32"
+    tslib "^2.4.0"
 
 "@fortawesome/fontawesome-common-types@6.1.1":
   version "6.1.1"
@@ -12049,15 +12034,15 @@ tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@2.4.0, tslib@^2.0.3, tslib@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
-  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
-
 tslib@^1.8.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
+
+tslib@^2.0.3, tslib@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tsutils@^3.17.1, tsutils@^3.21.0:
   version "3.21.0"
