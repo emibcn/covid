@@ -24,7 +24,7 @@
     "react-scripts": "^4.0.3",
     "react-simple-storage": "^1.4.2",
     "react-sortable-hoc": "^2.0.0",
-    "react-svg": "^15.1.16",
+    "react-svg": "^15.1.17",
     "react-tooltip": "^4.5.1",
     "react-translate": "^7.0.1",
     "recharts": "^2.1.12",
