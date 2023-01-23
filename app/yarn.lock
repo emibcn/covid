@@ -1859,10 +1859,10 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
-"@tanem/svg-injector@^10.1.42":
-  version "10.1.44"
-  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-10.1.44.tgz#57a338010fc78edbc864f3ab3bcaa3ee4a3704b4"
-  integrity sha512-YMNikuEyZixWN7vr1B6a1rO/D1jSxU6TOe4vC4Qbb0UHXH1dDOhvlgSU+wlZ35reqFCKnAUndhqEsBBIP/1lMA==
+"@tanem/svg-injector@^10.1.44":
+  version "10.1.45"
+  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-10.1.45.tgz#2ac00c6a0832264421e9db5208f951c0fd4a0bfc"
+  integrity sha512-HOmdNqYIP808rxzxc6dCP8MZOQQ1zKscoNo5BkjZKgYGSm/ObNCW6r+IPTP30kVHET7y0HAzrDwnP0WYFyr3Tg==
   dependencies:
     "@babel/runtime" "^7.20.7"
     content-type "^1.0.4"
@@ -10330,13 +10330,13 @@ react-sortable-hoc@^2.0.0:
     invariant "^2.2.4"
     prop-types "^15.5.7"
 
-react-svg@^15.1.21:
-  version "15.1.21"
-  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-15.1.21.tgz#0e6d0817531c5af560a44151a214b1a1a8da3eec"
-  integrity sha512-ISMX8ICoLNivt1+OPY24V0WmBYPSEuVU1EzgVhyXj7mSGs+aQosGFevatrfxx+1zh28iyvWRDma1YbpylGEwbw==
+react-svg@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-16.0.0.tgz#624188d5145cd983213ccec6fa1d812eed5e4788"
+  integrity sha512-Zh3Y7c8h2ufe7hk5YEebs4yH3mlZDlUbHrhYR1nZHCbJR9j7KaHYB8rcWEDiCh2WTstFJUEJtbPvjrHrJpEZhg==
   dependencies:
     "@babel/runtime" "^7.20.7"
-    "@tanem/svg-injector" "^10.1.42"
+    "@tanem/svg-injector" "^10.1.44"
     "@types/prop-types" "^15.7.5"
     prop-types "^15.8.1"
 
