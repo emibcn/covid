@@ -40,9 +40,11 @@ const FormDecorators = (props) => {
           {label}
         </InputLabel>
         {children}
-        {help ? (
-          <FormHelperText id={`helper-text-${id}`}>{help}</FormHelperText>
-        ) : null}
+        {help
+          ? (
+            <FormHelperText id={`helper-text-${id}`}>{help}</FormHelperText>
+            )
+          : null}
       </FormControl>
     </div>
   )

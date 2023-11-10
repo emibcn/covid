@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { withHandler } from "../../../../Backend/Charts/context";
+import { withHandler } from '../../../../Backend/Charts/context'
 
-import RecursiveTreeView from "./RecursiveTreeView";
+import RecursiveTreeView from './RecursiveTreeView'
 
-function EditRegion(props) {
+function EditRegion (props) {
   const {
     // Remove it from restProps: it comes from
     // Charts handler, not parent component
@@ -17,20 +17,20 @@ function EditRegion(props) {
     onChange,
     chartsDataHandler,
     ...restProps
-  } = props;
+  } = props
 
-  const onNodeSelect = (event, v) => onChange(Number(v));
+  const onNodeSelect = (event, v) => onChange(Number(v))
   const initialNode = React.useMemo(
     () => chartsDataHandler.findInitialNode(division, population),
     [chartsDataHandler, division, population]
-  );
+  )
   const found = React.useMemo(
     () =>
       chartsDataHandler
         .findBreadcrumb(initialNode, value)
         .map(({ url }) => `${url}`),
     [initialNode, value, chartsDataHandler]
-  );
+  )
 
   return (
     <RecursiveTreeView
@@ -40,7 +40,7 @@ function EditRegion(props) {
       value={`${value}`}
       {...restProps}
     />
-  );
+  )
 }
 
 const EditRegionPropTypes = {
@@ -50,14 +50,14 @@ const EditRegionPropTypes = {
   onChange: PropTypes.func.isRequired,
   chartsDataHandler: PropTypes.shape({
     findInitialNode: PropTypes.func.isRequired,
-    findBreadcrumb: PropTypes.func.isRequired,
+    findBreadcrumb: PropTypes.func.isRequired
   }).isRequired,
-  chartsIndex: PropTypes.string,
-};
+  chartsIndex: PropTypes.string
+}
 
-EditRegion.propTypes = EditRegionPropTypes;
+EditRegion.propTypes = EditRegionPropTypes
 EditRegion.defaultProps = {
-  chartsIndex: "",
-};
+  chartsIndex: ''
+}
 
-export default withHandler(EditRegion);
+export default withHandler(EditRegion)

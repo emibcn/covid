@@ -34,11 +34,13 @@ const withHandlerGenerator = (
       [BackendHandler, params]
     )
 
-    return value === false ? (
-      <Loading />
-    ) : (
-      <WrappedComponent {...props} {...{ [name]: value }} />
-    )
+    return value === false
+      ? (
+        <Loading />
+        )
+      : (
+        <WrappedComponent {...props} {...{ [name]: value }} />
+        )
   }
 
   // Return wrapper component wrapped with a

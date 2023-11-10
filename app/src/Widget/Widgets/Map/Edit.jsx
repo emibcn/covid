@@ -1,36 +1,36 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { translate } from "react-translate";
+import { translate } from 'react-translate'
 
-import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Divider from "@material-ui/core/Divider";
+import { makeStyles } from '@material-ui/core/styles'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import Divider from '@material-ui/core/Divider'
 
-import MapData from "../../../Backend/Maps";
+import MapData from '../../../Backend/Maps'
 
 // UI-Material Styles
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    minWidth: 120,
+    minWidth: 120
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+    marginTop: theme.spacing(2)
+  }
+}))
 
 // Renders a Select, with options from props
 const Selector = (props) => {
-  const classes = useStyles();
-  const { label, help, id, options, ...restProps } = props;
+  const classes = useStyles()
+  const { label, help, id, options, ...restProps } = props
   return (
     <div
       style={{
-        margin: "0 auto",
-        display: "block",
+        margin: '0 auto',
+        display: 'block'
       }}
     >
       <FormControl required className={classes.formControl}>
@@ -41,7 +41,7 @@ const Selector = (props) => {
           aria-describedby={`helper-text-${id}`}
           inputProps={{
             name: label,
-            id: id,
+            id
           }}
         >
           {options.map(({ value, label }) => (
@@ -50,72 +50,74 @@ const Selector = (props) => {
             </option>
           ))}
         </Select>
-        {help ? (
-          <FormHelperText id={`helper-text-${id}`}>{help}</FormHelperText>
-        ) : null}
+        {help
+          ? (
+            <FormHelperText id={`helper-text-${id}`}>{help}</FormHelperText>
+            )
+          : null}
       </FormControl>
     </div>
-  );
-};
+  )
+}
 
 // Renders a Select with map kinds options
 const MapSelectorOptions = MapData.kinds().map((kind) => ({
   value: kind,
-  label: kind,
-}));
-const MapSelector = translate("Widget/Map/Edit")((props) => {
-  const { t, ...restProps } = props;
+  label: kind
+}))
+const MapSelector = translate('Widget/Map/Edit')((props) => {
+  const { t, ...restProps } = props
   return (
     <Selector
       options={MapSelectorOptions}
-      label={t("Type")}
-      help={t("Select the regions type to show")}
+      label={t('Type')}
+      help={t('Select the regions type to show')}
       {...restProps}
     />
-  );
-});
+  )
+})
 
 // Renders a Select with map values options
 const MapValueSelectorOptions = MapData.kinds().reduce((options, kind) => {
   options[kind] = MapData.values(kind).map((values) => ({
     value: values,
-    label: MapData.metaName(values),
-  }));
-  return options;
-}, {});
-const MapValueSelector = translate("Widget/Map/Edit")((props) => {
-  const { kind, t, ...restProps } = props;
+    label: MapData.metaName(values)
+  }))
+  return options
+}, {})
+const MapValueSelector = translate('Widget/Map/Edit')((props) => {
+  const { kind, t, ...restProps } = props
   return (
     <Selector
-      label={t("Values")}
-      help={t("Select the data origin")}
+      label={t('Values')}
+      help={t('Select the data origin')}
       options={MapValueSelectorOptions[kind]}
       {...restProps}
     />
-  );
-});
+  )
+})
 
 /*
    Renders the edit form for the Map widget
 */
 class Edit extends React.PureComponent {
-  onChangeMapKind = (event) => this.props.onChangeMapKind(event.target.value);
-  onChangeMapValue = (event) => this.props.onChangeMapValue(event.target.value);
+  onChangeMapKind = (event) => this.props.onChangeMapKind(event.target.value)
+  onChangeMapValue = (event) => this.props.onChangeMapValue(event.target.value)
 
-  render() {
-    const { mapKind, mapValue } = this.props;
+  render () {
+    const { mapKind, mapValue } = this.props
 
     return (
-      <div style={{ textAlign: "left" }}>
+      <div style={{ textAlign: 'left' }}>
         <MapSelector value={mapKind} onChange={this.onChangeMapKind} />
-        <Divider style={{ margin: "2em 0" }} />
+        <Divider style={{ margin: '2em 0' }} />
         <MapValueSelector
           kind={mapKind}
           value={mapValue}
           onChange={this.onChangeMapValue}
         />
       </div>
-    );
+    )
   }
 }
 
@@ -123,7 +125,7 @@ Edit.propTypes = {
   mapKind: PropTypes.string.isRequired,
   mapValue: PropTypes.string.isRequired,
   onChangeMapKind: PropTypes.func.isRequired,
-  onChangeMapValue: PropTypes.func.isRequired,
-};
+  onChangeMapValue: PropTypes.func.isRequired
+}
 
-export default Edit;
+export default Edit

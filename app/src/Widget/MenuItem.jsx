@@ -1,29 +1,29 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import MenuItem from '@material-ui/core/MenuItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 
 // Renders an item into the widget's popup actions menu
 // Ensures click event uses widget id
 const WidgetMenuItem = React.forwardRef((props, ref) => {
-  const { onClick, option, icon, label } = props;
-  const handleClick = () => onClick(option);
+  const { onClick, option, icon, label } = props
+  const handleClick = () => onClick(option)
   return (
     <MenuItem key={option} onClick={handleClick} ref={ref}>
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={label || option} />
     </MenuItem>
-  );
-});
+  )
+})
 
-WidgetMenuItem.displayName = WidgetMenuItem;
+WidgetMenuItem.displayName = WidgetMenuItem
 WidgetMenuItem.propTypes = {
   icon: PropTypes.element.isRequired,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  option: PropTypes.string.isRequired,
-};
+  option: PropTypes.string.isRequired
+}
 
-export default WidgetMenuItem;
+export default WidgetMenuItem

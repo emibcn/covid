@@ -16,7 +16,7 @@ const Selector = (props) => {
         aria-describedby={`helper-text-${id}`}
         inputProps={{
           name: label,
-          id: id
+          id
         }}
       >
         {options.map((option) => (

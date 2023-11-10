@@ -133,12 +133,14 @@ ChartLegend.propTypes = {
 
 const ChartTooltip = ({ active, payload, label }) => {
   const classes = useStyles()
-  return active ? (
-    <div className={classes.tooltip}>
-      <p className={classes.label}>{label}</p>
-      <List payload={payload} />
-    </div>
-  ) : null
+  return active
+    ? (
+      <div className={classes.tooltip}>
+        <p className={classes.label}>{label}</p>
+        <List payload={payload} />
+      </div>
+      )
+    : null
 }
 
 ChartTooltip.defaultProps = {

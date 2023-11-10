@@ -55,11 +55,13 @@ const asyncModuleComponent = (importModule, modules, Wrapped) =>
     }, [])
 
     // Once loaded, pass components to wrapped as a prop
-    return !components ? (
-      <Loading />
-    ) : (
-      <Wrapped {...props} {...{ components }} />
-    )
+    return !components
+      ? (
+        <Loading />
+        )
+      : (
+        <Wrapped {...props} {...{ components }} />
+        )
   }
 
 export default asyncComponent

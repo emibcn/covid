@@ -38,13 +38,15 @@ Element.propTypes = {
 // Renders children conditionally wrapped with a tooltip,
 // depending on the existence and length of `title` prop
 const ConditionalTooltip = ({ title, children, ...rest }) =>
-  title && title.length ? (
-    <Tooltip arrow placement='top' title={title} {...rest}>
-      {children}
-    </Tooltip>
-  ) : (
-    children
-  )
+  title && title.length
+    ? (
+      <Tooltip arrow placement='top' title={title} {...rest}>
+        {children}
+      </Tooltip>
+      )
+    : (
+        children
+      )
 
 ConditionalTooltip.defaultProps = {
   children: []

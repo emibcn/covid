@@ -286,8 +286,8 @@ function Chart (props) {
   const yAxisLabel = yAxis?.label || ''
   const scale = yAxis?.scale
     ? yAxis.scale === 'squarified'
-        ? 'pow'
-        : yAxis.scale
+      ? 'pow'
+      : yAxis.scale
     : 'linear'
 
   const { ResponsiveContainer, ComposedChart, ReferenceLine, XAxis, YAxis } =
