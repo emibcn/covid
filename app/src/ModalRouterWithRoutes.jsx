@@ -22,7 +22,10 @@ const ModalRouterWithRoutes = (props) => {
         render={() =>
           withErrorCatcher(
             'Language',
-            <Language language={language} onLanguageChange={onLanguageChange} />
+            <Language
+              language={language}
+              onLanguageChange={onLanguageChange}
+            />
           )}
       />
       <Route

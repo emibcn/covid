@@ -53,34 +53,36 @@ const MenuAddWidget = React.memo((props) => {
           <AddIcon />
         </Fab>
       </Tooltip>
-      {anchorEl ? (
-        <Menu
-          id='widget-add-menu'
-          anchorEl={anchorEl}
-          keepMounted
-          open={open}
-          onClose={handleClose}
-          transformOrigin={{
-            vertical: 'center',
-            horizontal: 'right'
-          }}
-          PaperProps={{
-            style: {
-              width: '30ch'
-            }
-          }}
-        >
-          {options.map((option) => (
-            <WidgetMenuItem
-              key={option.key}
-              option={option.key}
-              onClick={handleClickElement}
-              icon={option.icon}
-              label={t(option.name)}
-            />
-          ))}
-        </Menu>
-      ) : null}
+      {anchorEl
+        ? (
+          <Menu
+            id='widget-add-menu'
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleClose}
+            transformOrigin={{
+              vertical: 'center',
+              horizontal: 'right'
+            }}
+            PaperProps={{
+              style: {
+                width: '30ch'
+              }
+            }}
+          >
+            {options.map((option) => (
+              <WidgetMenuItem
+                key={option.key}
+                option={option.key}
+                onClick={handleClickElement}
+                icon={option.icon}
+                label={t(option.name)}
+              />
+            ))}
+          </Menu>
+          )
+        : null}
     </>
   )
 })

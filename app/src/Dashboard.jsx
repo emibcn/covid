@@ -22,7 +22,10 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import Menu from './Menu'
 import ModalRouterWithRoutes from './ModalRouterWithRoutes'
 import AppThemeProvider from './AppThemeProvider'
-import { withServiceWorkerUpdater, LocalStoragePersistenceService } from '@3m1/service-worker-updater'
+import {
+  withServiceWorkerUpdater,
+  LocalStoragePersistenceService
+} from '@3m1/service-worker-updater'
 
 const Copyright = translate('Copyright')((props) => {
   const { t } = props
@@ -163,8 +166,8 @@ const Dashboard = (props) => {
 }
 
 export default translate('Widget')(
-  withServiceWorkerUpdater(
-    Dashboard,
-    { persistenceService: new LocalStoragePersistenceService('CovidRefactored') }
-  ))
+  withServiceWorkerUpdater(Dashboard, {
+    persistenceService: new LocalStoragePersistenceService('CovidRefactored')
+  })
+)
 export { Copyright }

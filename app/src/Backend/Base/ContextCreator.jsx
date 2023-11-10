@@ -21,14 +21,11 @@ const ContextCreator = (Handler, defaultName) => {
 
   const withHandler =
     (WrappedComponent, name = defaultName) =>
-      (props) =>
-        (
-          <Consumer>
-            {(context) => (
-              <WrappedComponent {...props} {...{ [name]: context }} />
-            )}
-          </Consumer>
-        )
+      (props) => (
+        <Consumer>
+          {(context) => <WrappedComponent {...props} {...{ [name]: context }} />}
+        </Consumer>
+      )
 
   return {
     Provider,

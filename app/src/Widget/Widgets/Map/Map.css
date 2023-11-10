@@ -5,7 +5,10 @@
   stroke-linejoin: round;
   transform-box: fill-box;
   transform-origin: center;
-  transition: transform 0.1s, stroke-width 0.2s, stroke 0.1s;
+  transition:
+    transform 0.1s,
+    stroke-width 0.2s,
+    stroke 0.1s;
   paint-order: stroke;
 }
 

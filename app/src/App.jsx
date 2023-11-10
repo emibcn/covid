@@ -1,28 +1,28 @@
-import React from "react";
-import { HashRouter as Router } from "react-router-dom";
+import React from 'react'
+import { HashRouter as Router } from 'react-router-dom'
 
-import Storage from "react-simple-storage";
-import { TranslatorProvider, useTranslate } from "react-translate";
-import { Helmet, HelmetProvider } from "react-helmet-async";
-import available from "./i18n/available";
+import Storage from 'react-simple-storage'
+import { TranslatorProvider, useTranslate } from 'react-translate'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
+import available from './i18n/available'
 
-import ErrorCatcher from "./ErrorCatcher";
-import Dashboard from "./Dashboard";
-import { WidgetsList } from "./Widget";
+import ErrorCatcher from './ErrorCatcher'
+import Dashboard from './Dashboard'
+import { WidgetsList } from './Widget'
 
-import { BackendProvider, IndexesHandler } from "./Backend";
+import { BackendProvider, IndexesHandler } from './Backend'
 
 // App Helmet: Controls HTML <head> elements with SideEffect
 // - Set a default title and title template, translated
 const AppHelmet = ({ language }) => {
-  const t = useTranslate("App");
-  const title = t("Covid Data - Refactored");
+  const t = useTranslate('App')
+  const title = t('Covid Data - Refactored')
   return (
     <Helmet titleTemplate={`%s | ${title}`} defaultTitle={title}>
       <html lang={language} />
     </Helmet>
-  );
-};
+  )
+}
 
 // Concentrate all providers (4) used in the app into a single component
 const AppProviders = ({ translations, language, children }) => (
@@ -31,79 +31,79 @@ const AppProviders = ({ translations, language, children }) => (
       <BackendProvider>
         <AppHelmet language={language} />
         <Router>
-          <div className="App" id="router-container">
+          <div className='App' id='router-container'>
             {children}
           </div>
         </Router>
       </BackendProvider>
     </HelmetProvider>
   </TranslatorProvider>
-);
+)
 
 const fixLocationHash = () => {
-  const decoded = decodeURIComponent(global.location.hash);
-  if (decoded !== "" && decoded !== global.location.hash) {
-    const hash = decoded.replace(/[^#]*(#.*)$/, "$1");
-    global.location.replace(hash);
+  const decoded = decodeURIComponent(global.location.hash)
+  if (decoded !== '' && decoded !== global.location.hash) {
+    const hash = decoded.replace(/[^#]*(#.*)$/, '$1')
+    global.location.replace(hash)
   }
-};
+}
 
 const getDefaultLanguage = (available) => {
-  const languageNav = (global.navigator.language ?? "").toLowerCase();
+  const languageNav = (global.navigator.language ?? '').toLowerCase()
   return available.find((language) => language.key === languageNav)
     ? languageNav
-    : "ca-es";
-};
+    : 'ca-es'
+}
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor () {
+    super()
 
     // Fix bad browser encoding HASH
-    fixLocationHash();
+    fixLocationHash()
 
-    const language = getDefaultLanguage(available);
+    const language = getDefaultLanguage(available)
     this.state = {
       initializing: true, // For Storage
       language,
       theme: false, // Use defined by user in browser
-      tutorialSeen: false,
-    };
+      tutorialSeen: false
+    }
   }
 
   // Called after Storage hydrated the component
-  stopInitializing = () => this.setState({ initializing: false });
+  stopInitializing = () => this.setState({ initializing: false })
 
   // Handle global configuration options
-  handleLanguageChange = (language) => this.setState({ language });
-  handleThemeChange = (theme) => this.setState({ theme });
-  handleTutorialSeenChange = (tutorialSeen) => this.setState({ tutorialSeen });
+  handleLanguageChange = (language) => this.setState({ language })
+  handleThemeChange = (theme) => this.setState({ theme })
+  handleTutorialSeenChange = (tutorialSeen) => this.setState({ tutorialSeen })
 
-  render() {
-    const { language, theme, tutorialSeen } = this.state;
+  render () {
+    const { language, theme, tutorialSeen } = this.state
     const translations = available.find(
       (_language) => _language.key === language
-    ).value;
+    ).value
 
     return (
       <AppProviders
         {...{
           translations,
-          language,
+          language
         }}
       >
         {/* Persistent state saver into localStorage */}
-        <ErrorCatcher origin="Storage">
+        <ErrorCatcher origin='Storage'>
           <Storage
             parent={this}
-            prefix="App"
-            blacklist={["initializing"]}
+            prefix='App'
+            blacklist={['initializing']}
             onParentStateHydrated={this.stopInitializing}
           />
         </ErrorCatcher>
 
         {/* Shows the app, with ErrorBoundaries */}
-        <ErrorCatcher origin="Dashboard">
+        <ErrorCatcher origin='Dashboard'>
           <Dashboard
             // Use language and handle its change
             language={language}
@@ -115,9 +115,9 @@ class App extends React.Component {
             tutorialSeen={tutorialSeen}
             onTutorialSeen={this.handleTutorialSeenChange}
           >
-            <ErrorCatcher origin="IndexesHandler">
+            <ErrorCatcher origin='IndexesHandler'>
               <IndexesHandler>
-                <ErrorCatcher origin="WidgetsList">
+                <ErrorCatcher origin='WidgetsList'>
                   <WidgetsList />
                 </ErrorCatcher>
               </IndexesHandler>
@@ -125,9 +125,9 @@ class App extends React.Component {
           </Dashboard>
         </ErrorCatcher>
       </AppProviders>
-    );
+    )
   }
 }
 
-export default App;
-export { fixLocationHash, getDefaultLanguage }; // For tests
+export default App
+export { fixLocationHash, getDefaultLanguage } // For tests
